@@ -1,0 +1,314 @@
+record_id,object_type,property,old_value,new_value,derived_from,status
+52295708192,meeting,meeting_source,,Direct Traffic,contact:17649358342:stat_latest_source,dry-run
+52788780290,meeting,meeting_source,,Email Campaign,company:50796010413:stat_latest_source,dry-run
+73817499301,meeting,meeting_source,,Customer Import,company:1087994034:stat_latest_source,dry-run
+74147950179,meeting,meeting_source,,Conference,company:30645171873:stat_latest_source,dry-run
+76902470923,meeting,meeting_source,,Digital Marketing,company:18004800939:stat_latest_source,dry-run
+77275660571,meeting,meeting_source,,Cold Call,company:18004430376:stat_latest_source,dry-run
+78281572637,meeting,meeting_source,,Other,company:32107943352:stat_latest_source,dry-run
+87853377596,meeting,hs_meeting_outcome,,COMPLETED,has meeting notes; deal:43289469864 in active stage; post-meeting contact activity,dry-run
+87901273774,meeting,hs_meeting_outcome,,COMPLETED,has meeting notes; deal:43319417745 in active stage; post-meeting contact activity,dry-run
+87974044311,meeting,hs_meeting_outcome,,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+88062028813,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:40614622023:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+88072413614,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:42712950671:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90924918075,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45176098650:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+88854347553,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:43347317370:stage=937266523 (deal lost/nurture),dry-run
+88871337568,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:44074523947:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+89712990218,meeting,hs_meeting_outcome,,COMPLETED,post-meeting contact activity,dry-run
+90331012019,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45002329381:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90767605411,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45002390918:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90393687906,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45002268248:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90328284424,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45002390658:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90293190510,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45002406509:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90329794173,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45092461376:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90394332572,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45002144568:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90330462499,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45054322842:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+91137842224,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45002409238:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90333700484,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45002512410:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90774509633,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:45416930853:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+91747609875,meeting,hs_meeting_outcome,,COMPLETED,has meeting notes; deal:42657541434 in active stage; post-meeting contact activity,dry-run
+92948523163,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:47739238740:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+92194651280,meeting,hs_meeting_outcome,,NO_SHOW,"no deal, no notes, no post-meeting activity",dry-run
+93392240958,meeting,hs_meeting_outcome,,COMPLETED - STALLED,deal:48123095344:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+93517127768,meeting,hs_meeting_outcome,,COMPLETED - PROGRESSED,deal:39528082461:stage=77f2e34f-14fa-409c-9850-692b7c2c7321 (progressed past discovery),dry-run
+95082728778,meeting,hs_meeting_outcome,,COMPLETED,post-meeting contact activity,dry-run
+95085069642,meeting,hs_meeting_outcome,,COMPLETED - PROGRESSED,deal:49530764587:stage=77f2e34f-14fa-409c-9850-692b7c2c7321 (progressed past discovery),dry-run
+95173033651,meeting,hs_meeting_outcome,,COMPLETED,post-meeting contact activity,dry-run
+97774015854,meeting,hs_meeting_outcome,,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+100662343546,meeting,hs_meeting_outcome,,COMPLETED,has meeting notes,dry-run
+101802459243,meeting,hs_meeting_outcome,,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+102219714828,meeting,hs_meeting_outcome,,COMPLETED,has meeting notes,dry-run
+102648034587,meeting,hs_meeting_outcome,,COMPLETED,has meeting notes; deal:55494481258 in active stage,dry-run
+88505916075,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,post-meeting contact activity,dry-run
+88784514126,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED - STALLED,deal:43662938284:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+88791847494,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED - STALLED,deal:42657498295:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+89717875894,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED - STALLED,deal:44491132482:stage=6f75eed0-c3f8-49f9-a9af-84791515bb90 (deal lost/nurture),dry-run
+90228047758,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes,dry-run
+90232527634,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes,dry-run
+90761796463,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes,dry-run
+90725921305,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes,dry-run
+90781667854,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes,dry-run
+91487712031,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes,dry-run
+92166940308,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+95368285987,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED - PROGRESSED,deal:49530889141:stage=5fa97649-4953-4304-931d-32c3ff1aa342 (progressed past discovery),dry-run
+96009541016,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+96027998076,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+96229696070,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes,dry-run
+98222256556,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes,dry-run
+98297912697,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED - PROGRESSED,deal:52850543390:stage=5fa97649-4953-4304-931d-32c3ff1aa342 (progressed past discovery),dry-run
+98318622123,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; deal:52925387844 in active stage; post-meeting contact activity,dry-run
+98324350015,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+99135574597,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+99459361293,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes,dry-run
+100255950975,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+101163588682,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+101783282851,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; post-meeting contact activity,dry-run
+103166649402,meeting,hs_meeting_outcome,SCHEDULED,COMPLETED,has meeting notes; deal:55641151821 in active stage; post-meeting contact activity,dry-run
+385789309,deal,lead_source,,,no source found,skipped
+385789392,deal,lead_source,,,no source found,skipped
+385875472,deal,lead_source,,List Import,company:1003419250:stat_latest_source,dry-run
+385875532,deal,lead_source,,,no source found,skipped
+385875561,deal,lead_source,,Integration,company:41188263049:stat_latest_source,dry-run
+385876360,deal,lead_source,,Prospecting,company:40105555789:stat_latest_source,dry-run
+385876407,deal,lead_source,,Sponsored Event,deal:385876407:oc_source,dry-run
+426375987,deal,lead_source,,,no source found,skipped
+454895101,deal,lead_source,,Sponsored Event,deal:454895101:source_history,dry-run
+455795523,deal,lead_source,,Prospecting,company:40105555789:stat_latest_source,dry-run
+455823176,deal,lead_source,,,no source found,skipped
+455868447,deal,lead_source,,,no source found,skipped
+459503946,deal,lead_source,,Integration,company:41705935134:stat_latest_source,dry-run
+459504298,deal,lead_source,,,no source found,skipped
+460569445,deal,lead_source,,,no source found,skipped
+463893437,deal,lead_source,,Integration,company:46717827362:stat_latest_source,dry-run
+472816611,deal,lead_source,,Sponsored Event,deal:472816611:oc_source,dry-run
+493823643,deal,lead_source,,,no source found,skipped
+498810301,deal,lead_source,,Prospecting,deal:498810301:oc_source,dry-run
+533747187,deal,lead_source,,,no source found,skipped
+533748344,deal,lead_source,,List Import,company:41226676587:stat_latest_source,dry-run
+533749695,deal,lead_source,,Web Link,deal:533749695:oc_source,dry-run
+533749734,deal,lead_source,,,no source found,skipped
+577464102,deal,lead_source,,Prospecting,company:41221722950:stat_latest_source,dry-run
+577527646,deal,lead_source,,Meeting Attendee,company:41190126949:stat_latest_source,dry-run
+588852606,deal,lead_source,,Integration,company:1003419180:stat_latest_source,dry-run
+599959366,deal,lead_source,,,no source found,skipped
+599995790,deal,lead_source,,,no source found,skipped
+611991140,deal,lead_source,,Integration,company:41224032554:stat_latest_source,dry-run
+627871799,deal,lead_source,,,no source found,skipped
+627879768,deal,lead_source,,,no source found,skipped
+627887657,deal,lead_source,,Direct,deal:627887657:source_history,dry-run
+627888740,deal,lead_source,,,no source found,skipped
+627889136,deal,lead_source,,,no source found,skipped
+627889507,deal,lead_source,,,no source found,skipped
+627929081,deal,lead_source,,Integration,company:41218470180:stat_latest_source,dry-run
+627929912,deal,lead_source,,,no source found,skipped
+627930960,deal,lead_source,,,no source found,skipped
+627944498,deal,lead_source,,,no source found,skipped
+627961086,deal,lead_source,,,no source found,skipped
+627961137,deal,lead_source,,,no source found,skipped
+627978455,deal,lead_source,,,no source found,skipped
+627992258,deal,lead_source,,List Import,deal:627992258:oc_source,dry-run
+628530583,deal,lead_source,,Prospecting,deal:628530583:oc_source,dry-run
+634605543,deal,lead_source,,,no source found,skipped
+657428724,deal,lead_source,,Prospecting,deal:657428724:oc_source,dry-run
+658171470,deal,lead_source,,,no source found,skipped
+658186558,deal,lead_source,,List Import,deal:658186558:oc_source,dry-run
+669277607,deal,lead_source,,List Import,deal:669277607:oc_source,dry-run
+677996800,deal,lead_source,,,no source found,skipped
+695529372,deal,lead_source,,,no source found,skipped
+715855353,deal,lead_source,,,no source found,skipped
+715856230,deal,lead_source,,,no source found,skipped
+733039290,deal,lead_source,,,no source found,skipped
+742905200,deal,lead_source,,,no source found,skipped
+758643576,deal,lead_source,,Organic Search,deal:758643576:oc_source,dry-run
+779377330,deal,lead_source,,Integration,company:41216298335:stat_latest_source,dry-run
+779837311,deal,lead_source,,Email,deal:779837311:oc_source,dry-run
+787209226,deal,lead_source,,,no source found,skipped
+787301023,deal,lead_source,,,no source found,skipped
+817622611,deal,lead_source,,Sponsored Event,deal:817622611:oc_source,dry-run
+828403713,deal,lead_source,,,no source found,skipped
+832902733,deal,lead_source,,,no source found,skipped
+19041505072,deal,lead_source,,,no source found,skipped
+843786227,deal,lead_source,,List Import,company:41227744938:stat_latest_source,dry-run
+843989141,deal,lead_source,,,no source found,skipped
+844392406,deal,lead_source,,,no source found,skipped
+847643321,deal,lead_source,,,no source found,skipped
+853563716,deal,lead_source,,,no source found,skipped
+856323398,deal,lead_source,,Prospecting,company:32107939902:stat_latest_source,dry-run
+858685209,deal,lead_source,,,no source found,skipped
+869005992,deal,lead_source,,Integration,company:32107938961:stat_latest_source,dry-run
+892451166,deal,lead_source,,Prospecting,deal:892451166:oc_source,dry-run
+912625113,deal,lead_source,,,no source found,skipped
+912756200,deal,lead_source,,Prospecting,company:41187637869:stat_latest_source,dry-run
+913002056,deal,lead_source,,,no source found,skipped
+925660042,deal,lead_source,,Email,deal:925660042:oc_source,dry-run
+933883382,deal,lead_source,,Direct,deal:933883382:oc_source,dry-run
+959598810,deal,lead_source,,List Import,company:41228379479:stat_latest_source,dry-run
+1045627870,deal,lead_source,,,no source found,skipped
+4029147836,deal,lead_source,,,no source found,skipped
+16375602765,deal,lead_source,,,no source found,skipped
+16373969175,deal,lead_source,,Organic Search,deal:16373969175:oc_source,dry-run
+16375292684,deal,lead_source,,Web Link,deal:16375292684:oc_source,dry-run
+16375339880,deal,lead_source,,List Import,deal:16375339880:oc_source,dry-run
+16375399856,deal,lead_source,,,no source found,skipped
+16375537035,deal,lead_source,,Prospecting,company:41189970821:stat_latest_source,dry-run
+16375563585,deal,lead_source,,,no source found,skipped
+16375702575,deal,lead_source,,Email,deal:16375702575:oc_source,dry-run
+16375339961,deal,lead_source,,Sponsored Event,deal:16375339961:oc_source,dry-run
+16375617576,deal,lead_source,,Web Link,deal:16375617576:oc_source,dry-run
+16375235082,deal,lead_source,,,no source found,skipped
+16375380094,deal,lead_source,,,no source found,skipped
+16375522164,deal,lead_source,,,no source found,skipped
+16375405190,deal,lead_source,,Email,deal:16375405190:oc_source,dry-run
+16375468910,deal,lead_source,,Web Link,deal:16375468910:oc_source,dry-run
+16375553681,deal,lead_source,,Sponsored Event,deal:16375553681:oc_source,dry-run
+16375634010,deal,lead_source,,Email,deal:16375634010:oc_source,dry-run
+16375248959,deal,lead_source,,Sponsored Event,deal:16375248959:oc_source,dry-run
+16375287579,deal,lead_source,,List Import,company:41196623286:stat_latest_source,dry-run
+16375339957,deal,lead_source,,List Import,company:41227744938:stat_latest_source,dry-run
+16375354282,deal,lead_source,,Prospecting,deal:16375354282:oc_source,dry-run
+16375410723,deal,lead_source,,,no source found,skipped
+16375495537,deal,lead_source,,Integration,company:41225736501:stat_latest_source,dry-run
+16375506012,deal,lead_source,,Integration,deal:16375506012:oc_source,dry-run
+16375543130,deal,lead_source,,List Import,deal:16375543130:oc_source,dry-run
+16375543134,deal,lead_source,,Integration,company:41228834395:stat_latest_source,dry-run
+16375570545,deal,lead_source,,Prospecting,company:41187637869:stat_latest_source,dry-run
+16375586122,deal,lead_source,,Organic Search,deal:16375586122:oc_source,dry-run
+16375727634,deal,lead_source,,Integration,company:41218470180:stat_latest_source,dry-run
+16375354281,deal,lead_source,,Organic Search,company:1100448718:stat_latest_source,dry-run
+16375431004,deal,lead_source,,Direct,company:1964396990:stat_latest_source,dry-run
+16375478455,deal,lead_source,,Email,deal:16375478455:oc_source,dry-run
+16375478529,deal,lead_source,,,no source found,skipped
+16375254380,deal,lead_source,,,no source found,skipped
+16375585166,deal,lead_source,,,no source found,skipped
+16375453233,deal,lead_source,,,no source found,skipped
+16375307315,deal,lead_source,,Integration,deal:16375307315:oc_source,dry-run
+16375248644,deal,lead_source,,Web Link,deal:16375248644:oc_source,dry-run
+4023336868,deal,lead_source,,,no source found,skipped
+4023337024,deal,lead_source,,Integration,company:41228834395:stat_latest_source,dry-run
+4023345110,deal,lead_source,,Integration,company:41218470180:stat_latest_source,dry-run
+4023347042,deal,lead_source,,,no source found,skipped
+4027544549,deal,lead_source,,,no source found,skipped
+4039609315,deal,lead_source,,,no source found,skipped
+16375235000,deal,lead_source,,List Import,company:41732417671:stat_latest_source,dry-run
+16375273361,deal,lead_source,,Web Link,deal:16375273361:oc_source,dry-run
+16375365906,deal,lead_source,,,no source found,skipped
+16375648693,deal,lead_source,,Integration,deal:16375648693:oc_source,dry-run
+16375654528,deal,lead_source,,Email,deal:16375654528:oc_source,dry-run
+16375664691,deal,lead_source,,Email,deal:16375664691:oc_source,dry-run
+16375499935,deal,lead_source,,Paid Social,deal:16375499935:oc_source,dry-run
+16375384449,deal,lead_source,,Integration,deal:16375384449:oc_source,dry-run
+16375405188,deal,lead_source,,,no source found,skipped
+16375296899,deal,lead_source,,List Import,deal:16375296899:oc_source,dry-run
+16375380106,deal,lead_source,,,no source found,skipped
+16375516503,deal,lead_source,,,no source found,skipped
+16375172997,deal,lead_source,,,no source found,skipped
+16375396509,deal,lead_source,,Web Link,company:5189824020:stat_latest_source,dry-run
+16375410724,deal,lead_source,,,no source found,skipped
+16375442340,deal,lead_source,,List Import,deal:16375442340:oc_source,dry-run
+16375570542,deal,lead_source,,,no source found,skipped
+16375753000,deal,lead_source,,Web Link,deal:16375753000:oc_source,dry-run
+16375521084,deal,lead_source,,,no source found,skipped
+16375453232,deal,lead_source,,,no source found,skipped
+16375350580,deal,lead_source,,,no source found,skipped
+16375330864,deal,lead_source,,Sponsored Event,deal:16375330864:oc_source,dry-run
+16375326092,deal,lead_source,,,no source found,skipped
+16375316646,deal,lead_source,,,no source found,skipped
+16375415657,deal,lead_source,,Sponsored Event,deal:16375415657:oc_source,dry-run
+16375457940,deal,lead_source,,,no source found,skipped
+16375601427,deal,lead_source,,,no source found,skipped
+16375287583,deal,lead_source,,,no source found,skipped
+16375601429,deal,lead_source,,,no source found,skipped
+16375254371,deal,lead_source,,,no source found,skipped
+16375273349,deal,lead_source,,List Import,deal:16375273349:oc_source,dry-run
+16375248952,deal,lead_source,,,no source found,skipped
+16375365907,deal,lead_source,,Email,deal:16375365907:oc_source,dry-run
+16375474487,deal,lead_source,,Sponsored Event,deal:16375474487:oc_source,dry-run
+16375558405,deal,lead_source,,,no source found,skipped
+16375563811,deal,lead_source,,,no source found,skipped
+16375575896,deal,lead_source,,,no source found,skipped
+16375580187,deal,lead_source,,Prospecting,company:36445266688:stat_latest_source,dry-run
+16375664697,deal,lead_source,,,no source found,skipped
+16375727635,deal,lead_source,,Prospecting,deal:16375727635:oc_source,dry-run
+16375420786,deal,lead_source,,,no source found,skipped
+16375184001,deal,lead_source,,Web Link,deal:16375184001:oc_source,dry-run
+16375204753,deal,lead_source,,List Import,deal:16375204753:oc_source,dry-run
+16375172994,deal,lead_source,,Integration,company:41216298335:stat_latest_source,dry-run
+16375199042,deal,lead_source,,Email,deal:16375199042:oc_source,dry-run
+16375633079,deal,lead_source,,List Import,deal:16375633079:oc_source,dry-run
+16375273373,deal,lead_source,,Email,deal:16375273373:oc_source,dry-run
+16375527348,deal,lead_source,,Integration,company:41177536422:stat_latest_source,dry-run
+16375511224,deal,lead_source,,,no source found,skipped
+16375511299,deal,lead_source,,List Import,deal:16375511299:oc_source,dry-run
+18228925014,deal,lead_source,,Email,deal:18228925014:oc_source,dry-run
+16375753002,deal,lead_source,,Integration,deal:16375753002:oc_source,dry-run
+16375183999,deal,lead_source,,,no source found,skipped
+16375463965,deal,lead_source,,,no source found,skipped
+16375511297,deal,lead_source,,,no source found,skipped
+16375532198,deal,lead_source,,,no source found,skipped
+16375199044,deal,lead_source,,Direct,company:18004898830:stat_latest_source,dry-run
+16375442332,deal,lead_source,,,no source found,skipped
+16375474483,deal,lead_source,,Email,deal:16375474483:oc_source,dry-run
+16375484218,deal,lead_source,,Integration,company:1087994034:stat_latest_source,dry-run
+16375521090,deal,lead_source,,List Import,deal:16375521090:oc_source,dry-run
+16375405193,deal,lead_source,,,no source found,skipped
+16375751458,deal,lead_source,,Email,deal:16375751458:oc_source,dry-run
+16375570032,deal,lead_source,,,no source found,skipped
+16375301705,deal,lead_source,,Sponsored Event,deal:16375301705:source_history,dry-run
+16375335777,deal,lead_source,,Web Link,deal:16375335777:oc_source,dry-run
+16375431002,deal,lead_source,,,no source found,skipped
+16375570044,deal,lead_source,,List Import,deal:16375570044:oc_source,dry-run
+16375506017,deal,lead_source,,,no source found,skipped
+16375558407,deal,lead_source,,,no source found,skipped
+16375448152,deal,lead_source,,,no source found,skipped
+16375670654,deal,lead_source,,Integration,deal:16375670654:oc_source,dry-run
+16375390012,deal,lead_source,,Prospecting,deal:16375390012:oc_source,dry-run
+16375558400,deal,lead_source,,,no source found,skipped
+16375307317,deal,lead_source,,,no source found,skipped
+4043138283,deal,lead_source,,,no source found,skipped
+16375453236,deal,lead_source,,,no source found,skipped
+4028019682,deal,lead_source,,Email,deal:4028019682:oc_source,dry-run
+16375648695,deal,lead_source,,Email,deal:16375648695:oc_source,dry-run
+16375199040,deal,lead_source,,,no source found,skipped
+16375405194,deal,lead_source,,List Import,company:47281113389:stat_latest_source,dry-run
+16375370168,deal,lead_source,,List Import,company:41732417671:stat_latest_source,dry-run
+16375521088,deal,lead_source,,List Import,company:18004206665:stat_latest_source,dry-run
+16375463961,deal,lead_source,,Organic Search,deal:16375463961:oc_source,dry-run
+16375479880,deal,lead_source,,Organic Search,deal:16375479880:oc_source,dry-run
+16375495524,deal,lead_source,,Email,deal:16375495524:oc_source,dry-run
+16375495530,deal,lead_source,,Email,deal:16375495530:oc_source,dry-run
+16375533317,deal,lead_source,,Organic Search,deal:16375533317:oc_source,dry-run
+16375575897,deal,lead_source,,Sponsored Event,company:41219073864:stat_latest_source,dry-run
+16375666325,deal,lead_source,,Email,deal:16375666325:oc_source,dry-run
+16375746404,deal,lead_source,,Web Link,deal:16375746404:oc_source,dry-run
+16375787169,deal,lead_source,,Organic Search,deal:16375787169:oc_source,dry-run
+16579698558,deal,lead_source,,Email,deal:16579698558:oc_source,dry-run
+16579663682,deal,lead_source,,Integration,company:41200339329:stat_latest_source,dry-run
+17118508665,deal,lead_source,,Email,deal:17118508665:oc_source,dry-run
+17118542209,deal,lead_source,,Email,deal:17118542209:oc_source,dry-run
+17118542750,deal,lead_source,,Sponsored Event,deal:17118542750:oc_source,dry-run
+17369293387,deal,lead_source,,Sponsored Event,deal:17369293387:oc_source,dry-run
+17585424449,deal,lead_source,,Web Link,deal:17585424449:oc_source,dry-run
+17585515326,deal,lead_source,,Web Link,company:5189824020:stat_latest_source,dry-run
+17619226231,deal,lead_source,,Web Link,deal:17619226231:oc_source,dry-run
+17619790198,deal,lead_source,,Paid Social,deal:17619790198:oc_source,dry-run
+17619226662,deal,lead_source,,Email,deal:17619226662:oc_source,dry-run
+17731092075,deal,lead_source,,,no source found,skipped
+17731092844,deal,lead_source,,,no source found,skipped
+17979214723,deal,lead_source,,Sponsored Event,deal:17979214723:oc_source,dry-run
+17980040516,deal,lead_source,,Integration,deal:17980040516:oc_source,dry-run
+18193977880,deal,lead_source,,,no source found,skipped
+18315301928,deal,lead_source,,Web Link,deal:18315301928:oc_source,dry-run
+19007835704,deal,lead_source,,Integration,company:1087994034:stat_latest_source,dry-run
+19228468401,deal,lead_source,,Email,deal:19228468401:oc_source,dry-run
+20781292166,deal,lead_source,,,no source found,skipped
+21135828592,deal,lead_source,,Email,deal:21135828592:oc_source,dry-run
+22117577311,deal,lead_source,,List Import,deal:22117577311:oc_source,dry-run
+22217180945,deal,lead_source,,List Import,deal:22217180945:oc_source,dry-run
+22217181089,deal,lead_source,,Email,deal:22217181089:oc_source,dry-run
+22217101841,deal,lead_source,,Email,deal:22217101841:oc_source,dry-run
+22677114705,deal,lead_source,,Email,deal:22677114705:oc_source,dry-run
+44998418812,deal,lead_source,,Sponsored Event,deal:44998418812:oc_source,dry-run
+53275161880,deal,lead_source,,List Import,deal:53275161880:oc_source,dry-run
+54784515728,deal,lead_source,,List Import,deal:54784515728:oc_source,dry-run
+55506613828,deal,lead_source,,Integration,deal:55506613828:oc_source,dry-run
+55494481258,deal,lead_source,,List Import,deal:55494481258:oc_source,dry-run

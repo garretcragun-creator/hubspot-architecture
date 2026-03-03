@@ -1,0 +1,647 @@
+{
+  "version": 1,
+  "lastUpdated": "2026-02-20",
+  "companyMappings": {
+    "family health centers": {
+      "hsCompanyId": "586265542",
+      "hsCompanyName": "Family Health Centers",
+      "hsCompanyDomain": "myfamilyhealth.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "southcentral foundation": {
+      "hsCompanyId": "44534774567",
+      "hsCompanyName": "Southcentral Foundation",
+      "hsCompanyDomain": "southcentralfoundation.com",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "arcare": {
+      "hsCompanyId": "36445266800",
+      "hsCompanyName": "Arcare",
+      "hsCompanyDomain": "arcare.net",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "mountain park health center": {
+      "hsCompanyId": "44672975471",
+      "hsCompanyName": "Mountain Park Health Center",
+      "hsCompanyDomain": "mountainparkhealth.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "tuba city regional health care": {
+      "hsCompanyId": "36407808793",
+      "hsCompanyName": "Tuba City Regional Health Care Corporation",
+      "hsCompanyDomain": "tchealth.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "alameda county": {
+      "hsCompanyId": "49494281822",
+      "hsCompanyName": "Alameda, County Of",
+      "hsCompanyDomain": "camden-medical.com",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "celebrating life chc": {
+      "hsCompanyId": "41192138419",
+      "hsCompanyName": "Celebrating Life Community Health Center",
+      "hsCompanyDomain": "clchc.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "clinica de salud del valle de salinas": {
+      "hsCompanyId": "41187026947",
+      "hsCompanyName": "Clinica De Salud Del Valle De Salinas",
+      "hsCompanyDomain": "csvs.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "easterseals southern california|41180324636": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "families together orange county": {
+      "hsCompanyId": "41190271138",
+      "hsCompanyName": "Families Together Of Orange County",
+      "hsCompanyDomain": "familiestogetheroc.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "mendocino community health clinic": {
+      "hsCompanyId": "41731490306",
+      "hsCompanyName": "Mendocino Community Health Clinic",
+      "hsCompanyDomain": "mchcinc.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "neighborhood healthcare": {
+      "hsCompanyId": "41189032070",
+      "hsCompanyName": "Neighborhood Healthcare",
+      "hsCompanyDomain": "nhcare.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "north east medical services": {
+      "hsCompanyId": "36445266688",
+      "hsCompanyName": "North East Medical Services",
+      "hsCompanyDomain": "nems.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "shasta community health center": {
+      "hsCompanyId": "41189664292",
+      "hsCompanyName": "Shasta Community Health Center",
+      "hsCompanyDomain": "shastahealth.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "southland integrated services": {
+      "hsCompanyId": "41199248945",
+      "hsCompanyName": "Southland Integrated Services, Inc.",
+      "hsCompanyDomain": "southlandintegrated.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "university california irvine": {
+      "hsCompanyId": "49480829538",
+      "hsCompanyName": "University Of California Irvine",
+      "hsCompanyDomain": "ucirvinehealth.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "american board family medicine|42361276597": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "university north florida|41191205783": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "crusader community health": {
+      "hsCompanyId": "41193684867",
+      "hsCompanyName": "Crusader Community Health",
+      "hsCompanyDomain": "crusaderhealth.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "siu center for family medicine|41195074440": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "jane pauley chc": {
+      "hsCompanyId": "41193997964",
+      "hsCompanyName": "Jane Pauley Community Health Center",
+      "hsCompanyDomain": "janepauleychc.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "meridian health services": {
+      "hsCompanyId": "41228530494",
+      "hsCompanyName": "Meridian Health Services Corp",
+      "hsCompanyDomain": "meridianhs.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "great plains health alliance|41219387693": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "new orleans va medical center|41190747798": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "duffy health center": {
+      "hsCompanyId": "32107940950",
+      "hsCompanyName": "Duffy Health Center",
+      "hsCompanyDomain": "duffyhealthcenter.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "north mississippi health services|41193378054": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "presbyterian medical services": {
+      "hsCompanyId": "41179392563",
+      "hsCompanyName": "Presbyterian Medical Services",
+      "hsCompanyDomain": "pmsnm.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "evergreen health": {
+      "hsCompanyId": "41195069085",
+      "hsCompanyName": "Evergreen Health",
+      "hsCompanyDomain": "evergreenhs.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "hudson headwaters health network": {
+      "hsCompanyId": "41223577005",
+      "hsCompanyName": "Hudson Headwaters Health Network",
+      "hsCompanyDomain": "hhhn.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "metrohealth medical center": {
+      "hsCompanyId": "41189970821",
+      "hsCompanyName": "Metrohealth Medical Center",
+      "hsCompanyDomain": "metrohealth.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "delaware valley community health": {
+      "hsCompanyId": "41196623286",
+      "hsCompanyName": "Delaware Valley Community Health, Inc",
+      "hsCompanyDomain": "dvch.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "family practice center|49475357349": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "jefferson health lehigh valley health|41180167195": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "corporacion sanos": {
+      "hsCompanyId": "41191362858",
+      "hsCompanyName": "Corporacion Sanos",
+      "hsCompanyDomain": "corpsanos.com",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "hopehealth": {
+      "hsCompanyId": "41688982104",
+      "hsCompanyName": "HopeHealth",
+      "hsCompanyDomain": "hope-health.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "medical university south carolina|41190438771": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "neighborhood health": {
+      "hsCompanyId": "41216613042",
+      "hsCompanyName": "Neighborhood Health",
+      "hsCompanyDomain": "neighborhoodhealthva.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    },
+    "lone star communiations|41270700702": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "texas health resources|41188421037": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "texas tech univ health sciences center|41228070666": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "uthealth east texas|18004017829": {
+      "status": "rejected",
+      "source": "HIMSS 2026"
+    },
+    "utah navajo health system": {
+      "hsCompanyId": "41193216677",
+      "hsCompanyName": "Utah Navajo Health System",
+      "hsCompanyDomain": "unhsinc.org",
+      "status": "confirmed",
+      "source": "HIMSS 2026"
+    }
+  },
+  "contactPreferences": {
+    "586265542": {
+      "include": [
+        "182223302530",
+        "194721578523",
+        "249101"
+      ]
+    },
+    "44534774567": {
+      "include": [
+        "191423548441",
+        "174735977629",
+        "4325132",
+        "191422121398",
+        "96540847527",
+        "96569603346",
+        "191834681015",
+        "139978299463",
+        "191422121475",
+        "191412056472"
+      ],
+      "exclude": [
+        "191410652213"
+      ]
+    },
+    "36445266800": {
+      "exclude": [
+        "4322160",
+        "140920790929",
+        "4317101",
+        "6565201",
+        "856701",
+        "4321412",
+        "198376",
+        "4319205",
+        "71917030987",
+        "126070433181"
+      ],
+      "include": [
+        "140920790928",
+        "80081420688",
+        "198414",
+        "143139720830",
+        "856820",
+        "6565858",
+        "198516",
+        "140920790932",
+        "71943610477",
+        "4320015",
+        "140920790931",
+        "140920790930",
+        "140920790927",
+        "140920790926"
+      ]
+    },
+    "44672975471": {
+      "include": [
+        "109401",
+        "191423497775",
+        "174735977863",
+        "109351",
+        "122779786615",
+        "191412074617",
+        "122823850623",
+        "532701",
+        "122787553026",
+        "122791426079",
+        "122779786620",
+        "4317434",
+        "199497475594"
+      ],
+      "exclude": [
+        "191420895529",
+        "109301",
+        "109451"
+      ]
+    },
+    "36407808793": {
+      "include": [
+        "88661385538",
+        "113244697100"
+      ],
+      "exclude": [
+        "122792040275",
+        "128573254305",
+        "4319522",
+        "165709909859"
+      ]
+    },
+    "41192138419": {
+      "include": [
+        "4321853",
+        "4323452"
+      ]
+    },
+    "41187026947": {
+      "include": [
+        "88655285162",
+        "124458",
+        "169292595892"
+      ],
+      "exclude": [
+        "6569302",
+        "6567702",
+        "88618753356",
+        "6565401",
+        "88682607254",
+        "6566653",
+        "6565904",
+        "192677968800",
+        "168796162692"
+      ]
+    },
+    "41731490306": {
+      "exclude": [
+        "4318357",
+        "4317996",
+        "4318565",
+        "4320401",
+        "4320637",
+        "66735576176",
+        "452501"
+      ],
+      "include": [
+        "71675",
+        "125120",
+        "199100825356",
+        "4319124"
+      ]
+    },
+    "41189032070": {
+      "exclude": [
+        "88547516579",
+        "88585447029",
+        "189974583607",
+        "194736522327",
+        "185169445486",
+        "88586799542",
+        "15937380232",
+        "182198400621"
+      ],
+      "include": [
+        "88581620533",
+        "186051",
+        "161957773585",
+        "855452",
+        "66744513620",
+        "182198400623",
+        "182198400618",
+        "246951",
+        "199514797627",
+        "182198400625"
+      ]
+    },
+    "36445266688": {
+      "exclude": [
+        "200056185650",
+        "4317854",
+        "4325067",
+        "4322728",
+        "181936757121",
+        "4322052",
+        "181936757119"
+      ],
+      "include": [
+        "4324903",
+        "4319610",
+        "4318834",
+        "854651",
+        "4324654",
+        "4324459",
+        "199485579068",
+        "181936757118"
+      ]
+    },
+    "41189664292": {
+      "exclude": [
+        "88653777990",
+        "110601",
+        "88645904462",
+        "4321558"
+      ],
+      "include": [
+        "4322153",
+        "88660015384",
+        "6568703",
+        "63801",
+        "88645530880",
+        "4322840",
+        "185184951431",
+        "185179985751",
+        "185178103985",
+        "4323292",
+        "185174709884",
+        "5667013724"
+      ]
+    },
+    "41193684867": {
+      "include": [
+        "857520",
+        "193691406374",
+        "422851",
+        "67408826175",
+        "191949820000",
+        "191942589540",
+        "193758113700"
+      ],
+      "exclude": [
+        "67392496659",
+        "4323987",
+        "191950003596"
+      ]
+    },
+    "41193997964": {
+      "include": [
+        "4325208",
+        "373401",
+        "857528",
+        "373351",
+        "4317526",
+        "71928584001"
+      ],
+      "exclude": [
+        "182240933124",
+        "88821754513",
+        "4320115",
+        "857271",
+        "4325651",
+        "88814535212"
+      ]
+    },
+    "41228530494": {
+      "include": [
+        "397151",
+        "373451",
+        "80124255057",
+        "4323204",
+        "4324213",
+        "4319318",
+        "4318879"
+      ],
+      "exclude": [
+        "857353",
+        "4322914"
+      ]
+    },
+    "32107940950": {
+      "include": [
+        "194719272787",
+        "6565306",
+        "114275424563"
+      ],
+      "exclude": [
+        "857723",
+        "114275424564",
+        "114275424565",
+        "4321200"
+      ]
+    },
+    "41179392563": {
+      "include": [
+        "78190",
+        "26096750149",
+        "115451",
+        "99224626800"
+      ],
+      "exclude": [
+        "4318108",
+        "4318872",
+        "4325201",
+        "4319285",
+        "141161297257",
+        "9386651"
+      ]
+    },
+    "41195069085": {
+      "include": [
+        "4324430",
+        "199479646099",
+        "65215071256",
+        "65214646577",
+        "199480161555"
+      ],
+      "exclude": [
+        "199479686584",
+        "65212509305",
+        "4321761"
+      ]
+    },
+    "41223577005": {
+      "include": [
+        "79791949123",
+        "877515",
+        "79815516973",
+        "150260786361",
+        "79792212665",
+        "79792540600",
+        "65212522282"
+      ],
+      "exclude": [
+        "879051",
+        "878456"
+      ]
+    },
+    "41189970821": {
+      "exclude": [
+        "4320677",
+        "4319130"
+      ],
+      "include": [
+        "182241040767",
+        "182242595979"
+      ]
+    },
+    "41196623286": {
+      "exclude": [
+        "4326552",
+        "199092855966",
+        "199101030971",
+        "84206618009",
+        "84212286475",
+        "4321953",
+        "4324648",
+        "4321100"
+      ],
+      "include": [
+        "4321804",
+        "4321433",
+        "4324474",
+        "202183310860",
+        "4318677",
+        "84215530871",
+        "4325216",
+        "4322288"
+      ]
+    },
+    "41191362858": {
+      "include": [
+        "191944758564"
+      ]
+    },
+    "41688982104": {
+      "include": [
+        "9257151",
+        "201866337818",
+        "194721518735",
+        "88693925136",
+        "4326403",
+        "9257551",
+        "9257302",
+        "26139706217",
+        "9257501"
+      ],
+      "exclude": [
+        "4317702",
+        "194621454342",
+        "88657068816",
+        "88695778843",
+        "88676899158",
+        "88695343887",
+        "9257451",
+        "88655325606",
+        "26142886241",
+        "194721612871"
+      ]
+    },
+    "41216613042": {
+      "include": [
+        "135692459339",
+        "136227144005",
+        "4323034",
+        "877719"
+      ],
+      "exclude": [
+        "4324871"
+      ]
+    },
+    "41193216677": {
+      "include": [
+        "72010072878",
+        "132120382376"
+      ],
+      "exclude": [
+        "4323411",
+        "132170210051",
+        "1017801"
+      ]
+    }
+  }
+}

@@ -1,0 +1,314 @@
+csv_company,match_confidence,hs_company_name,hs_contact_name,hs_contact_email,hs_contact_title,company_match,include
+Family Health Centers,HIGH,Family Health Centers,Aliya Quidwai,aquidwai@fhc.us,Chief Operations Officer,Y,Y
+Family Health Centers,HIGH,Family Health Centers,Florence Lestage,flestage@myfamilyhealth.org,"AVP, Revenue Integrity",Y,Y
+Family Health Centers,HIGH,Family Health Centers,Mike Ellis,mellis@fhc.us,Director IT,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Gottlieb Katherine,katherineg@southcentralfoundation.com,Chief Executive Officer and President,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Lee Olson,lolson@southcentralfoundation.com,CFO,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,April Kyle,akyle@southcentralfoundation.com,Southcentral Foundation President/CEO,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Katherine Gottleib,gkatherine@southcentralfoundation.com,President/CEO,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Gerard Asselin,gerard.asselin@southcentralfoundation.com,Director of Operations,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Sharon Fenn,sfenn@southcentralfoundation.com,Director of Organizational Development,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Beverly Westhoff,bwesthoff@southcentralfoundation.com,Director of Financial Operations,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Michelle Tierney,ntierney@southcentralfoundation.com,Executive Vice President Organizational Development and Innovation,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Monica Lee,mlee@southcentralfoundation.com,Director of Operations,Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Ruth Alvarez,ralvarez@southcentralfoundation.com,"CEO, Practitioner",Y,Y
+Southcentral Foundation,HIGH,Southcentral Foundation,Andrea Hiles,ahiles@southcentralfoundation.com,CNM,Y,N
+Arcare,HIGH,Arcare,Jeremy Beehn,jeremy.beehn@arcare.net,Chief Financial Analyst,Y,N
+Arcare,HIGH,Arcare,Jamie Mobley,jamie.mobley@arcare.net,Chief Experience Officer,Y,N
+Arcare,HIGH,Arcare,Terry Hill,terry.hill@arcare.net,Chief Medical Officer,Y,Y
+Arcare,HIGH,Arcare,Winston Collier,winston.collier@arcare.net,Chief Legal Officer,Y,N
+Arcare,HIGH,Arcare,Joey Miller (Flowers),joey.miller@arcare.net,Chief Strategy Officer,Y,N
+Arcare,HIGH,Arcare,Steven F. Collier,steven.collier@arcare.net,Chief Executive Officer,Y,Y
+Arcare,HIGH,Arcare,Lauren Jill Fields,lauren.fields@arcare.net,CFO,Y,Y
+Arcare,HIGH,Arcare,Tom Arens,tom.arens@arcare.net,CIO,Y,N
+Arcare,HIGH,Arcare,Talmage Whitehead,talmage.whitehead@arcare.net,President,Y,Y
+Arcare,HIGH,Arcare,Christian Gibson,chris.gibson@arcare.net,COO,Y,Y
+Arcare,HIGH,Arcare,Tanya Underwood,tanya.underwood@arcare.net,Director of Compliance,Y,N
+Arcare,HIGH,Arcare,Carrie Fortune,carrie.fortune@arcare.net,Director of Grants Management,Y,Y
+Arcare,HIGH,Arcare,Teresa Edwards,teresa.edwards@arcare.net,VP of Finance,Y,Y
+Arcare,HIGH,Arcare,Alex Collier,alex.collier@arcare.net,Director of Corporate Properties,Y,N
+Arcare,HIGH,Arcare,Garrett Morgan,garrett.morgan@arcare.net,Vice President Operations Central Arkansas,Y,Y
+Arcare,HIGH,Arcare,Clark Osborne,clark.osborne@arcare.net,Vice President of Technology,Y,Y
+Arcare,HIGH,Arcare,Alison Dewitt,alison.dewitt@arcare.net,"AVP, Pharmacy Optimization",Y,Y
+Arcare,HIGH,Arcare,Dustin Morris,dustin.morris@arcare.net,Director of IT Clinical Services,Y,Y
+Arcare,HIGH,Arcare,Aaron Pilkington,aaron.pilkington@arcare.net,Vice President of Strategic Communications,Y,N
+Arcare,HIGH,Arcare,Anna Hall,anna.hall@arcare.net,Vice President of Coordinated Care,Y,Y
+Arcare,HIGH,Arcare,Justin Denton,justin.denton@arcare.net,SVP of Specialty Pharmacy,Y,N
+Arcare,HIGH,Arcare,Shawn  Studdard,shawn.studdard@arcare.net,Senior Vice President | Specialty Care,Y,N
+Arcare,HIGH,Arcare,Natalie Carden,natalie.carden@arcare.net,Vice President Operations- Northwest,Y,Y
+Arcare,HIGH,Arcare,Diane Verser,diane.verser@arcare.net,Vice President Operations,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Alana Podwika,apodwika@mphc-az.org,Chief Information Officer,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Anna Alonzo,aalonzo@email.arizona.edu,Chief Operating Officer,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Sandra Curtice,scurtice@mphc-az.org,Chief Financial Officer,Y,N
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Davinder Singh,dsingh@mphc-az.org,Chief Medical Officer,Y,N
+Mountain Park Health Center,HIGH,Mountain Park Health Center,John Swagert,jswagert@mphc-az.org,Chief Executive Officer,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Rachel Lambert,rlambert@mphc-az.org,Chief Operating Officer,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Andrea Albertson,aalbertson@mphc-az.org,Associate Director Of Operations,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Richard Montgomery,rmontgomery@mphc-az.org,Director of Operations,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Warren Woodward,wwoodward@mphc-az.org,Sr. Director Operations,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,James Hall,jhall@mphc-az.org,Director of Digital and Technology Services (Vice President Equivalent),Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Michelle Arteaga,marteaga@mphc-az.org,Associate Director of Operations,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Anna Torrez,atorrez@mphc-az.org,Operations Director,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Stella Xenakis,sxenakis@mphc-az.org,Senior Director of Grants & Programs and Complianc,Y,N
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Rabah R,rradhi@mphc-az.org,Director Of Operations - Patient Access,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Jason Cheatham,jcheatham@mphc-az.org,Associate IT Director,Y,Y
+Mountain Park Health Center,HIGH,Mountain Park Health Center,Brandi Whisler,bwhisler@mphc-az.org,Senior Director of Operations,Y,Y
+Tuba City Regional Health Care,HIGH,Tuba City Regional Health Care Corporation,Melissa Goad,melissa.goad@tchealth.org,CFO,Y,Y
+Tuba City Regional Health Care,HIGH,Tuba City Regional Health Care Corporation,Natalia Hatathli,natalia.hatathli@tchealth.org,Chief Ancillary Officer,Y,N
+Tuba City Regional Health Care,HIGH,Tuba City Regional Health Care Corporation,Riad Abdlekarim,riad.abdelkarim@tchealth.org,Chief Medical Officer,Y,N
+Tuba City Regional Health Care,HIGH,Tuba City Regional Health Care Corporation,Lorayne Goldtooth,lorayne.goldtooth@tchealth.org,Quality Data Analyst Director,Y,N
+Tuba City Regional Health Care,HIGH,Tuba City Regional Health Care Corporation,Jacqueline Jensen,jacqueline.jensen@tchealth.org,Clinical Informatics Director,Y,N
+Tuba City Regional Health Care,HIGH,Tuba City Regional Health Care Corporation,Christina Zeigler,christina.zeigler@tchealth.org,Dental Director,Y,Y
+Alameda County,HIGH,"Alameda, County Of",,,,Y,
+Celebrating Life CHC,MEDIUM,Celebrating Life Community Health Center,Sergey Sergeyev,ssergeyev@clchc.org,Founder & Chief Executive Officer,Y,Y
+Celebrating Life CHC,MEDIUM,Celebrating Life Community Health Center,Adilene Mendoza,amendoza@clchc.org,Director of Operations,Y,Y
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Mac Mccoy,mmccoy@csvs.org,Chief Financial Officer,Y,Y
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Elizabeth Reyes,ereyez@csvs.org,Board Member,Y,N
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Ali Chavez,achavez@csvs.org,Board Member,Y,N
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Oguchi Nkwocha,onkwocha@csvs.org,Chief Medical Officer,Y,N
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Max Cuevas,mcuevas@csvs.org,Chief Executive Officer,Y,Y
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Maria Aguilar,maguilar@csvs.org,Board Member,Y,N
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Hina Rincon,hrincon@csvs.org,Chief Nursing Officer,Y,N
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Raymond Gonzales,rgonzales@csvs.org,Board Member,Y,N
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Rogelio Jacinto,rjacinto@csvs.org,Board Member,Y,N
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Jeremiah Jrincon,jrincon@csvs.org,Director of Information Technology,Y,Y
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Jon Yoshiyama,jyoshiyama@csvs.org,Medical Director,Y,N
+Clinica de Salud del Valle de Salinas,HIGH,Clinica De Salud Del Valle De Salinas,Servando Medina,semedina@csvs.org,Human Resources Director,Y,N
+Easterseals Southern California,MEDIUM,"Southern California Medical Center, Inc.",Omar Kader,okader@scmedcenter.org,Chief Financial & Operations Officer,N,
+Easterseals Southern California,MEDIUM,"Southern California Medical Center, Inc.",Lien Tran,ltran@scmedcenter.org,Interim Assistant Chief Medical Officer,N,
+Easterseals Southern California,MEDIUM,"Southern California Medical Center, Inc.",Ara Baghdasarian,abaghdasarian@scmedcenter.org,CEO,N,
+Families Together of Orange County,HIGH,Families Together Of Orange County,,,,Y,
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Christie MacVitie,cmacvitie@mchcinc.org,Chief Financial Officer,Y,N
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Justin Ebert,jebert@mchcinc.org,Battalion Chief,Y,N
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Rodney Grainger,rgrainger@longvalley.org,CEO,Y,Y
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Carole Press,ceo@mchcinc.org,Chief Executive Officer,Y,Y
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Lisa Alexander,lalexander@mchcinc.org,Executive Assistant to Chief Executive Officer,Y,Y
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Jasmin Pintane,jpintane@mchcinc.org,Director of Nursing,Y,N
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Esperanza Fausto,lgarbocci@mchcinc.org,Director of Operations,Y,Y
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Ben Anderson,banderson@mchcinc.org,Director of Behavioral Health,Y,N
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Anna Shaw,ashaw@mchcinc.org,Director Of Development,Y,N
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Joaquin Blanco,jblanco@mchcinc.org,Director of People and Culture,Y,N
+Mendocino Community Health Clinic,HIGH,Mendocino Community Health Clinic,Lavonna Schrock,lschrock@mchcinc.org,Controller,Y,N
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Jim Schultz,jims@nhcare.org,Chief Medical Officer,Y,N
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Lisa Daigle,lisad@nhcare.org,Chief Financial Officer,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Prudence August,prudence.august@nhcare.org,Chief Information Officer,Y,N
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Rakesh Patel,rakeshp@nhcare.org,Chief Executive Officer,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Rakesh Patel,alex.nunez@nhcare.org,Chief Executive Officer,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Tracy Ream,tream@nhcare.org,CEO,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Marlena Martinez,marlena.martinez@nhcare.org,Director of Operations,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Michelle Hughes,michelle.hughes@nhcare.org,Director of Quality and Population Health,Y,N
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Corrine Busta,corrine.busta@nhcare.org,Director of External Affairs,Y,N
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Sandra Orzel,sandra.orzel@nhcare.org,Senior Director of Operations and Program Management,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Maria Acosta,maria.acosta@nhcare.org,Director of Operations,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Maura Mireles-Castro,mauram@nhcare.org,Director of Operations,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Wendi Vierra,wendi.vierra@nhcare.org,Director of Operations Behavioral Health,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Gail Tomsky,,Director of Nursing & QI,Y,N
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Elizabeth Ahumada,elizabethh@nhcare.org,Vice President of Operations,Y,Y
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Alex Bulloch,philanthropy@nhcare.org,Page Manager,Y,N
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Jeff Glenn,glennj@nhcare.org,Retired,Y,N
+Neighborhood Healthcare,HIGH,Neighborhood Healthcare,Lane Ingram,lane.carpenteringram@nhcare.org,Clinic Manager,Y,N
+North East Medical Services,HIGH,North East Medical Services,Jonathan Wong,jonathan.wong@nems.org,"Section Chief, Dept of Ob/gyn",Y,N
+North East Medical Services,HIGH,North East Medical Services,Jerry Jew,jerry.jew@nems.org,Chief Strategy Officer (CSO),Y,Y
+North East Medical Services,HIGH,North East Medical Services,Linda Tang,linda.tang@nems.org,Chief Managed Care Officer,Y,Y
+North East Medical Services,HIGH,North East Medical Services,Paul Fox,paul.fox@nems.org,Chief Administrative Officer (CAO),Y,Y
+North East Medical Services,HIGH,North East Medical Services,Johnson Wong,ruby.zhu@nems.org,CFO,Y,N
+North East Medical Services,HIGH,North East Medical Services,Eddie Chan,eddie.chan@nems.org,President & CEO,Y,Y
+North East Medical Services,HIGH,North East Medical Services,Rachel Koh,rachel.koh@nems.org,COO,Y,Y
+North East Medical Services,HIGH,North East Medical Services,Murali Athuluri,murali.athuluri@nems.org,CIO,Y,Y
+North East Medical Services,HIGH,North East Medical Services,Annie Yik,annie.yik@nems.org,"MSO Associate Director, VBC Operations",Y,Y
+North East Medical Services,HIGH,North East Medical Services,Kenneth Tai,kenneth.tai@nems.org,Internal Medicine Residency Program Director,Y,N
+North East Medical Services,HIGH,North East Medical Services,Daniel Vega,daniel.vega@nems.org,Director of Operations,Y,Y
+North East Medical Services,HIGH,North East Medical Services,Beverley Chan,beverley.chan@nems.org,Director of Pharmacy,Y,N
+North East Medical Services,HIGH,North East Medical Services,Jackie Lam,jackie.lam@nems.org,Medical Director & Quality Improvement Director,Y,N
+North East Medical Services,HIGH,North East Medical Services,Jessica Ho,jessica.ho@nems.org,Government & Community Affairs Director,Y,N
+North East Medical Services,HIGH,North East Medical Services,Thomas Woo,thomas.woo@nems.org,Director of Provider Network Operations,Y,N
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Dan Santi,dsanti@shastahealth.org,Chief Financial Officer,Y,N
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Harold Carlson,hcarlson@shastahealth.org,Chief Planning and Development Officer,Y,N
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Theresa Blanco,tblanco@shastahealth.org,Chief Strategy and Communications Officer,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Garrett Olin,garrolin@shastahealth.org,Chief Information Officer,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Brandon Thornock,bthornock@shastahealth.org,CEO,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Dorothy Bratton,dbratton@shastahealth.org,Deputy Chief Medical Officer,Y,N
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Dean Germano,dgermano@shastahealth.org,Chief Executive Officer,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Laura Baynard,lbaynard@shastahealth.org,Chief Operations Officer,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Laura Dougan,ladougan@shastahealth.org,Director of Clinical Operations,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Brenda Shipp,,Associate Director of Operations,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Anne Frunk,annfrunk@shastahealth.org,"Director, Electronic Data Interchange",Y,N
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Joy Afaneh,,Director of Quality Improvement,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Karen Gryszan,kgryszan@shastahealth.org,Senior Director of Clinical Operations,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Katie Amaya,katamaya@shastahealth.org,Director of Quality Improvement,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Catherine Jackson,cjackson@shastahealth.org,Director of Quality Improvement,Y,Y
+Shasta Community Health Center,HIGH,Shasta Community Health Center,Rae Sanchez,rsanchez@shastahealth.org,QI Director,Y,Y
+"Southland Integrated Services, Inc.",HIGH,"Southland Integrated Services, Inc.",,,,Y,
+"University of California, Irvine",HIGH,University Of California Irvine,,,,Y,
+American Board of Family Medicine,MEDIUM,Tri-County Family Medicine,Nicholas Apostoleris,napostoleris@tcfmedicine.com,Chief of Staff and Alignment,N,
+American Board of Family Medicine,MEDIUM,Tri-County Family Medicine,Karen Stone,kstone@tcfmedicine.com,Executive Director,N,
+University of North Florida,MEDIUM,North Florida Medical Centers,Lane Lunn,llunn@nfmc.org,Chief Executive Officer,N,
+University of North Florida,MEDIUM,North Florida Medical Centers,Ryan Boulo,ryan@nfmc.org,CIO,N,
+University of North Florida,MEDIUM,North Florida Medical Centers,Travis Coker,tcoker@nfmc.org,COO,N,
+University of North Florida,MEDIUM,North Florida Medical Centers,Patrick Brown,pbrown@nfmc.org,Chief Medical Officer,N,
+University of North Florida,MEDIUM,North Florida Medical Centers,Victoria Wiggins,vwiggins@nfmc.org,Chief Financial Officer,N,
+University of North Florida,MEDIUM,North Florida Medical Centers,Patrick Brown,pjarnold2@gmail.com,Chief Medical Officer,N,
+Crusader Community Health,HIGH,Crusader Community Health,Samuel Miller,smiller@crusaderhealth.org,President & Chief Executive Officer,Y,Y
+Crusader Community Health,HIGH,Crusader Community Health,Noel Nickel,nnickel@crusaderhealth.org,Chief Operating Officer,Y,Y
+Crusader Community Health,HIGH,Crusader Community Health,Terry White,twhite@crusaderhealth.org,Chief Operations Officer,Y,Y
+Crusader Community Health,HIGH,Crusader Community Health,Sean Peterson,speterson@crusaderhealth.org,Director of Clinical Quality,Y,Y
+Crusader Community Health,HIGH,Crusader Community Health,Geneva Porter,gporter@crusaderhealth.org,Director of Clinical Operations,Y,Y
+Crusader Community Health,HIGH,Crusader Community Health,Thomas Dammon,tdammon@crusaderhealth.org,"Director of Information Technology, Cissp, Msitm -",Y,Y
+Crusader Community Health,HIGH,Crusader Community Health,Gary Fernando,gfernando@crusaderhealth.org,Assistant Clerkship Director,Y,N
+Crusader Community Health,HIGH,Crusader Community Health,Liz Henning,lhenning@crusaderhealth.org,Vice President Decision Support and Risk Managemen,Y,N
+Crusader Community Health,HIGH,Crusader Community Health,Shawn David,sdavid@crusaderhealth.org,Vice President Information Technology and Information Security,Y,Y
+Crusader Community Health,HIGH,Crusader Community Health,Amanda Flores,aflores@crusaderhealth.org,RN,Y,N
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Alba Pumarol,apumarol@institute.org,Chief Medical Officer,N,
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Tracey Ochsenreiter,traceyo@institute.org,Chief Operating Officer,N,
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Scott Morgan,scmorgan@institute.org,Chief Strategy Officer,N,
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Eric Gayle,egayle@institute.org,President & CEO,N,
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Elizabeth Lever,elever@institute.org,Chief Information Officer,N,
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Neil Calman,ncalman@institute.org,President & CEO Emeritus and Co-Founder,N,
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Susanne Callahan,scallahan@institute.org,"Vice President, Planning & Community Engagement",N,
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Michelle Penny,mpenny@institute.org,"Vice President, Practice Administration",N,
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Kate Fahy,kfahy@institute.org,"Vice President, Planning and Development",N,
+SIU Center for Family Medicine,MEDIUM,The Institute For Family Health,Cindylou Killikelly,ckillikelly@institute.org,Vice President and Chief Nursing Officer,N,
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Patrick Wooten,pwooten@janepauleychc.org,Chief Operating Officer,Y,Y
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Kim Newlin,knewlin@janepauleychc.org,COO,Y,Y
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Demetrius Dillard,ddillard@janepauleychc.org,CIO,Y,Y
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Karen Hill,khill@janepauleychc.org,Chief Medical Officer,Y,N
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Michael Dale,mdale@janepauleychc.org,Chief Financial Officer,Y,N
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,James Bien,jbien@janepauleychc.org,Chief Medical Officer,Y,N
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Marc Hackett,mhackett@janepauleychc.org,CEO,Y,Y
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Scheri-Lyn Makombe,smakombe@janepauleychc.org,CMO,Y,N
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Brendon Smith,bsmith@janepauleychc.org,Director of Integrated BH,Y,N
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Aaron Knapp,aknapp@janepauleychc.org,Director of Pharmacy Operations,Y,Y
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Jason Hua,jhua@janepauleychc.org,Dental Director,Y,N
+Jane Pauley CHC,MEDIUM,Jane Pauley Community Health Center,Eric Serrano,eserrano@janepauleychc.org,Director of IT,Y,Y
+Meridian Health Services,HIGH,Meridian Health Services Corp,Rob Woods,rob.woods@meridianhs.org,CIO,Y,Y
+Meridian Health Services,HIGH,Meridian Health Services Corp,Scott Riggs,scott.riggs@meridianhs.org,CFO,Y,N
+Meridian Health Services,HIGH,Meridian Health Services Corp,Hank Milius,hank.milius@meridianhs.org,President /CEO,Y,Y
+Meridian Health Services,HIGH,Meridian Health Services Corp,Seth Warren,seth.warren@meridianhs.org,President and Chief Executive Officer,Y,Y
+Meridian Health Services,HIGH,Meridian Health Services Corp,Jodie Wendel,jodie.wendel@meridianhs.org,Director,Y,Y
+Meridian Health Services,HIGH,Meridian Health Services Corp,Lori Mathis,lori.mathis@meridianhs.org,Director of Community Health,Y,Y
+Meridian Health Services,HIGH,Meridian Health Services Corp,Donald Day,donald.day@meridianhs.org,Director of Nursing,Y,N
+Meridian Health Services,HIGH,Meridian Health Services Corp,Thom Thomas,thomas.thomas@meridianhs.org,"VP of Quality, Risk, Compliance",Y,Y
+Meridian Health Services,HIGH,Meridian Health Services Corp,Jennifer Henderson,jennifer.henderson@meridianhs.org,VP of primary care,Y,Y
+Great Plains Health Alliance,MEDIUM,Great Salt Plains Health Center,Tim Starkey,tstarkey@gsphealth.org,CEO,N,
+Great Plains Health Alliance,MEDIUM,Great Salt Plains Health Center,Sierra Dirden,sdirden@gsphealth.org,COO,N,
+New Orleans VA Medical Center,MEDIUM,New Orleans Aids Task Force,Alice Riener,alice.riener@crescentcare.org,CEO,N,
+New Orleans VA Medical Center,MEDIUM,New Orleans Aids Task Force,Reginald Vicks,reginald.vicks@crescentcare.org,Chief Operations Ofiicer,N,
+New Orleans VA Medical Center,MEDIUM,New Orleans Aids Task Force,Annette Leblanc,annette.leblanc@crescentcare.org,Chief Financial Officer,N,
+New Orleans VA Medical Center,MEDIUM,New Orleans Aids Task Force,Steve Cawley,steve.cawley@crescentcare.org,CIO,N,
+New Orleans VA Medical Center,MEDIUM,New Orleans Aids Task Force,Nicholas Sickels,nicholas.vansickels@crescentcare.org,CFO,N,
+New Orleans VA Medical Center,MEDIUM,New Orleans Aids Task Force,Noel Twilbeck,noel.twilbeck@crescentcare.org,CEO,N,
+New Orleans VA Medical Center,MEDIUM,New Orleans Aids Task Force,Demarcus Pickens,demarcus.pickens@crescentcare.org,Clinical Practice Director,N,
+New Orleans VA Medical Center,MEDIUM,New Orleans Aids Task Force,Mayfield Joshua,mayfield.joshua@crescentcare.org,Director of Operations,N,
+Duffy Health Center,HIGH,Duffy Health Center,Stephanie Wroten,swroten@duffyhealthcenter.org,CEO,Y,Y
+Duffy Health Center,HIGH,Duffy Health Center,Jeffrey Dykens,jdykens@duffyhealthcenter.org,CFO,Y,N
+Duffy Health Center,HIGH,Duffy Health Center,Vikki Ciavarro,vciavarro@duffyhealthcenter.org,Chief Financial Officer,Y,N
+Duffy Health Center,HIGH,Duffy Health Center,Anna Marini,amarini@duffyhealthcenter.org,Chief Compliance Officer,Y,N
+Duffy Health Center,HIGH,Duffy Health Center,Heidi Nelson,hnelson@duffyhealthcenter.org,CEO,Y,Y
+Duffy Health Center,HIGH,Duffy Health Center,Sara Grambach,sgrambach@duffyhealthcenter.org,Director of Development & Community Relations,Y,N
+Duffy Health Center,HIGH,Duffy Health Center,Matt Doolin,mdoolin@duffyhealthcenter.org,Director of Nursing and Clinical Operations,Y,Y
+North Mississippi Health Services,MEDIUM,"North Mississippi Primary Health Care, Inc.",Steve Reed,steve.reed@nmphc.org,Chief Financial Officer,N,
+North Mississippi Health Services,MEDIUM,"North Mississippi Primary Health Care, Inc.",Jennifer Pierce,jennifer.pierce@nmphc.org,Chief Nursing Officer,N,
+North Mississippi Health Services,MEDIUM,"North Mississippi Primary Health Care, Inc.",Max Goodman,max.goodman@nmphc.org,Director of IT,N,
+North Mississippi Health Services,MEDIUM,"North Mississippi Primary Health Care, Inc.",Amy Gresham,amy.gresham@nmphc.org,"Director, Quality and Risk Management",N,
+North Mississippi Health Services,MEDIUM,"North Mississippi Primary Health Care, Inc.",Rob Jeter,rob.jeter@nmphc.org,CHRO,N,
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,Steven Hansen,steve.hansen@pmsnm.org,CEO/President,Y,Y
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,James Brown,james.brown@pmsnm.org,Vice President Information Technology,Y,Y
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,Doug Smith,doug.smith@pmsnm.org,Executive Vice President,Y,Y
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,Don Daniel,don.daniel@pmsnm.org,Vice President of Business Development & General Counsel,Y,N
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,Andres Gensini,andres.gensini@pmsnm.org,Vice President Clinical Affairs,Y,N
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,Diane Martinez,diane.martinez@pmsnm.org,Vice President of Human Resources & Administration,Y,N
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,Danna Varela,danna.varela@pmsnm.org,Director of Operational Support,Y,Y
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,Kent Mosbrucker,kent.mosbrucker@pmsnm.org,VP Finance,Y,N
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,Debora Castillo,debora.castillo@pmsnm.org,Dental Director,Y,N
+Presbyterian Medical Services,HIGH,Presbyterian Medical Services,Toni Rodriguez,toni.rodriguez@pmsnm.org,Healthcare,Y,N
+Evergreen Health,HIGH,Evergreen Health,Michael Lee,mlee@evergreenhs.org,Chief Operating Officer,Y,Y
+Evergreen Health,HIGH,Evergreen Health,Jesse Gasbarro,jgasbarro@evergreenhs.org,Chief Financial Officer,Y,N
+Evergreen Health,HIGH,Evergreen Health,Selina Chao,selina.chao@evergreenhg.com,Principal Chief Executive Officer,Y,Y
+Evergreen Health,HIGH,Evergreen Health,Joelle Toal,jtoal@evergreenhs.org,AVP of Clinical Operations,Y,Y
+Evergreen Health,HIGH,Evergreen Health,Neil Bhattarai,nbhattarai@evergreenhs.org,Director of Population Health & Value Based Initiatives,Y,N
+Evergreen Health,HIGH,Evergreen Health,Melissa Gulino,mgulino@evergreenhs.org,Vice President of Medical Services,Y,N
+Evergreen Health,HIGH,Evergreen Health,Carly Casali,ccasali@evergreenhs.org,AVP of Practice Operations,Y,Y
+Evergreen Health,HIGH,Evergreen Health,Alexandrea Sailing,asailing@evergreenhs.org,Director of Practice Operations,Y,Y
+Hudson Headwaters Health Network,HIGH,Hudson Headwaters Health Network,Kevin Gallagher,kgallagher@hhhn.org,Chief Medical Informatics Officer,Y,Y
+Hudson Headwaters Health Network,HIGH,Hudson Headwaters Health Network,Tucker Slingerland  MD,dslingerland@hhhn.org,Chief Executive Officer,Y,Y
+Hudson Headwaters Health Network,HIGH,Hudson Headwaters Health Network,Ephraim Back,eback@hhhn.org,Chief of Clinical Initiatives,Y,Y
+Hudson Headwaters Health Network,HIGH,Hudson Headwaters Health Network,William Borgos,wborgos@hhhn.org,Chief Medical Officer,Y,N
+Hudson Headwaters Health Network,HIGH,Hudson Headwaters Health Network,Kevin Dougrey,kdougrey@hhhn.org,Vice President of Medical Staff Operations,Y,Y
+Hudson Headwaters Health Network,HIGH,Hudson Headwaters Health Network,Justin Miller,jmiller@hhhn.org,Executive Vice President Chief Information Officer,Y,Y
+Hudson Headwaters Health Network,HIGH,Hudson Headwaters Health Network,Patti Hammond,phammond@hhhn.org,Evp/coo,Y,Y
+Hudson Headwaters Health Network,HIGH,Hudson Headwaters Health Network,Laura Pasco,lpasco@hhhn.org,"Evp, Chief Financial Officer",Y,N
+Hudson Headwaters Health Network,HIGH,Hudson Headwaters Health Network,Justin Miller,jmiller01@hhhn.org,"EVP, Chief Informatics Officer",Y,Y
+MetroHealth Medical Center,HIGH,Metrohealth Medical Center,Gregory Heintschel,gheintschel@metrohealth.org,Chief Medical Officer,Y,N
+MetroHealth Medical Center,HIGH,Metrohealth Medical Center,Nic Sukalac,nsukalac@metrohealth.org,"Senior Vice President, Provider Enterprise Operations",Y,Y
+MetroHealth Medical Center,HIGH,Metrohealth Medical Center,Kathleen Davis Bellamy,kdavisbellamy@metrohealth.org,Executive Director Community Outreach,Y,N
+MetroHealth Medical Center,HIGH,Metrohealth Medical Center,Sarah Strebel-Pertko,sstrebelpertko@metrohealth.org,"Director, Operations - West",Y,Y
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Brent B. Simmons,simmonsb@dvch.org,Chief Graduate Medical Education Officer,Y,N
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Naomi Walinsky-King,kingn@dvch.org,Chief Medical Officer,Y,N
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Ryan Taylor,taylorr@dvch.org,Chief Financial Officer,Y,N
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Ryan Harris,harrisr@dvch.org,Chief Human Resources Officer,Y,N
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Brenda Cooke,brobles@dvch.org,Chief Operating Officer,Y,Y
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Brenda Cooke,roblesb@dvch.org,Chief Operating Officer,Y,Y
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Mark Stewart,stewartm@dvch.org,Chief of Staff,Y,Y
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Erica Dotson,dotsone@dvch.org,"Director of Operations, Patient Experience and Engagement",Y,Y
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Bill Trojan,trojanb@dvch.org,Vice President & Chief Operating Officer,Y,Y
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Carla Wimbush,wimbushc@dvch.org,Vice President and CFO,Y,N
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Julia Dejoseph,dejosephj@dvch.org,Senior Vice President & Chief Medical Officer,Y,N
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Kimberly Allen,allenk@dvch.org,Vice President and Chief Quality & Innovation Officer,Y,Y
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Isaiah Nathaniel,nathanieli@dvch.org,Senior Vice President and Chief Information Officer,Y,Y
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Tatyana Morgan,hawkinst@dvch.org,Director of Human Resources,Y,N
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Jodine Patterson,pattersonj@dvch.org,Director of Operations: Systems and Processes,Y,Y
+"Delaware Valley Community Health, Inc",HIGH,"Delaware Valley Community Health, Inc",Scott Mcneal,mcneals@dvch.org,Medical Affairs Consultant,Y,N
+Family Practice Center,MEDIUM,Debaca Family Practice Clinic,,,,N,
+Jefferson Health Lehigh Valley Health,MEDIUM,Neighborhood Health Centers Of The Lehigh Valley,,,,N,
+Corporacion SANOS,HIGH,Corporacion Sanos,Elba Vazquez,evazquez@sanospr.org,Executive Director,Y,Y
+HopeHealth,HIGH,HopeHealth,Ken Burgess,kburgess@hope-health.org,COO,Y,Y
+HopeHealth,HIGH,HopeHealth,Melissa Haines,mhaines@hope-health.org,Chief Operating Officer,Y,Y
+HopeHealth,HIGH,HopeHealth,Margaret Baker Daniel,mbaker@hope-health.org,Chief Compliance Officer and General Counsel,Y,N
+HopeHealth,HIGH,HopeHealth,Derek Brown,dbrown@hope-health.org,Chief Advancement Officer,Y,N
+HopeHealth,HIGH,HopeHealth,Edward Behling,ebehling@hope-health.org,Chief Medical Officer,Y,N
+HopeHealth,HIGH,HopeHealth,Mark Vinson,mark@hope-health.org,Chief Financial Officer,Y,N
+HopeHealth,HIGH,HopeHealth,Carl Humphries,chumphries@hope-health.org,Chief Executive Officer,Y,Y
+HopeHealth,HIGH,HopeHealth,Christi Epps,cepps@hope-health.org,"Chief Pharmacy Officer at Hope Health, Inc.",Y,N
+HopeHealth,HIGH,HopeHealth,Carl Humphries,carl@hope-health.org,Chief Executive Officer,Y,Y
+HopeHealth,HIGH,HopeHealth,Esther Marcia Wilds,ewilds@hope-health.org,Chief Nursing Officer,Y,N
+HopeHealth,HIGH,HopeHealth,Rufus Jackson,rjackson@hope-health.org,Chief Information Officer,Y,N
+HopeHealth,HIGH,HopeHealth,Deena Hilton,deena@hope-health.org,Chief Human Resources Officer,Y,N
+HopeHealth,HIGH,HopeHealth,Tiffany Straus,tstraus@hope-health.org,Associate Vice President,Y,Y
+HopeHealth,HIGH,HopeHealth,Kami Burkemper,kburkemper@hope-health.org,AVP Clinical Operations,Y,Y
+HopeHealth,HIGH,HopeHealth,Erin Faile,efaile@hope-health.org,AVP Operations,Y,Y
+HopeHealth,HIGH,HopeHealth,Farrah Hughes,fhughes@hope-health.org,Director Of Behavioral Health,Y,N
+HopeHealth,HIGH,HopeHealth,Melanie Jones,mjones@hope-health.org,Associate Vice President-Clinical Operations and Excellence,Y,Y
+HopeHealth,HIGH,HopeHealth,Tami Garris,tgarris@hope-health.org,Director of Healthcare Analytics,Y,Y
+HopeHealth,HIGH,HopeHealth,Schipp Ames,sames@hope-health.org,"VP, Strategic Marketing and External Affairs",Y,N
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Joy Gandy,joy.gandy@caresouth-carolina.com,COO,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Peggy Foster,peggy.foster@caresouth-carolina.com,Deputy Operations Officer,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Ann Lewis,ann.lewis@caresouth-carolina.com,CEO,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Randy Carlyle,randy.carlyle@caresouth-carolina.com,Chief Quality Officer,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Tracie Thigpen,tracie.thigpen@caresouth-carolina.com,Chief Nursing Officer,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Shannon Freeman,shannon.freeman@caresouth-carolina.com,Chief Financial Officer,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Catherine Compton,catherine.compton@caresouth-carolina.com,Chief Medical Officer,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Jeniqua Duncan,jeniqua.duncan@caresouth-carolina.com,Chief of Value Based Care,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Joe Bittle,joe.bittle@caresouth-carolina.com,Chief of Community Health,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Amy Cook,amy.cook@caresouth-carolina.com,Director of Behavioral Health,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Travis Russell,travis.russell@caresouth-carolina.com,Director of Dental Services,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Takisha Bittle,takisha.bittle@caresouth-carolina.com,Small Practice Quality Improvement Director,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Ashley Singleton,ashley.singleton@caresouth-carolina.com,Director of Pharmacy,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Gary Herrington,gary.herrington@caresouth-carolina.com,Bachelor's of Science Degree,N,
+Medical University of South Carolina,MEDIUM,Care South Carolina Inc,Dan Myers,daniel.myers@caresouth-carolina.com,Site Administrator,N,
+Neighborhood Health,HIGH,Neighborhood Health,Frank Flosman,fflosman@nhci.org,Chief Operating Officer,Y,Y
+Neighborhood Health,HIGH,Neighborhood Health,Frackson Sakala,fsakala@hamiltonhealthcenter.com,Chief Financial Officer,Y,N
+Neighborhood Health,HIGH,Neighborhood Health,Shauna Tucker,stucker@neighborhoodhealthtn.org,Chief Operating Officer,Y,Y
+Neighborhood Health,HIGH,Neighborhood Health,Cynthia Sturdevant,csturdevant@neighborhoodhealthva.org,Chief Operating Officer,Y,Y
+Neighborhood Health,HIGH,Neighborhood Health,Basim Khan,bkhan@neighborhoodhealthva.org,Executive Director,Y,Y
+"Lone Star Communiations, Inc",MEDIUM,Lone Star Health Center,Lata Joshi,ljoshi@lonestarfamily.org,Chief Medical Officer,N,
+"Lone Star Communiations, Inc",MEDIUM,Lone Star Health Center,Heidi Bunyan,hbunyan@lonestarfamily.org,Chief Operating Officer,N,
+"Lone Star Communiations, Inc",MEDIUM,Lone Star Health Center,Karen Harwell,kharwell@lonestarfamily.org,Chief Executive Officer,N,
+Texas Health Resources,MEDIUM,"Special Health Resources For Texas, Incorporated",,,,N,
+Texas Tech Univ Health Sciences Center,MEDIUM,Texas Tech University Health Sciences Center,,,,N,
+UTHealth East Texas,MEDIUM,East Texas Community Clinic,Glen Robison,grobison@easttexascc.org,CEO,N,
+UTHealth East Texas,MEDIUM,East Texas Community Clinic,Douglas Curran,dcurran@easttexascc.org,Chief Medical Officer,N,
+Utah Navajo Health System,HIGH,Utah Navajo Health System,Michael Jensen,mjensen@unhsinc.org,Chief Opperations officer,Y,Y
+Utah Navajo Health System,HIGH,Utah Navajo Health System,Byron C,bclarke@unhsinc.org,Chief Operations Officer,Y,Y
+Utah Navajo Health System,HIGH,Utah Navajo Health System,Andrew Evans,aevans@unhsinc.org,Chief Financial Officer,Y,N
+Utah Navajo Health System,HIGH,Utah Navajo Health System,Brian Olsen,bolsen@unhsinc.org,Dental Director,Y,N
+Utah Navajo Health System,HIGH,Utah Navajo Health System,Verlyn Hawks,vhawks@unhsinc.org,IT Director,Y,N

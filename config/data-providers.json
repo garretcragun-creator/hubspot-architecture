@@ -1,0 +1,9 @@
+{
+  "mimilabs": {
+    "url": "https://mimilabs.ai/api/mcp",
+    "headers": {
+      "Authorization": "Bearer mimi_a4f7b5acb5c137132d2decaea47dbcd7"
+    },
+    "description": "Data provider for enriching Location and Company records (address, phone, etc.)."
+  }
+}

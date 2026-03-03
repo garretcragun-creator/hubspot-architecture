@@ -1,0 +1,180 @@
+csv_company,match_confidence,hs_company_name,hs_contact_name,hs_contact_email,hs_contact_title,company_match,include
+Family Health Centers,LEARNED,Family Health Centers,Aliya Quidwai,aquidwai@fhc.us,Chief Operations Officer,Y,Y
+Family Health Centers,LEARNED,Family Health Centers,Florence Lestage,flestage@myfamilyhealth.org,"AVP, Revenue Integrity",Y,Y
+Family Health Centers,LEARNED,Family Health Centers,Mike Ellis,mellis@fhc.us,Director IT,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,Gottlieb Katherine,katherineg@southcentralfoundation.com,Chief Executive Officer and President,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,Lee Olson,lolson@southcentralfoundation.com,CFO,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,April Kyle,akyle@southcentralfoundation.com,Southcentral Foundation President/CEO,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,Katherine Gottleib,gkatherine@southcentralfoundation.com,President/CEO,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,Gerard Asselin,gerard.asselin@southcentralfoundation.com,Director of Operations,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,Sharon Fenn,sfenn@southcentralfoundation.com,Director of Organizational Development,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,Beverly Westhoff,bwesthoff@southcentralfoundation.com,Director of Financial Operations,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,Michelle Tierney,ntierney@southcentralfoundation.com,Executive Vice President Organizational Development and Innovation,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,Monica Lee,mlee@southcentralfoundation.com,Director of Operations,Y,Y
+Southcentral Foundation,LEARNED,Southcentral Foundation,Ruth Alvarez,ralvarez@southcentralfoundation.com,"CEO, Practitioner",Y,Y
+Arcare,LEARNED,Arcare,Terry Hill,terry.hill@arcare.net,Chief Medical Officer,Y,Y
+Arcare,LEARNED,Arcare,Steven F. Collier,steven.collier@arcare.net,Chief Executive Officer,Y,Y
+Arcare,LEARNED,Arcare,Lauren Jill Fields,lauren.fields@arcare.net,CFO,Y,Y
+Arcare,LEARNED,Arcare,Talmage Whitehead,talmage.whitehead@arcare.net,President,Y,Y
+Arcare,LEARNED,Arcare,Christian Gibson,chris.gibson@arcare.net,COO,Y,Y
+Arcare,LEARNED,Arcare,Carrie Fortune,carrie.fortune@arcare.net,Director of Grants Management,Y,Y
+Arcare,LEARNED,Arcare,Teresa Edwards,teresa.edwards@arcare.net,VP of Finance,Y,Y
+Arcare,LEARNED,Arcare,Garrett Morgan,garrett.morgan@arcare.net,Vice President Operations Central Arkansas,Y,Y
+Arcare,LEARNED,Arcare,Clark Osborne,clark.osborne@arcare.net,Vice President of Technology,Y,Y
+Arcare,LEARNED,Arcare,Alison Dewitt,alison.dewitt@arcare.net,"AVP, Pharmacy Optimization",Y,Y
+Arcare,LEARNED,Arcare,Dustin Morris,dustin.morris@arcare.net,Director of IT Clinical Services,Y,Y
+Arcare,LEARNED,Arcare,Anna Hall,anna.hall@arcare.net,Vice President of Coordinated Care,Y,Y
+Arcare,LEARNED,Arcare,Natalie Carden,natalie.carden@arcare.net,Vice President Operations- Northwest,Y,Y
+Arcare,LEARNED,Arcare,Diane Verser,diane.verser@arcare.net,Vice President Operations,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Alana Podwika,apodwika@mphc-az.org,Chief Information Officer,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Anna Alonzo,aalonzo@email.arizona.edu,Chief Operating Officer,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,John Swagert,jswagert@mphc-az.org,Chief Executive Officer,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Rachel Lambert,rlambert@mphc-az.org,Chief Operating Officer,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Andrea Albertson,aalbertson@mphc-az.org,Associate Director Of Operations,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Richard Montgomery,rmontgomery@mphc-az.org,Director of Operations,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Warren Woodward,wwoodward@mphc-az.org,Sr. Director Operations,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,James Hall,jhall@mphc-az.org,Director of Digital and Technology Services (Vice President Equivalent),Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Michelle Arteaga,marteaga@mphc-az.org,Associate Director of Operations,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Anna Torrez,atorrez@mphc-az.org,Operations Director,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Rabah R,rradhi@mphc-az.org,Director Of Operations - Patient Access,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Jason Cheatham,jcheatham@mphc-az.org,Associate IT Director,Y,Y
+Mountain Park Health Center,LEARNED,Mountain Park Health Center,Brandi Whisler,bwhisler@mphc-az.org,Senior Director of Operations,Y,Y
+Tuba City Regional Health Care,LEARNED,Tuba City Regional Health Care Corporation,Melissa Goad,melissa.goad@tchealth.org,CFO,Y,Y
+Tuba City Regional Health Care,LEARNED,Tuba City Regional Health Care Corporation,Christina Zeigler,christina.zeigler@tchealth.org,Dental Director,Y,Y
+Alameda County,LEARNED,"Alameda, County Of",,,,Y,
+Celebrating Life CHC,LEARNED,Celebrating Life Community Health Center,Sergey Sergeyev,ssergeyev@clchc.org,Founder & Chief Executive Officer,Y,Y
+Celebrating Life CHC,LEARNED,Celebrating Life Community Health Center,Adilene Mendoza,amendoza@clchc.org,Director of Operations,Y,Y
+Clinica de Salud del Valle de Salinas,LEARNED,Clinica De Salud Del Valle De Salinas,Mac Mccoy,mmccoy@csvs.org,Chief Financial Officer,Y,Y
+Clinica de Salud del Valle de Salinas,LEARNED,Clinica De Salud Del Valle De Salinas,Max Cuevas,mcuevas@csvs.org,Chief Executive Officer,Y,Y
+Clinica de Salud del Valle de Salinas,LEARNED,Clinica De Salud Del Valle De Salinas,Jeremiah Jrincon,jrincon@csvs.org,Director of Information Technology,Y,Y
+Families Together of Orange County,LEARNED,Families Together Of Orange County,,,,Y,
+Mendocino Community Health Clinic,LEARNED,Mendocino Community Health Clinic,Rodney Grainger,rgrainger@longvalley.org,CEO,Y,Y
+Mendocino Community Health Clinic,LEARNED,Mendocino Community Health Clinic,Carole Press,ceo@mchcinc.org,Chief Executive Officer,Y,Y
+Mendocino Community Health Clinic,LEARNED,Mendocino Community Health Clinic,Lisa Alexander,lalexander@mchcinc.org,Executive Assistant to Chief Executive Officer,Y,Y
+Mendocino Community Health Clinic,LEARNED,Mendocino Community Health Clinic,Esperanza Fausto,lgarbocci@mchcinc.org,Director of Operations,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Lisa Daigle,lisad@nhcare.org,Chief Financial Officer,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Rakesh Patel,rakeshp@nhcare.org,Chief Executive Officer,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Rakesh Patel,alex.nunez@nhcare.org,Chief Executive Officer,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Tracy Ream,tream@nhcare.org,CEO,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Marlena Martinez,marlena.martinez@nhcare.org,Director of Operations,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Sandra Orzel,sandra.orzel@nhcare.org,Senior Director of Operations and Program Management,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Maria Acosta,maria.acosta@nhcare.org,Director of Operations,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Maura Mireles-Castro,mauram@nhcare.org,Director of Operations,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Wendi Vierra,wendi.vierra@nhcare.org,Director of Operations Behavioral Health,Y,Y
+Neighborhood Healthcare,LEARNED,Neighborhood Healthcare,Elizabeth Ahumada,elizabethh@nhcare.org,Vice President of Operations,Y,Y
+North East Medical Services,LEARNED,North East Medical Services,Jerry Jew,jerry.jew@nems.org,Chief Strategy Officer (CSO),Y,Y
+North East Medical Services,LEARNED,North East Medical Services,Linda Tang,linda.tang@nems.org,Chief Managed Care Officer,Y,Y
+North East Medical Services,LEARNED,North East Medical Services,Paul Fox,paul.fox@nems.org,Chief Administrative Officer (CAO),Y,Y
+North East Medical Services,LEARNED,North East Medical Services,Eddie Chan,eddie.chan@nems.org,President & CEO,Y,Y
+North East Medical Services,LEARNED,North East Medical Services,Rachel Koh,rachel.koh@nems.org,COO,Y,Y
+North East Medical Services,LEARNED,North East Medical Services,Murali Athuluri,murali.athuluri@nems.org,CIO,Y,Y
+North East Medical Services,LEARNED,North East Medical Services,Annie Yik,annie.yik@nems.org,"MSO Associate Director, VBC Operations",Y,Y
+North East Medical Services,LEARNED,North East Medical Services,Daniel Vega,daniel.vega@nems.org,Director of Operations,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Theresa Blanco,tblanco@shastahealth.org,Chief Strategy and Communications Officer,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Garrett Olin,garrolin@shastahealth.org,Chief Information Officer,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Brandon Thornock,bthornock@shastahealth.org,CEO,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Dean Germano,dgermano@shastahealth.org,Chief Executive Officer,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Laura Baynard,lbaynard@shastahealth.org,Chief Operations Officer,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Laura Dougan,ladougan@shastahealth.org,Director of Clinical Operations,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Brenda Shipp,,Associate Director of Operations,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Joy Afaneh,,Director of Quality Improvement,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Karen Gryszan,kgryszan@shastahealth.org,Senior Director of Clinical Operations,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Katie Amaya,katamaya@shastahealth.org,Director of Quality Improvement,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Catherine Jackson,cjackson@shastahealth.org,Director of Quality Improvement,Y,Y
+Shasta Community Health Center,LEARNED,Shasta Community Health Center,Rae Sanchez,rsanchez@shastahealth.org,QI Director,Y,Y
+"Southland Integrated Services, Inc.",LEARNED,"Southland Integrated Services, Inc.",,,,Y,
+"University of California, Irvine",LEARNED,University Of California Irvine,,,,Y,
+Crusader Community Health,LEARNED,Crusader Community Health,Samuel Miller,smiller@crusaderhealth.org,President & Chief Executive Officer,Y,Y
+Crusader Community Health,LEARNED,Crusader Community Health,Noel Nickel,nnickel@crusaderhealth.org,Chief Operating Officer,Y,Y
+Crusader Community Health,LEARNED,Crusader Community Health,Terry White,twhite@crusaderhealth.org,Chief Operations Officer,Y,Y
+Crusader Community Health,LEARNED,Crusader Community Health,Sean Peterson,speterson@crusaderhealth.org,Director of Clinical Quality,Y,Y
+Crusader Community Health,LEARNED,Crusader Community Health,Geneva Porter,gporter@crusaderhealth.org,Director of Clinical Operations,Y,Y
+Crusader Community Health,LEARNED,Crusader Community Health,Thomas Dammon,tdammon@crusaderhealth.org,"Director of Information Technology, Cissp, Msitm -",Y,Y
+Crusader Community Health,LEARNED,Crusader Community Health,Shawn David,sdavid@crusaderhealth.org,Vice President Information Technology and Information Security,Y,Y
+Jane Pauley CHC,LEARNED,Jane Pauley Community Health Center,Patrick Wooten,pwooten@janepauleychc.org,Chief Operating Officer,Y,Y
+Jane Pauley CHC,LEARNED,Jane Pauley Community Health Center,Kim Newlin,knewlin@janepauleychc.org,COO,Y,Y
+Jane Pauley CHC,LEARNED,Jane Pauley Community Health Center,Demetrius Dillard,ddillard@janepauleychc.org,CIO,Y,Y
+Jane Pauley CHC,LEARNED,Jane Pauley Community Health Center,Marc Hackett,mhackett@janepauleychc.org,CEO,Y,Y
+Jane Pauley CHC,LEARNED,Jane Pauley Community Health Center,Aaron Knapp,aknapp@janepauleychc.org,Director of Pharmacy Operations,Y,Y
+Jane Pauley CHC,LEARNED,Jane Pauley Community Health Center,Eric Serrano,eserrano@janepauleychc.org,Director of IT,Y,Y
+Meridian Health Services,LEARNED,Meridian Health Services Corp,Rob Woods,rob.woods@meridianhs.org,CIO,Y,Y
+Meridian Health Services,LEARNED,Meridian Health Services Corp,Hank Milius,hank.milius@meridianhs.org,President /CEO,Y,Y
+Meridian Health Services,LEARNED,Meridian Health Services Corp,Seth Warren,seth.warren@meridianhs.org,President and Chief Executive Officer,Y,Y
+Meridian Health Services,LEARNED,Meridian Health Services Corp,Jodie Wendel,jodie.wendel@meridianhs.org,Director,Y,Y
+Meridian Health Services,LEARNED,Meridian Health Services Corp,Lori Mathis,lori.mathis@meridianhs.org,Director of Community Health,Y,Y
+Meridian Health Services,LEARNED,Meridian Health Services Corp,Thom Thomas,thomas.thomas@meridianhs.org,"VP of Quality, Risk, Compliance",Y,Y
+Meridian Health Services,LEARNED,Meridian Health Services Corp,Jennifer Henderson,jennifer.henderson@meridianhs.org,VP of primary care,Y,Y
+Duffy Health Center,LEARNED,Duffy Health Center,Stephanie Wroten,swroten@duffyhealthcenter.org,CEO,Y,Y
+Duffy Health Center,LEARNED,Duffy Health Center,Heidi Nelson,hnelson@duffyhealthcenter.org,CEO,Y,Y
+Duffy Health Center,LEARNED,Duffy Health Center,Matt Doolin,mdoolin@duffyhealthcenter.org,Director of Nursing and Clinical Operations,Y,Y
+Presbyterian Medical Services,LEARNED,Presbyterian Medical Services,Steven Hansen,steve.hansen@pmsnm.org,CEO/President,Y,Y
+Presbyterian Medical Services,LEARNED,Presbyterian Medical Services,James Brown,james.brown@pmsnm.org,Vice President Information Technology,Y,Y
+Presbyterian Medical Services,LEARNED,Presbyterian Medical Services,Doug Smith,doug.smith@pmsnm.org,Executive Vice President,Y,Y
+Presbyterian Medical Services,LEARNED,Presbyterian Medical Services,Danna Varela,danna.varela@pmsnm.org,Director of Operational Support,Y,Y
+Evergreen Health,LEARNED,Evergreen Health,Michael Lee,mlee@evergreenhs.org,Chief Operating Officer,Y,Y
+Evergreen Health,LEARNED,Evergreen Health,Selina Chao,selina.chao@evergreenhg.com,Principal Chief Executive Officer,Y,Y
+Evergreen Health,LEARNED,Evergreen Health,Joelle Toal,jtoal@evergreenhs.org,AVP of Clinical Operations,Y,Y
+Evergreen Health,LEARNED,Evergreen Health,Carly Casali,ccasali@evergreenhs.org,AVP of Practice Operations,Y,Y
+Evergreen Health,LEARNED,Evergreen Health,Alexandrea Sailing,asailing@evergreenhs.org,Director of Practice Operations,Y,Y
+Hudson Headwaters Health Network,LEARNED,Hudson Headwaters Health Network,Kevin Gallagher,kgallagher@hhhn.org,Chief Medical Informatics Officer,Y,Y
+Hudson Headwaters Health Network,LEARNED,Hudson Headwaters Health Network,Tucker Slingerland  MD,dslingerland@hhhn.org,Chief Executive Officer,Y,Y
+Hudson Headwaters Health Network,LEARNED,Hudson Headwaters Health Network,Ephraim Back,eback@hhhn.org,Chief of Clinical Initiatives,Y,Y
+Hudson Headwaters Health Network,LEARNED,Hudson Headwaters Health Network,Kevin Dougrey,kdougrey@hhhn.org,Vice President of Medical Staff Operations,Y,Y
+Hudson Headwaters Health Network,LEARNED,Hudson Headwaters Health Network,Justin Miller,jmiller@hhhn.org,Executive Vice President Chief Information Officer,Y,Y
+Hudson Headwaters Health Network,LEARNED,Hudson Headwaters Health Network,Patti Hammond,phammond@hhhn.org,Evp/coo,Y,Y
+Hudson Headwaters Health Network,LEARNED,Hudson Headwaters Health Network,Justin Miller,jmiller01@hhhn.org,"EVP, Chief Informatics Officer",Y,Y
+MetroHealth Medical Center,LEARNED,Metrohealth Medical Center,Nic Sukalac,nsukalac@metrohealth.org,"Senior Vice President, Provider Enterprise Operations",Y,Y
+MetroHealth Medical Center,LEARNED,Metrohealth Medical Center,Sarah Strebel-Pertko,sstrebelpertko@metrohealth.org,"Director, Operations - West",Y,Y
+"Delaware Valley Community Health, Inc",LEARNED,"Delaware Valley Community Health, Inc",Brenda Cooke,brobles@dvch.org,Chief Operating Officer,Y,Y
+"Delaware Valley Community Health, Inc",LEARNED,"Delaware Valley Community Health, Inc",Brenda Cooke,roblesb@dvch.org,Chief Operating Officer,Y,Y
+"Delaware Valley Community Health, Inc",LEARNED,"Delaware Valley Community Health, Inc",Mark Stewart,stewartm@dvch.org,Chief of Staff,Y,Y
+"Delaware Valley Community Health, Inc",LEARNED,"Delaware Valley Community Health, Inc",Erica Dotson,dotsone@dvch.org,"Director of Operations, Patient Experience and Engagement",Y,Y
+"Delaware Valley Community Health, Inc",LEARNED,"Delaware Valley Community Health, Inc",Bill Trojan,trojanb@dvch.org,Vice President & Chief Operating Officer,Y,Y
+"Delaware Valley Community Health, Inc",LEARNED,"Delaware Valley Community Health, Inc",Kimberly Allen,allenk@dvch.org,Vice President and Chief Quality & Innovation Officer,Y,Y
+"Delaware Valley Community Health, Inc",LEARNED,"Delaware Valley Community Health, Inc",Isaiah Nathaniel,nathanieli@dvch.org,Senior Vice President and Chief Information Officer,Y,Y
+"Delaware Valley Community Health, Inc",LEARNED,"Delaware Valley Community Health, Inc",Jodine Patterson,pattersonj@dvch.org,Director of Operations: Systems and Processes,Y,Y
+Corporacion SANOS,LEARNED,Corporacion Sanos,Elba Vazquez,evazquez@sanospr.org,Executive Director,Y,Y
+HopeHealth,LEARNED,HopeHealth,Ken Burgess,kburgess@hope-health.org,COO,Y,Y
+HopeHealth,LEARNED,HopeHealth,Melissa Haines,mhaines@hope-health.org,Chief Operating Officer,Y,Y
+HopeHealth,LEARNED,HopeHealth,Carl Humphries,chumphries@hope-health.org,Chief Executive Officer,Y,Y
+HopeHealth,LEARNED,HopeHealth,Carl Humphries,carl@hope-health.org,Chief Executive Officer,Y,Y
+HopeHealth,LEARNED,HopeHealth,Tiffany Straus,tstraus@hope-health.org,Associate Vice President,Y,Y
+HopeHealth,LEARNED,HopeHealth,Kami Burkemper,kburkemper@hope-health.org,AVP Clinical Operations,Y,Y
+HopeHealth,LEARNED,HopeHealth,Erin Faile,efaile@hope-health.org,AVP Operations,Y,Y
+HopeHealth,LEARNED,HopeHealth,Melanie Jones,mjones@hope-health.org,Associate Vice President-Clinical Operations and Excellence,Y,Y
+HopeHealth,LEARNED,HopeHealth,Tami Garris,tgarris@hope-health.org,Director of Healthcare Analytics,Y,Y
+Neighborhood Health,LEARNED,Neighborhood Health,Frank Flosman,fflosman@nhci.org,Chief Operating Officer,Y,Y
+Neighborhood Health,LEARNED,Neighborhood Health,Shauna Tucker,stucker@neighborhoodhealthtn.org,Chief Operating Officer,Y,Y
+Neighborhood Health,LEARNED,Neighborhood Health,Cynthia Sturdevant,csturdevant@neighborhoodhealthva.org,Chief Operating Officer,Y,Y
+Neighborhood Health,LEARNED,Neighborhood Health,Basim Khan,bkhan@neighborhoodhealthva.org,Executive Director,Y,Y
+Utah Navajo Health System,LEARNED,Utah Navajo Health System,Michael Jensen,mjensen@unhsinc.org,Chief Opperations officer,Y,Y
+Utah Navajo Health System,LEARNED,Utah Navajo Health System,Byron C,bclarke@unhsinc.org,Chief Operations Officer,Y,Y
+University of Southern California,MEDIUM,"Southern California Medical Center, Inc.",Omar Kader,okader@scmedcenter.org,Chief Financial & Operations Officer,,
+University of Southern California,MEDIUM,"Southern California Medical Center, Inc.",Ara Baghdasarian,abaghdasarian@scmedcenter.org,CEO,,
+North Mississippi Medical Center,MEDIUM,"North Mississippi Primary Health Care, Inc.",Max Goodman,max.goodman@nmphc.org,Director of IT,,
+North Mississippi Medical Center,MEDIUM,"North Mississippi Primary Health Care, Inc.",Amy Gresham,amy.gresham@nmphc.org,"Director, Quality and Risk Management",,
+North Mississippi Medical Center,MEDIUM,"North Mississippi Primary Health Care, Inc.",Rob Jeter,rob.jeter@nmphc.org,CHRO,,
+Family Practice Center,MEDIUM,Bassett Family Practice,,,,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Joe Bittle,joe.bittle@caresouth-carolina.com,Chief of Community Health,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Joy Gandy,joy.gandy@caresouth-carolina.com,COO,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Peggy Foster,peggy.foster@caresouth-carolina.com,Deputy Operations Officer,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Ann Lewis,ann.lewis@caresouth-carolina.com,CEO,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Randy Carlyle,randy.carlyle@caresouth-carolina.com,Chief Quality Officer,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Jeniqua Duncan,jeniqua.duncan@caresouth-carolina.com,Chief of Value Based Care,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Amy Cook,amy.cook@caresouth-carolina.com,Director of Behavioral Health,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Travis Russell,travis.russell@caresouth-carolina.com,Director of Dental Services,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Takisha Bittle,takisha.bittle@caresouth-carolina.com,Small Practice Quality Improvement Director,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Ashley Singleton,ashley.singleton@caresouth-carolina.com,Director of Pharmacy,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Gary Herrington,gary.herrington@caresouth-carolina.com,Bachelor's of Science Degree,,
+University of South Carolina,MEDIUM,Care South Carolina Inc,Dan Myers,daniel.myers@caresouth-carolina.com,Site Administrator,,
+Great Plains Tribal Health,MEDIUM,Great Salt Plains Health Center,Tim Starkey,tstarkey@gsphealth.org,CEO,,
+Great Plains Tribal Health,MEDIUM,Great Salt Plains Health Center,Sierra Dirden,sdirden@gsphealth.org,COO,,
+"Lone Star Communiations, Inc",MEDIUM,Lone Star Circle Of Care,Tillery Stout,tstout@lscctx.org,Chief Administrative Officer and General Counsel,,
+"Lone Star Communication, Inc.",MEDIUM,Lone Star Health Center,Heidi Bunyan,hbunyan@lonestarfamily.org,Chief Operating Officer,,
+"Lone Star Communication, Inc.",MEDIUM,Lone Star Health Center,Karen Harwell,kharwell@lonestarfamily.org,Chief Executive Officer,,
+Texas Tech University Health Sciences,MEDIUM,Texas Tech University Health Sciences Center,,,,,
+UTHealth East Texas,MEDIUM,East Texas Border Health Clinic,Carla Roadcap,carla.roadcap@genesisprimecare.org,Chief Executive Officer,,
+UTHealth East Texas,MEDIUM,East Texas Border Health Clinic,Patty Pickering,patty.pickering@genesisprimecare.org,Chief Information Officer,,
+UTHealth East Texas,MEDIUM,East Texas Border Health Clinic,Ken White,ken.white@genesisprimecare.org,COO,,
+UTHealth East Texas,MEDIUM,East Texas Border Health Clinic,Keith Creel,keith.creel@genesisprimecare.org,Chief Operating Officer,,
+UTHealth East Texas,MEDIUM,East Texas Border Health Clinic,Terri Rowe,terri.rowe@genesisprimecare.org,Behavioral Health Director,,

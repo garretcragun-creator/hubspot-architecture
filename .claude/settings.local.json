@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node scripts/data-integrity-audit-target-assignments.js)",
+      "Bash(node scripts/fix-gap2-and-detail-gap1.js --commit)",
+      "Bash(node -e \":*)"
+    ]
+  }
+}

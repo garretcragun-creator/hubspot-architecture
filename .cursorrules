@@ -1,0 +1,10 @@
+## HubSpot Context
+- **Schema & Data:** Always check `.cursor/hubspot-context/hs-schema.md` before suggesting property names.
+- **Pipelines:** Refer to `.cursor/hubspot-context/hs-pipeline.md` for stage IDs.
+- **Automation:** Check `.cursor/hubspot-context/hs-automation.md` before suggesting new workflows to avoid collisions.
+- **Attribution:** Review `.cursor/hubspot-context/hs-attribution-audit.md` before modifying any attribution properties or workflows. `stat_latest_source` is the single source of truth. 43 properties were archived on 2026-02-11. Do NOT recreate archived properties.
+
+## Weekly Audit
+- **Run:** `node scripts/weekly-audit.js` — 8 parallel checks, ~6 s, writes report to `.cursor/hubspot-context/weekly-audit-report.md`.
+- **Prompt:** Follow `.cursor/prompts/weekly-audit.md` for the step-by-step playbook.
+- **AUTO-FIX** items are safe to execute without asking. **REVIEW** items require human approval. **NEVER** merge companies, delete contacts/deals, or modify active workflows without explicit approval.

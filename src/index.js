@@ -149,6 +149,13 @@ registerActionHandlers(app, { onAction: handleRepAction });
 async function processMeeting(meetingId) {
   // 1. Fetch meeting
   const meeting = await getMeeting(meetingId);
+
+  // Only process Discovery Calls
+  if (meeting.hs_activity_type !== 'Discovery Call') {
+    console.log(`[meeting] ${meetingId} skipped — type is "${meeting.hs_activity_type || 'unset'}"`);
+    return;
+  }
+
   const meetingTitle = meeting.hs_meeting_title || '(untitled)';
   // HubSpot returns ISO 8601 strings for date properties (e.g. "2026-03-02T16:00:00Z")
   const meetingStartMs = meeting.hs_meeting_start_time

@@ -127,6 +127,7 @@ const MEETING_PROPS = [
   'hs_createdate',         // when the meeting object was created in HubSpot
   'hubspot_owner_id',
   'meeting_source',
+  'hs_activity_type',      // "Discovery Call", "Demo Call", etc.
 ].join(',');
 
 async function getMeeting(meetingId) {
@@ -320,11 +321,18 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
 async function getNewMeetings(sinceMs) {
   const data = await request('POST', '/crm/v3/objects/meetings/search', {
     filterGroups: [{
-      filters: [{
-        propertyName: 'hs_createdate',
-        operator: 'GT',
-        value: String(sinceMs),
-      }],
+      filters: [
+        {
+          propertyName: 'hs_createdate',
+          operator: 'GT',
+          value: String(sinceMs),
+        },
+        {
+          propertyName: 'hs_activity_type',
+          operator: 'EQ',
+          value: 'Discovery Call',
+        },
+      ],
     }],
     properties: ['hs_object_id', 'hs_createdate'],
     sorts: [{ propertyName: 'hs_createdate', direction: 'ASCENDING' }],

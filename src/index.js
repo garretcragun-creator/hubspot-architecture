@@ -150,7 +150,10 @@ async function processMeeting(meetingId) {
   // 1. Fetch meeting
   const meeting = await getMeeting(meetingId);
   const meetingTitle = meeting.hs_meeting_title || '(untitled)';
-  const meetingStartMs = parseInt(meeting.hs_meeting_start_time || '0', 10);
+  // HubSpot returns ISO 8601 strings for date properties (e.g. "2026-03-02T16:00:00Z")
+  const meetingStartMs = meeting.hs_meeting_start_time
+    ? new Date(meeting.hs_meeting_start_time).getTime()
+    : 0;
   const meetingTime = meetingStartMs
     ? new Date(meetingStartMs).toLocaleString('en-US', {
         timeZone: 'America/New_York',
@@ -164,8 +167,10 @@ async function processMeeting(meetingId) {
     : '(unknown)';
   const ownerId = meeting.hubspot_owner_id;
 
-  // hs_createdate = when HubSpot created the meeting object (Unix ms string)
-  const meetingCreatedMs = parseInt(meeting.hs_createdate || String(Date.now()), 10);
+  // hs_createdate is also an ISO 8601 string from HubSpot
+  const meetingCreatedMs = meeting.hs_createdate
+    ? new Date(meeting.hs_createdate).getTime()
+    : Date.now();
 
   // 2. Fetch associations
   const [contactIds, companyIds] = await Promise.all([

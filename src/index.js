@@ -199,7 +199,7 @@ async function processMeeting(meetingId) {
 
   // 5. Resolve owner email
   const owner = ownerId ? await getOwnerById(ownerId) : null;
-  const ownerEmail = 'garret.cragun@stat.io' || owner?.email; // TEST OVERRIDE
+  const ownerEmail = owner?.email;
 
   if (!ownerEmail) {
     console.warn(

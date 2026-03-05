@@ -142,6 +142,17 @@ async function patchMeeting(meetingId, properties) {
   return request('PATCH', `/crm/v3/objects/meetings/${meetingId}`, { properties });
 }
 
+/**
+ * Patch hs_meeting_outcome on a meeting.
+ * Valid values: COMPLETED | NO_SHOW | RESCHEDULED | CANCELLED
+ *
+ * @param {string} meetingId
+ * @param {string} outcome   - one of the four enumeration values above
+ */
+async function patchMeetingOutcome(meetingId, outcome) {
+  return patchMeeting(meetingId, { hs_meeting_outcome: outcome });
+}
+
 // ─── Companies PATCH ────────────────────────────────────────────────────────
 async function patchCompany(companyId, properties) {
   return request('PATCH', `/crm/v3/objects/companies/${companyId}`, { properties });
@@ -349,6 +360,7 @@ module.exports = {
   getCompany,
   getMeeting,
   patchMeeting,
+  patchMeetingOutcome,
   patchCompany,
   getMeetingAssociations,
   getOwnerById,

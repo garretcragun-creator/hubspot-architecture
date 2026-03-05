@@ -18,6 +18,7 @@ const {
   getCompany,
   getMeeting,
   patchMeeting,
+  patchMeetingOutcome,
   patchCompany,
   getMeetingAssociations,
   getOwnerById,
@@ -26,13 +27,18 @@ const {
   getNewMeetings,
 } = require('./hubspot');
 
+const { getCallsInWindow, inferMeetingHeld } = require('./gong');
+
 const { inferSource } = require('./inference');
-const { scheduleJob, markResponded } = require('./scheduler');
+const { scheduleJob, markResponded, schedulePostMeetingJob, markPostMeetingResponded } = require('./scheduler');
 const {
   buildAttributionBlocks,
   sendAttributionDM,
   updateAttributionMessage,
   registerActionHandlers,
+  buildPostMeetingBlocks,
+  buildPostMeetingConfirmedBlocks,
+  registerPostMeetingActionHandlers,
 } = require('./slack');
 
 // ─── Config ──────────────────────────────────────────────────────────────────
@@ -69,6 +75,10 @@ function markSeen(meetingId) {
 // ─── In-memory store: meetingId → { channel, ts, meetingTitle } ─────────────
 // Needed so action handlers and fallback can update the Slack message.
 const _msgStore = new Map();
+
+// ─── Post-meeting store: meetingId → { channel, ts, meetingTitle } ───────────
+// Same shape as _msgStore but for the outcome DM sent at meeting end time.
+const _postMsgStore = new Map();
 
 // ─── Bolt + Express setup ────────────────────────────────────────────────────
 const receiver = new ExpressReceiver({
@@ -140,6 +150,41 @@ async function handleRepAction({ meetingId, companyId, chosenSource, body }) {
 }
 
 registerActionHandlers(app, { onAction: handleRepAction });
+
+// ─── Post-meeting outcome action handler ─────────────────────────────────────
+/**
+ * Called by both "Yes" button and "Something else" dropdown on the outcome DM.
+ * Handles HubSpot patch + scheduler cancel + Slack message update.
+ */
+async function handleOutcomeAction({ meetingId, chosenOutcome, body }) {
+  markPostMeetingResponded(meetingId);
+
+  const msgRef = _postMsgStore.get(meetingId);
+  const channel = msgRef?.channel || body?.container?.channel_id;
+  const ts      = msgRef?.ts      || body?.container?.message_ts;
+  const meetingTitle = msgRef?.meetingTitle || '(meeting)';
+
+  console.log(
+    `[index] outcome action for meeting ${meetingId}: outcome="${chosenOutcome}" channel=${channel} ts=${ts}`
+  );
+
+  // Patch hs_meeting_outcome in HubSpot
+  await patchMeetingOutcome(meetingId, chosenOutcome).catch((err) =>
+    console.error(`[index] patchMeetingOutcome ${meetingId}: ${err.message}`)
+  );
+
+  // Update Slack message to confirmed state
+  if (channel && ts) {
+    await app.client.chat.update({
+      channel,
+      ts,
+      text: `Meeting outcome recorded: ${chosenOutcome}`,
+      blocks: buildPostMeetingConfirmedBlocks({ meetingTitle, outcome: chosenOutcome, setBy: 'rep' }),
+    }).catch((err) => console.error(`[index] chat.update outcome: ${err.message}`));
+  }
+}
+
+registerPostMeetingActionHandlers(app, { onOutcome: handleOutcomeAction });
 
 // ─── Core meeting processor ───────────────────────────────────────────────────
 /**
@@ -249,7 +294,36 @@ async function processMeeting(meetingId) {
     _msgStore.set(meetingId, { channel, ts, meetingTitle });
   }
 
-  // 7. Schedule 1-hour fallback
+  // 7. Schedule post-meeting outcome check at meeting end time
+  const meetingEndMs = meeting.hs_meeting_end_time
+    ? new Date(meeting.hs_meeting_end_time).getTime()
+    : 0;
+
+  if (meetingEndMs > Date.now()) {
+    const delayMs = meetingEndMs - Date.now();
+    console.log(
+      `[meeting] scheduling post-meeting check for ${meetingId} in ${Math.round(delayMs / 60000)} min`
+    );
+    setTimeout(
+      () =>
+        processPostMeeting({
+          meetingId,
+          meetingTitle,
+          meetingStartMs,
+          meetingEndMs,
+          ownerEmail,
+        }).catch((err) =>
+          console.error(`[post-meeting] processPostMeeting ${meetingId}: ${err.message}`, err)
+        ),
+      delayMs
+    );
+  } else {
+    console.log(
+      `[meeting] meeting ${meetingId} end time is in the past (${meetingEndMs}) — skipping post-meeting check`
+    );
+  }
+
+  // 8. Schedule 1-hour fallback
   scheduleJob({
     meetingId,
     companyId,
@@ -265,6 +339,107 @@ async function processMeeting(meetingId) {
           setBy: 'auto',
         }).catch((err) =>
           console.error(`[scheduler/fallback] updateAttributionMessage: ${err.message}`)
+        );
+      }
+    },
+  });
+}
+
+// ─── Post-meeting processor ───────────────────────────────────────────────────
+/**
+ * Called at meeting end time for a Discovery Call.
+ * 1. Queries Gong for calls in the meeting window.
+ * 2. Infers held/no-show.
+ * 3. Sends outcome DM to the meeting owner.
+ * 4. Schedules 1-hour fallback to auto-apply if rep doesn't respond.
+ *
+ * @param {object} opts
+ * @param {string}  opts.meetingId
+ * @param {string}  opts.meetingTitle
+ * @param {number}  opts.meetingStartMs
+ * @param {number}  opts.meetingEndMs
+ * @param {string}  opts.ownerEmail
+ */
+async function processPostMeeting({ meetingId, meetingTitle, meetingStartMs, meetingEndMs, ownerEmail }) {
+  console.log(`[post-meeting] processing outcome for meeting ${meetingId}`);
+
+  // 1. Query Gong
+  let calls = [];
+  try {
+    calls = await getCallsInWindow(meetingStartMs, meetingEndMs);
+  } catch (err) {
+    console.warn(`[post-meeting] getCallsInWindow for ${meetingId}: ${err.message} — proceeding without Gong data`);
+  }
+
+  // 2. Infer outcome
+  const { held, confidence, reason } = inferMeetingHeld(calls);
+  const inferredOutcome = held ? 'COMPLETED' : 'NO_SHOW';
+
+  console.log(
+    `[post-meeting] ${meetingId} inferred: ${inferredOutcome} (confidence ${confidence}) — ${reason}`
+  );
+
+  // 3. Send outcome DM to rep
+  let channel = null;
+  let ts = null;
+
+  if (ownerEmail) {
+    const blocks = buildPostMeetingBlocks({
+      meetingId,
+      meetingTitle,
+      held,
+      inferredOutcome,
+      confidence,
+      reason,
+    });
+
+    try {
+      // Resolve email → user ID → DM channel (reuse pattern from sendAttributionDM)
+      const lookupRes = await app.client.users.lookupByEmail({ email: ownerEmail });
+      const userId = lookupRes.user?.id;
+      if (userId) {
+        const openRes = await app.client.conversations.open({ users: userId });
+        channel = openRes.channel?.id;
+        if (channel) {
+          const postRes = await app.client.chat.postMessage({
+            channel,
+            text: `Outcome check for your disco call: ${meetingTitle || '(untitled)'}`,
+            blocks,
+          });
+          ts = postRes.ts;
+          console.log(`[post-meeting] DM sent to ${ownerEmail} — channel=${channel} ts=${ts}`);
+        }
+      }
+    } catch (err) {
+      console.error(`[post-meeting] sendDM for ${meetingId}: ${err.message}`);
+    }
+  } else {
+    console.warn(`[post-meeting] no ownerEmail for ${meetingId} — skipping DM`);
+  }
+
+  // Store ref for later updates
+  if (channel && ts) {
+    _postMsgStore.set(meetingId, { channel, ts, meetingTitle });
+  }
+
+  // 4. Schedule 1-hour fallback
+  schedulePostMeetingJob({
+    meetingId,
+    inferredOutcome,
+    onFallback: async ({ meetingId: mid, inferredOutcome: outcome }) => {
+      const ref = _postMsgStore.get(mid);
+      if (ref?.channel && ref?.ts) {
+        await app.client.chat.update({
+          channel: ref.channel,
+          ts: ref.ts,
+          text: `Meeting outcome recorded: ${outcome}`,
+          blocks: buildPostMeetingConfirmedBlocks({
+            meetingTitle: ref.meetingTitle,
+            outcome,
+            setBy: 'auto',
+          }),
+        }).catch((err) =>
+          console.error(`[scheduler/post-fallback] chat.update for ${mid}: ${err.message}`)
         );
       }
     },

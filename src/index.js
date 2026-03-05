@@ -11,6 +11,9 @@
 
 require('dotenv').config();
 
+// VERSION TAG — used to confirm Railway is running the latest build
+console.log('[index] BUILD v3 — trigger endpoint active');
+
 const { App, ExpressReceiver } = require('@slack/bolt');
 
 const {

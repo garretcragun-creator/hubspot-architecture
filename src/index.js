@@ -494,6 +494,121 @@ receiver.router.get('/health', (_req, res) => {
   res.json({ ok: true, uptime: process.uptime() });
 });
 
+// ─── Manual trigger (for testing) ────────────────────────────────────────────
+/**
+ * POST /trigger
+ * Body: { "meetingId": "105720785935", "slackEmail": "you@yourco.com" }
+ *
+ * Runs the full pipeline for a specific meeting but routes ALL Slack DMs to
+ * slackEmail instead of the actual owner. The post-meeting Gong check fires
+ * immediately (no processing-delay wait) so you can see both messages at once.
+ *
+ * Button interactions on the test messages still patch HubSpot normally.
+ */
+receiver.router.post('/trigger', async (req, res) => {
+  const { meetingId, slackEmail } = req.body || {};
+
+  if (!meetingId)   return res.status(400).json({ ok: false, error: 'meetingId is required' });
+  if (!slackEmail)  return res.status(400).json({ ok: false, error: 'slackEmail is required' });
+
+  res.json({ ok: true, meetingId, slackEmail, message: 'trigger accepted — check Slack' });
+
+  (async () => {
+    console.log(`[trigger] processing meeting ${meetingId} → Slack override: ${slackEmail}`);
+
+    // ── 1. Fetch meeting ──────────────────────────────────────────────────────
+    const meeting = await getMeeting(meetingId);
+    const meetingTitle   = meeting.hs_meeting_title || '(untitled)';
+    const meetingStartMs = meeting.hs_meeting_start_time
+      ? new Date(meeting.hs_meeting_start_time).getTime() : 0;
+    const meetingEndMs   = meeting.hs_meeting_end_time
+      ? new Date(meeting.hs_meeting_end_time).getTime()   : 0;
+    const meetingCreatedMs = meeting.hs_createdate
+      ? new Date(meeting.hs_createdate).getTime() : Date.now();
+    const meetingTime = meetingStartMs
+      ? new Date(meetingStartMs).toLocaleString('en-US', {
+          timeZone: 'America/New_York',
+          month: 'short', day: 'numeric', year: 'numeric',
+          hour: 'numeric', minute: '2-digit', timeZoneName: 'short',
+        })
+      : '(unknown)';
+
+    // ── 2. Associations + contact/company data ────────────────────────────────
+    const [contactIds, companyIds] = await Promise.all([
+      getMeetingAssociations(meetingId, 'contacts'),
+      getMeetingAssociations(meetingId, 'companies'),
+    ]);
+    const contactId = contactIds[0] || null;
+    const companyId = companyIds[0] || null;
+
+    const [contact, company, recentActivity, hapilyRegistrants] = await Promise.all([
+      contactId ? getContact(contactId)                                  : Promise.resolve({}),
+      companyId ? getCompany(companyId)                                  : Promise.resolve({}),
+      contactId ? getRecentOutboundActivity(contactId, meetingCreatedMs) : Promise.resolve([]),
+      contactId ? getHapilyRegistrants(contactId)                        : Promise.resolve([]),
+    ]);
+
+    // ── 3. Source inference ───────────────────────────────────────────────────
+    const { source: inferredSource, reason, confidence } = inferSource(
+      contact, company, recentActivity, hapilyRegistrants, meetingCreatedMs
+    );
+    console.log(`[trigger] inferred source: "${inferredSource}" (${confidence}) — ${reason}`);
+
+    // ── 4. Attribution DM → override email ───────────────────────────────────
+    const attrBlocks = buildAttributionBlocks({
+      meetingId, companyId, inferredSource, meetingTitle, meetingTime, reason, confidence,
+    });
+    try {
+      const dmResult = await sendAttributionDM(app, { ownerEmail: slackEmail, blocks: attrBlocks });
+      _msgStore.set(meetingId, { channel: dmResult.channel, ts: dmResult.ts, meetingTitle });
+      console.log(`[trigger] attribution DM sent → ${slackEmail}`);
+    } catch (err) {
+      console.error(`[trigger] attribution DM error: ${err.message}`);
+    }
+
+    // ── 5. Post-meeting Gong check — run immediately (no processing delay) ────
+    console.log(`[trigger] running post-meeting Gong check immediately`);
+
+    let participantEmails = [slackEmail];
+    try {
+      const contactEmails = await getMeetingContactEmails(meetingId);
+      participantEmails = [...new Set([...participantEmails, ...contactEmails])];
+    } catch (_) { /* non-fatal */ }
+    console.log(`[trigger] participant emails: ${participantEmails.join(', ')}`);
+
+    const windowStart = meetingStartMs || Date.now();
+    const windowEnd   = meetingEndMs   || Date.now();
+    const calls = await getCallsInWindow(windowStart, windowEnd, participantEmails).catch(() => []);
+    const { held, confidence: outConf, reason: outReason } = inferMeetingHeld(calls);
+    const inferredOutcome = held ? 'COMPLETED' : 'NO_SHOW';
+    console.log(`[trigger] inferred outcome: ${inferredOutcome} (${outConf}) — ${outReason}`);
+
+    // ── 6. Outcome DM → override email ───────────────────────────────────────
+    const outBlocks = buildPostMeetingBlocks({
+      meetingId, meetingTitle, held, inferredOutcome, confidence: outConf, reason: outReason,
+    });
+    try {
+      const lookupRes = await app.client.users.lookupByEmail({ email: slackEmail });
+      const userId = lookupRes.user?.id;
+      if (userId) {
+        const openRes  = await app.client.conversations.open({ users: userId });
+        const dmChannel = openRes.channel?.id;
+        if (dmChannel) {
+          const postRes = await app.client.chat.postMessage({
+            channel: dmChannel,
+            text: `[TEST] Outcome check for: ${meetingTitle}`,
+            blocks: outBlocks,
+          });
+          _postMsgStore.set(meetingId, { channel: dmChannel, ts: postRes.ts, meetingTitle });
+          console.log(`[trigger] outcome DM sent → ${slackEmail}`);
+        }
+      }
+    } catch (err) {
+      console.error(`[trigger] outcome DM error: ${err.message}`);
+    }
+  })().catch((err) => console.error(`[trigger] unhandled error: ${err.message}`, err));
+});
+
 // ─── Built-in meeting poller ──────────────────────────────────────────────────
 // HubSpot has no "meeting created" workflow trigger, so we poll instead.
 // Every 2 minutes, search for meetings created since the last check and process

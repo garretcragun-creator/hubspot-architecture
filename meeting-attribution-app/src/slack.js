@@ -12,8 +12,21 @@
 const { CANONICAL_SOURCES } = require('./inference');
 
 // ─── Block IDs / Action IDs ──────────────────────────────────────────────────
+// Attribution flow (source)
 const ACTION_CONFIRM_YES = 'meeting_source_confirm_yes';
 const ACTION_SELECT_OTHER = 'meeting_source_select_other';
+
+// Post-meeting outcome flow
+const ACTION_OUTCOME_YES    = 'post_meeting_held_yes';
+const ACTION_OUTCOME_SELECT = 'post_meeting_outcome_select';
+
+// HubSpot enumeration values for hs_meeting_outcome
+const OUTCOME_OPTIONS = [
+  { label: 'Held',        value: 'COMPLETED'    },
+  { label: 'No Show',     value: 'NO_SHOW'      },
+  { label: 'Rescheduled', value: 'RESCHEDULED'  },
+  { label: 'Cancelled',   value: 'CANCELLED'    },
+];
 
 /**
  * Encode metadata into a block_id / value string.
@@ -126,6 +139,114 @@ function buildConfirmedBlocks({ meetingTitle, source, setBy }) {
   ];
 }
 
+// ─── Post-meeting Block Kit builders ─────────────────────────────────────────
+/**
+ * Encode post-meeting metadata into a value string.
+ * Format: "pm_{meetingId}|{inferredOutcome}"
+ */
+function encodePmMeta(meetingId, inferredOutcome) {
+  return `pm_${meetingId}|${inferredOutcome}`;
+}
+
+function decodePmMeta(raw) {
+  // Strip "pm_" prefix if present
+  const stripped = raw.startsWith('pm_') ? raw.slice(3) : raw;
+  const [meetingId, ...rest] = stripped.split('|');
+  const inferredOutcome = rest.join('|');
+  return { meetingId, inferredOutcome };
+}
+
+/**
+ * Build Block Kit blocks for the post-meeting outcome DM.
+ *
+ * @param {object} opts
+ * @param {string}  opts.meetingId
+ * @param {string}  opts.meetingTitle
+ * @param {boolean} opts.held           - Gong inference: true = held, false = no-show
+ * @param {string}  opts.inferredOutcome - COMPLETED | NO_SHOW | RESCHEDULED | CANCELLED
+ * @param {number}  opts.confidence     - 0–100
+ * @param {string}  opts.reason         - one-line Gong inference reason
+ */
+function buildPostMeetingBlocks({
+  meetingId,
+  meetingTitle,
+  held,
+  inferredOutcome,
+  confidence,
+  reason,
+}) {
+  const meta = encodePmMeta(meetingId, inferredOutcome);
+  const confLabel = confidence >= 70 ? 'high' : confidence >= 50 ? 'medium' : 'low';
+  const heldText = held ? 'held' : 'did not hold';
+
+  const options = OUTCOME_OPTIONS.map((o) => ({
+    text: { type: 'plain_text', text: o.label, emoji: false },
+    value: o.value,
+  }));
+
+  return [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `:stopwatch: *Your discovery meeting just ended!*\n*Meeting:* ${meetingTitle || '(untitled)'}`,
+      },
+    },
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `Based on Gong data, it looks like it likely *${heldText}* (${confLabel} confidence).\nIs that right?`,
+      },
+    },
+    {
+      type: 'actions',
+      block_id: `pm_${meta}`,
+      elements: [
+        {
+          type: 'button',
+          text: { type: 'plain_text', text: 'Yes, that\'s right', emoji: false },
+          style: 'primary',
+          action_id: ACTION_OUTCOME_YES,
+          value: meta,
+        },
+        {
+          type: 'static_select',
+          placeholder: { type: 'plain_text', text: 'Something else…', emoji: false },
+          action_id: ACTION_OUTCOME_SELECT,
+          options,
+        },
+      ],
+    },
+    {
+      type: 'context',
+      elements: [
+        {
+          type: 'mrkdwn',
+          text: `_Gong inference: ${reason}_`,
+        },
+      ],
+    },
+  ];
+}
+
+/**
+ * Build "confirmed outcome" blocks shown after rep (or fallback) has set the outcome.
+ */
+function buildPostMeetingConfirmedBlocks({ meetingTitle, outcome, setBy }) {
+  const label = OUTCOME_OPTIONS.find((o) => o.value === outcome)?.label || outcome;
+  const who = setBy === 'auto' ? 'Auto-set (no response in 1 h)' : 'Set by you';
+  return [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `:white_check_mark: *Meeting outcome recorded for "${meetingTitle || 'disco call'}"*\n*Outcome:* ${label}\n_${who}_`,
+      },
+    },
+  ];
+}
+
 // ─── DM sender ───────────────────────────────────────────────────────────────
 /**
  * Send the attribution DM to the rep via their Slack email.
@@ -185,13 +306,11 @@ async function updateAttributionMessage(app, { channel, ts, meetingTitle, source
 
 // ─── Action handler registration ─────────────────────────────────────────────
 /**
- * Register Bolt action handlers.
+ * Register Bolt action handlers for the attribution (source) flow.
  *
  * @param {object} app
  * @param {object} opts
- * @param {Function} opts.onAction  - async ({ meetingId, companyId, chosenSource, ack, respond, body }) => void
- *                                    Called for both "Yes" and "Something else" actions.
- *                                    Caller is responsible for ack(), HubSpot patch, scheduler.markResponded().
+ * @param {Function} opts.onAction  - async ({ meetingId, companyId, chosenSource, body }) => void
  */
 function registerActionHandlers(app, { onAction }) {
   // "Yes, that's right" button
@@ -204,7 +323,6 @@ function registerActionHandlers(app, { onAction }) {
   // "Something else…" dropdown
   app.action(ACTION_SELECT_OTHER, async ({ ack, body, payload }) => {
     await ack();
-    // payload.selected_option.value for static_select
     const chosenSource = payload.selected_option?.value;
     if (!chosenSource) {
       console.warn('[slack] SELECT_OTHER fired with no selected_option');
@@ -220,7 +338,41 @@ function registerActionHandlers(app, { onAction }) {
   });
 }
 
+/**
+ * Register Bolt action handlers for the post-meeting outcome flow.
+ *
+ * @param {object} app
+ * @param {object} opts
+ * @param {Function} opts.onOutcome  - async ({ meetingId, chosenOutcome, body }) => void
+ */
+function registerPostMeetingActionHandlers(app, { onOutcome }) {
+  // "Yes, that's right" button — confirm inferred outcome
+  app.action(ACTION_OUTCOME_YES, async ({ ack, body, payload }) => {
+    await ack();
+    const { meetingId, inferredOutcome } = decodePmMeta(payload.value);
+    await onOutcome({ meetingId, chosenOutcome: inferredOutcome, body });
+  });
+
+  // "Something else…" dropdown — rep picks a different outcome
+  app.action(ACTION_OUTCOME_SELECT, async ({ ack, body, payload }) => {
+    await ack();
+    const chosenOutcome = payload.selected_option?.value;
+    if (!chosenOutcome) {
+      console.warn('[slack] OUTCOME_SELECT fired with no selected_option');
+      return;
+    }
+    // block_id = "pm_{meta}" — strip prefix
+    const rawBlockId = body.actions?.[0]?.block_id || '';
+    const metaPart = rawBlockId.startsWith('pm_')
+      ? rawBlockId.slice('pm_'.length)
+      : rawBlockId;
+    const { meetingId } = decodePmMeta(metaPart);
+    await onOutcome({ meetingId, chosenOutcome, body });
+  });
+}
+
 module.exports = {
+  // Attribution (source) flow
   buildAttributionBlocks,
   buildConfirmedBlocks,
   sendAttributionDM,
@@ -228,4 +380,12 @@ module.exports = {
   registerActionHandlers,
   ACTION_CONFIRM_YES,
   ACTION_SELECT_OTHER,
+
+  // Post-meeting outcome flow
+  buildPostMeetingBlocks,
+  buildPostMeetingConfirmedBlocks,
+  registerPostMeetingActionHandlers,
+  ACTION_OUTCOME_YES,
+  ACTION_OUTCOME_SELECT,
+  OUTCOME_OPTIONS,
 };

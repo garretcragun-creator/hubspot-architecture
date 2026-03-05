@@ -106,10 +106,93 @@ async function runFallback({ meetingId, companyId, inferredSource, onFallback })
 }
 
 /**
- * Return the number of currently pending jobs (useful for health checks).
+ * Return the number of currently pending attribution jobs (useful for health checks).
  */
 function pendingCount() {
   return _jobs.size;
 }
 
-module.exports = { scheduleJob, markResponded, pendingCount };
+// ─── Post-meeting outcome fallback ────────────────────────────────────────────
+// Separate Map so post-meeting keys never collide with attribution keys.
+const _postJobs = new Map();
+
+/**
+ * Schedule a 1-hour fallback for the post-meeting outcome flow.
+ * If the rep responds before the timer fires, markPostMeetingResponded()
+ * cancels it. Otherwise runPostFallback() applies the Gong-inferred outcome.
+ *
+ * @param {object} opts
+ * @param {string}   opts.meetingId         - HubSpot meeting ID
+ * @param {string}   opts.inferredOutcome   - COMPLETED | NO_SHOW | RESCHEDULED | CANCELLED
+ * @param {Function} opts.onFallback        - async fn called on expiry:
+ *                                            receives { meetingId, inferredOutcome }
+ */
+function schedulePostMeetingJob({ meetingId, inferredOutcome, onFallback }) {
+  // Cancel any existing post-meeting job for this meeting
+  cancelPostMeetingJob(meetingId);
+
+  const timer = setTimeout(async () => {
+    _postJobs.delete(meetingId);
+    await runPostFallback({ meetingId, inferredOutcome, onFallback });
+  }, DELAY_MS);
+
+  if (timer.unref) timer.unref();
+
+  _postJobs.set(meetingId, { timer, meetingId, inferredOutcome, onFallback });
+  console.log(`[scheduler] post-meeting job scheduled for meeting ${meetingId} (fires in 1 h)`);
+}
+
+/**
+ * Cancel the pending post-meeting fallback (call when rep responds).
+ * @param {string} meetingId
+ * @returns {boolean}
+ */
+function markPostMeetingResponded(meetingId) {
+  return cancelPostMeetingJob(meetingId);
+}
+
+function cancelPostMeetingJob(meetingId) {
+  const job = _postJobs.get(meetingId);
+  if (!job) return false;
+  clearTimeout(job.timer);
+  _postJobs.delete(meetingId);
+  console.log(`[scheduler] post-meeting job cancelled for meeting ${meetingId} (rep responded)`);
+  return true;
+}
+
+async function runPostFallback({ meetingId, inferredOutcome, onFallback }) {
+  console.log(
+    `[scheduler] post-meeting fallback firing for meeting ${meetingId} — outcome "${inferredOutcome}"`
+  );
+
+  // Patch hs_meeting_outcome in HubSpot
+  const { patchMeetingOutcome } = require('./hubspot');
+  await patchMeetingOutcome(meetingId, inferredOutcome).catch((err) =>
+    console.error(`[scheduler] patchMeetingOutcome ${meetingId}: ${err.message}`)
+  );
+
+  // Notify caller (e.g. update the Slack message to show auto-set)
+  if (typeof onFallback === 'function') {
+    try {
+      await onFallback({ meetingId, inferredOutcome });
+    } catch (err) {
+      console.error(`[scheduler] post-meeting onFallback for meeting ${meetingId}: ${err.message}`);
+    }
+  }
+}
+
+/**
+ * Return number of currently pending post-meeting jobs.
+ */
+function pendingPostCount() {
+  return _postJobs.size;
+}
+
+module.exports = {
+  scheduleJob,
+  markResponded,
+  pendingCount,
+  schedulePostMeetingJob,
+  markPostMeetingResponded,
+  pendingPostCount,
+};

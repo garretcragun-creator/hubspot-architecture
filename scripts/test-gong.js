@@ -4,18 +4,20 @@
  * Quick smoke test for Gong credentials + inference logic.
  * Run from the meeting-attribution-app directory:
  *
- *   GONG_ACCESS_KEY=xxx GONG_ACCESS_SECRET=yyy node scripts/test-gong.js [meetingId]
+ *   GONG_ACCESS_KEY=xxx GONG_ACCESS_SECRET=yyy HUBSPOT_ACCESS_TOKEN=yyy \
+ *     node scripts/test-gong.js <meetingId>
  *
  * If a HubSpot meetingId is supplied the script fetches real start/end times
- * from HubSpot and queries the matching Gong window. Otherwise it queries
- * the last 4 hours as a connectivity check.
+ * AND participant emails from HubSpot, then queries Gong with the email filter.
+ * Without a meetingId it queries the last 4 hours as a connectivity check
+ * (no email filter applied).
  */
 
 require('dotenv').config();
 
 const { getCallsInWindow, inferMeetingHeld } = require('../src/gong');
 
-// Optional: pull real meeting times from HubSpot
+// Pull real meeting times from HubSpot
 async function getMeetingTimes(meetingId) {
   const { getMeeting } = require('../src/hubspot');
   const props = await getMeeting(meetingId);
@@ -27,10 +29,34 @@ async function getMeetingTimes(meetingId) {
   return { startMs, endMs, title };
 }
 
+// Pull participant emails (owner + associated contacts) from HubSpot
+async function getParticipantEmails(meetingId) {
+  const { getMeetingContactEmails, getMeetingAssociations, getOwnerById, getMeeting } =
+    require('../src/hubspot');
+
+  // Contact emails via the new helper
+  const contactEmails = await getMeetingContactEmails(meetingId);
+
+  // Owner email
+  let ownerEmail = null;
+  try {
+    const props = await getMeeting(meetingId);
+    if (props.hubspot_owner_id) {
+      const owner = await getOwnerById(props.hubspot_owner_id);
+      ownerEmail = owner?.email || null;
+    }
+  } catch (err) {
+    console.warn(`  Could not fetch owner email: ${err.message}`);
+  }
+
+  const all = [...new Set([ownerEmail, ...contactEmails].filter(Boolean))];
+  return all;
+}
+
 (async () => {
   const meetingId = process.argv[2] || null;
 
-  let startMs, endMs, label;
+  let startMs, endMs, label, participantEmails = [];
 
   if (meetingId) {
     console.log(`\nFetching HubSpot meeting ${meetingId}…`);
@@ -46,12 +72,20 @@ async function getMeetingTimes(meetingId) {
       console.error(`  HubSpot fetch failed: ${err.message}`);
       process.exit(1);
     }
+
+    console.log('\nFetching participant emails…');
+    try {
+      participantEmails = await getParticipantEmails(meetingId);
+      console.log(`  Emails (${participantEmails.length}): ${participantEmails.join(', ') || '(none)'}`);
+    } catch (err) {
+      console.warn(`  Could not fetch participant emails: ${err.message} — will query without filter`);
+    }
   } else {
     // Fallback: query the last 4 hours as a connectivity check
     endMs   = Date.now();
     startMs = endMs - 4 * 60 * 60 * 1000;
     label   = 'last 4 hours (connectivity check)';
-    console.log(`\nNo meetingId supplied — querying Gong for ${label}`);
+    console.log(`\nNo meetingId supplied — querying Gong for ${label} (no email filter)`);
   }
 
   if (!startMs) {
@@ -62,7 +96,7 @@ async function getMeetingTimes(meetingId) {
   console.log('\nQuerying Gong…');
   let calls;
   try {
-    calls = await getCallsInWindow(startMs, endMs || startMs);
+    calls = await getCallsInWindow(startMs, endMs || startMs, participantEmails);
   } catch (err) {
     console.error(`Gong API error: ${err.message}`);
     process.exit(1);

@@ -21,6 +21,7 @@ const {
   patchMeetingOutcome,
   patchCompany,
   getMeetingAssociations,
+  getMeetingContactEmails,
   getOwnerById,
   getRecentOutboundActivity,
   getHapilyRegistrants,
@@ -365,15 +366,25 @@ async function processMeeting(meetingId) {
 async function processPostMeeting({ meetingId, meetingTitle, meetingStartMs, meetingEndMs, ownerEmail }) {
   console.log(`[post-meeting] processing outcome for meeting ${meetingId}`);
 
-  // 1. Query Gong
+  // 1. Build participant email list (owner + associated contacts) for Gong filtering
+  let participantEmails = [ownerEmail].filter(Boolean);
+  try {
+    const contactEmails = await getMeetingContactEmails(meetingId);
+    participantEmails = [...new Set([...participantEmails, ...contactEmails])];
+    console.log(`[post-meeting] participant emails for ${meetingId}: ${participantEmails.join(', ')}`);
+  } catch (err) {
+    console.warn(`[post-meeting] getMeetingContactEmails for ${meetingId}: ${err.message} — using owner email only`);
+  }
+
+  // 2. Query Gong (filtered by participant emails)
   let calls = [];
   try {
-    calls = await getCallsInWindow(meetingStartMs, meetingEndMs);
+    calls = await getCallsInWindow(meetingStartMs, meetingEndMs, participantEmails);
   } catch (err) {
     console.warn(`[post-meeting] getCallsInWindow for ${meetingId}: ${err.message} — proceeding without Gong data`);
   }
 
-  // 2. Infer outcome
+  // 3. Infer outcome
   const { held, confidence, reason } = inferMeetingHeld(calls);
   const inferredOutcome = held ? 'COMPLETED' : 'NO_SHOW';
 
@@ -381,7 +392,7 @@ async function processPostMeeting({ meetingId, meetingTitle, meetingStartMs, mee
     `[post-meeting] ${meetingId} inferred: ${inferredOutcome} (confidence ${confidence}) — ${reason}`
   );
 
-  // 3. Send outcome DM to rep
+  // 4. Send outcome DM to rep
   let channel = null;
   let ts = null;
 
@@ -424,7 +435,7 @@ async function processPostMeeting({ meetingId, meetingTitle, meetingStartMs, mee
     _postMsgStore.set(meetingId, { channel, ts, meetingTitle });
   }
 
-  // 4. Schedule 1-hour fallback
+  // 5. Schedule 1-hour fallback
   schedulePostMeetingJob({
     meetingId,
     inferredOutcome,

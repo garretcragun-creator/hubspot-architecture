@@ -174,6 +174,39 @@ async function getMeetingAssociations(meetingId, toObjectType) {
   }
 }
 
+/**
+ * Return the email addresses of all contacts associated with a meeting.
+ * Used to filter Gong calls by participant email so we match the right call.
+ * Returns [] on any error so callers can proceed without email data.
+ *
+ * @param {string} meetingId
+ * @returns {Promise<string[]>} lowercased email strings
+ */
+async function getMeetingContactEmails(meetingId) {
+  try {
+    // Step 1: get associated contact IDs via v4 associations
+    const assocData = await request(
+      'GET',
+      `/crm/v4/objects/meetings/${meetingId}/associations/contacts`
+    );
+    const contactIds = (assocData.results || []).map((r) => String(r.toObjectId));
+    if (contactIds.length === 0) return [];
+
+    // Step 2: batch-read just the email property for those contacts
+    const batchData = await request('POST', '/crm/v3/objects/contacts/batch/read', {
+      inputs: contactIds.map((id) => ({ id })),
+      properties: ['email'],
+    });
+    return (batchData.results || [])
+      .map((c) => c.properties?.email)
+      .filter(Boolean)
+      .map((e) => e.toLowerCase());
+  } catch (err) {
+    console.warn(`[hubspot] getMeetingContactEmails for ${meetingId}: ${err.message}`);
+    return [];
+  }
+}
+
 // ─── Hapily event registrants (custom object 2-54709567) ────────────────────
 /**
  * Fetch hapily_registrant records associated to a contact via the v4
@@ -363,6 +396,7 @@ module.exports = {
   patchMeetingOutcome,
   patchCompany,
   getMeetingAssociations,
+  getMeetingContactEmails,
   getOwnerById,
   getRecentOutboundActivity,
   getHapilyRegistrants,

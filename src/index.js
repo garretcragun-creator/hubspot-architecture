@@ -492,7 +492,8 @@ const POLL_INTERVAL_MS = 2 * 60 * 1000; // 2 minutes
 
 // How long to wait after meeting end before querying Gong.
 // Gong can take up to 2-3 hours to finish processing a call recording.
-const GONG_PROCESSING_DELAY_MS = 2 * 60 * 60 * 1000; // 2 hours
+// Override with GONG_PROCESSING_DELAY_MS env var (ms) for testing, e.g. GONG_PROCESSING_DELAY_MS=30000
+const GONG_PROCESSING_DELAY_MS = parseInt(process.env.GONG_PROCESSING_DELAY_MS || '', 10) || 2 * 60 * 60 * 1000;
 // On startup, look back 5 min to catch anything created while restarting
 let _lastPolledMs = Date.now() - 5 * 60 * 1000;
 

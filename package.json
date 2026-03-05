@@ -1,6 +1,6 @@
 {
   "name": "meeting-attribution-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Discovery meeting attribution via Slack Block Kit + HubSpot API",
   "main": "src/index.js",
   "scripts": {

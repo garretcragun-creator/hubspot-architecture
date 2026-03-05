@@ -299,10 +299,12 @@ async function processMeeting(meetingId) {
     ? new Date(meeting.hs_meeting_end_time).getTime()
     : 0;
 
-  if (meetingEndMs > Date.now()) {
-    const delayMs = meetingEndMs - Date.now();
+  if (meetingEndMs > 0) {
+    const delayMs = Math.max(0, meetingEndMs - Date.now()) + GONG_PROCESSING_DELAY_MS;
+    const totalMin = Math.round(delayMs / 60000);
     console.log(
-      `[meeting] scheduling post-meeting check for ${meetingId} in ${Math.round(delayMs / 60000)} min`
+      `[meeting] scheduling post-meeting Gong check for ${meetingId} in ${totalMin} min ` +
+      `(end + ${GONG_PROCESSING_DELAY_MS / 3600000}h Gong processing buffer)`
     );
     setTimeout(
       () =>
@@ -319,7 +321,7 @@ async function processMeeting(meetingId) {
     );
   } else {
     console.log(
-      `[meeting] meeting ${meetingId} end time is in the past (${meetingEndMs}) — skipping post-meeting check`
+      `[meeting] meeting ${meetingId} has no end time — skipping post-meeting Gong check`
     );
   }
 
@@ -487,6 +489,10 @@ receiver.router.get('/health', (_req, res) => {
 // any new ones. The idempotency guard prevents double-processing if a webhook
 // also fires for the same meeting.
 const POLL_INTERVAL_MS = 2 * 60 * 1000; // 2 minutes
+
+// How long to wait after meeting end before querying Gong.
+// Gong can take up to 2-3 hours to finish processing a call recording.
+const GONG_PROCESSING_DELAY_MS = 2 * 60 * 60 * 1000; // 2 hours
 // On startup, look back 5 min to catch anything created while restarting
 let _lastPolledMs = Date.now() - 5 * 60 * 1000;
 

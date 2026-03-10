@@ -202,7 +202,7 @@ let _adminSlackId = null;
 
 registerAppHome(app, {
   getEntries: () => messageLog.getAll(),
-  get adminSlackId() { return _adminSlackId; },
+  getAdminSlackId: () => _adminSlackId,
 });
 
 // ─── Core meeting processor ───────────────────────────────────────────────────

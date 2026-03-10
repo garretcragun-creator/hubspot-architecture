@@ -563,14 +563,15 @@ function buildAppHomeBlocks(entries, { isAdmin }) {
  *
  * @param {object} app - Bolt App instance
  * @param {object} opts
- * @param {Function}    opts.getEntries   - () => Array of all log entries
- * @param {string|null} opts.adminSlackId - Slack user ID of the admin (sees all messages)
+ * @param {Function}    opts.getEntries       - () => Array of all log entries
+ * @param {Function}    opts.getAdminSlackId  - () => string|null  (resolved lazily at event time)
  */
-function registerAppHome(app, { getEntries, adminSlackId }) {
+function registerAppHome(app, { getEntries, getAdminSlackId }) {
   app.event('app_home_opened', async ({ event, client }) => {
     if (event.tab !== 'home') return;
 
     try {
+      const adminSlackId = typeof getAdminSlackId === 'function' ? getAdminSlackId() : null;
       const isAdmin = !!(adminSlackId && event.user === adminSlackId);
       const allEntries = getEntries();
       const entries = isAdmin

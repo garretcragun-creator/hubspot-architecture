@@ -35,6 +35,7 @@ const { getCallsInWindow, inferMeetingHeld } = require('./gong');
 
 const { inferSource } = require('./inference');
 const { scheduleJob, markResponded, schedulePostMeetingJob, markPostMeetingResponded } = require('./scheduler');
+const messageLog = require('./message-log');
 const {
   buildAttributionBlocks,
   sendAttributionDM,
@@ -43,12 +44,14 @@ const {
   buildPostMeetingBlocks,
   buildPostMeetingConfirmedBlocks,
   registerPostMeetingActionHandlers,
+  registerAppHome,
 } = require('./slack');
 
 // ─── Config ──────────────────────────────────────────────────────────────────
 const PORT = parseInt(process.env.PORT || '3000', 10);
 const SLACK_SIGNING_SECRET = process.env.SLACK_SIGNING_SECRET;
 const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN;
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || ''; // email of user who sees the full dashboard
 
 if (!SLACK_SIGNING_SECRET || !SLACK_BOT_TOKEN) {
   console.error('[index] SLACK_SIGNING_SECRET and SLACK_BOT_TOKEN are required');
@@ -110,6 +113,7 @@ receiver.router.use(express.json());
  */
 async function handleRepAction({ meetingId, companyId, chosenSource, body }) {
   markResponded(meetingId);
+  messageLog.logResponded({ meetingId, messageType: 'attribution', chosenValue: chosenSource });
 
   // Get stored Slack message ref
   const msgRef = _msgStore.get(meetingId);
@@ -162,6 +166,7 @@ registerActionHandlers(app, { onAction: handleRepAction });
  */
 async function handleOutcomeAction({ meetingId, chosenOutcome, body }) {
   markPostMeetingResponded(meetingId);
+  messageLog.logResponded({ meetingId, messageType: 'outcome', chosenValue: chosenOutcome });
 
   const msgRef = _postMsgStore.get(meetingId);
   const channel = msgRef?.channel || body?.container?.channel_id;
@@ -189,6 +194,16 @@ async function handleOutcomeAction({ meetingId, chosenOutcome, body }) {
 }
 
 registerPostMeetingActionHandlers(app, { onOutcome: handleOutcomeAction });
+
+// ─── App Home tab ─────────────────────────────────────────────────────────────
+// Admin Slack ID is resolved once at startup (see bottom of file).
+// Until then, everyone sees only their own messages.
+let _adminSlackId = null;
+
+registerAppHome(app, {
+  getEntries: () => messageLog.getAll(),
+  get adminSlackId() { return _adminSlackId; },
+});
 
 // ─── Core meeting processor ───────────────────────────────────────────────────
 /**
@@ -288,6 +303,15 @@ async function processMeeting(meetingId) {
       channel = dmResult.channel;
       ts = dmResult.ts;
       console.log(`[meeting] DM sent to ${ownerEmail} — channel=${channel} ts=${ts}`);
+
+      messageLog.logSent({
+        meetingId,
+        repEmail: ownerEmail,
+        repSlackId: dmResult.userId || null,
+        meetingTitle,
+        inferredSource,
+        messageType: 'attribution',
+      });
     } catch (err) {
       console.error(`[meeting] sendAttributionDM: ${err.message}`);
     }
@@ -335,6 +359,8 @@ async function processMeeting(meetingId) {
     companyId,
     inferredSource,
     onFallback: async ({ meetingId: mid, companyId: cid, inferredSource: src }) => {
+      messageLog.logAutoSet({ meetingId: mid, messageType: 'attribution', chosenValue: src });
+
       const ref = _msgStore.get(mid);
       if (ref?.channel && ref?.ts) {
         await updateAttributionMessage(app, {
@@ -424,6 +450,15 @@ async function processPostMeeting({ meetingId, meetingTitle, meetingStartMs, mee
           });
           ts = postRes.ts;
           console.log(`[post-meeting] DM sent to ${ownerEmail} — channel=${channel} ts=${ts}`);
+
+          messageLog.logSent({
+            meetingId,
+            repEmail: ownerEmail,
+            repSlackId: userId,
+            meetingTitle,
+            inferredSource: inferredOutcome,
+            messageType: 'outcome',
+          });
         }
       }
     } catch (err) {
@@ -443,6 +478,8 @@ async function processPostMeeting({ meetingId, meetingTitle, meetingStartMs, mee
     meetingId,
     inferredOutcome,
     onFallback: async ({ meetingId: mid, inferredOutcome: outcome }) => {
+      messageLog.logAutoSet({ meetingId: mid, messageType: 'outcome', chosenValue: outcome });
+
       const ref = _postMsgStore.get(mid);
       if (ref?.channel && ref?.ts) {
         await app.client.chat.update({
@@ -565,6 +602,15 @@ receiver.router.post('/trigger', async (req, res) => {
       const dmResult = await sendAttributionDM(app, { ownerEmail: slackEmail, blocks: attrBlocks });
       _msgStore.set(meetingId, { channel: dmResult.channel, ts: dmResult.ts, meetingTitle });
       console.log(`[trigger] attribution DM sent → ${slackEmail}`);
+
+      messageLog.logSent({
+        meetingId,
+        repEmail: slackEmail,
+        repSlackId: dmResult.userId || null,
+        meetingTitle,
+        inferredSource,
+        messageType: 'attribution',
+      });
     } catch (err) {
       console.error(`[trigger] attribution DM error: ${err.message}`);
     }
@@ -604,6 +650,15 @@ receiver.router.post('/trigger', async (req, res) => {
           });
           _postMsgStore.set(meetingId, { channel: dmChannel, ts: postRes.ts, meetingTitle });
           console.log(`[trigger] outcome DM sent → ${slackEmail}`);
+
+          messageLog.logSent({
+            meetingId,
+            repEmail: slackEmail,
+            repSlackId: userId || null,
+            meetingTitle,
+            inferredSource: inferredOutcome,
+            messageType: 'outcome',
+          });
         }
       }
     } catch (err) {
@@ -654,6 +709,21 @@ async function pollForNewMeetings() {
 (async () => {
   await app.start(PORT);
   console.log(`[index] meeting-attribution-app listening on port ${PORT}`);
+
+  // Resolve admin Slack ID for App Home role-based view
+  if (ADMIN_EMAIL) {
+    try {
+      const res = await app.client.users.lookupByEmail({ email: ADMIN_EMAIL });
+      _adminSlackId = res.user?.id || null;
+      if (_adminSlackId) {
+        console.log(`[index] admin Slack ID resolved: ${_adminSlackId} (${ADMIN_EMAIL})`);
+      } else {
+        console.warn(`[index] no Slack user found for ADMIN_EMAIL="${ADMIN_EMAIL}"`);
+      }
+    } catch (err) {
+      console.warn(`[index] could not resolve ADMIN_EMAIL="${ADMIN_EMAIL}": ${err.message}`);
+    }
+  }
 
   // Kick off the poller
   setInterval(pollForNewMeetings, POLL_INTERVAL_MS);

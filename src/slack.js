@@ -280,7 +280,7 @@ async function sendAttributionDM(app, { ownerEmail, blocks }) {
     blocks,
   });
 
-  return { ok: postRes.ok, ts: postRes.ts, channel };
+  return { ok: postRes.ok, ts: postRes.ts, channel, userId };
 }
 
 // ─── Message updater ─────────────────────────────────────────────────────────
@@ -371,6 +371,224 @@ function registerPostMeetingActionHandlers(app, { onOutcome }) {
   });
 }
 
+// ─── App Home tab ───────────────────────────────────────────────────────────
+
+/**
+ * Human-readable relative time string.
+ * @param {number} ms - timestamp to compare against now
+ * @returns {string}
+ */
+function _relativeTime(ms) {
+  if (!ms) return '';
+  const diff = Date.now() - ms;
+  const mins = Math.floor(diff / 60000);
+  if (mins < 1) return 'just now';
+  if (mins < 60) return `${mins}m ago`;
+  const hrs = Math.floor(mins / 60);
+  if (hrs < 24) return `${hrs}h ago`;
+  const days = Math.floor(hrs / 24);
+  return `${days}d ago`;
+}
+
+/**
+ * Build a single entry block for the App Home.
+ * @param {object} entry - log entry
+ * @param {boolean} isAdmin - whether to show rep mention
+ * @returns {object} Block Kit section block
+ */
+function _buildEntryBlock(entry, isAdmin) {
+  const typeLabel = entry.messageType === 'outcome' ? 'Outcome' : 'Source';
+  const repDisplay = isAdmin
+    ? (entry.repSlackId ? `<@${entry.repSlackId}>` : entry.repEmail)
+    : null;
+
+  if (entry.status === 'pending') {
+    const ago = _relativeTime(entry.sentAt);
+    const repLine = repDisplay ? ` to ${repDisplay}` : '';
+    return {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*${entry.meetingTitle}*\n${typeLabel} check sent${repLine} ${ago}\nInferred: _${entry.inferredSource}_`,
+      },
+    };
+  }
+
+  if (entry.status === 'responded') {
+    const ago = _relativeTime(entry.respondedAt);
+    const repLine = repDisplay ? ` by ${repDisplay}` : '';
+    return {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `*${entry.meetingTitle}*\n${typeLabel} confirmed${repLine} ${ago}\nChosen: *${entry.chosenValue}*  (inferred: _${entry.inferredSource}_)`,
+      },
+    };
+  }
+
+  // auto-set
+  const ago = _relativeTime(entry.respondedAt);
+  const repLine = repDisplay ? ` for ${repDisplay}` : '';
+  return {
+    type: 'section',
+    text: {
+      type: 'mrkdwn',
+      text: `*${entry.meetingTitle}*\n${typeLabel} auto-applied${repLine} ${ago}\nAuto-set: *${entry.chosenValue}*`,
+    },
+  };
+}
+
+/**
+ * Build Block Kit blocks for the App Home tab.
+ *
+ * @param {object[]} entries - from messageLog.getAll() (already filtered for role)
+ * @param {object} opts
+ * @param {boolean} opts.isAdmin - true → full dashboard, false → personal view
+ * @returns {object[]} Block Kit blocks array
+ */
+function buildAppHomeBlocks(entries, { isAdmin }) {
+  const pending   = entries.filter((e) => e.status === 'pending');
+  const responded = entries.filter((e) => e.status === 'responded');
+  const autoSet   = entries.filter((e) => e.status === 'auto-set');
+
+  const blocks = [];
+  const MAX_PER_SECTION = 20;
+
+  // ── Header ──
+  blocks.push({
+    type: 'header',
+    text: {
+      type: 'plain_text',
+      text: isAdmin ? 'Meeting Attribution Dashboard' : 'Your Attribution Messages',
+      emoji: false,
+    },
+  });
+  blocks.push({
+    type: 'section',
+    text: {
+      type: 'mrkdwn',
+      text: `*Last 7 days:*  ${pending.length} awaiting  |  ${responded.length} responded  |  ${autoSet.length} auto-set`,
+    },
+  });
+  blocks.push({ type: 'divider' });
+
+  // ── Awaiting Response ──
+  blocks.push({
+    type: 'header',
+    text: { type: 'plain_text', text: 'Awaiting Response', emoji: false },
+  });
+
+  if (pending.length === 0) {
+    blocks.push({
+      type: 'section',
+      text: { type: 'mrkdwn', text: '_No messages awaiting response._' },
+    });
+  } else {
+    for (const entry of pending.slice(0, MAX_PER_SECTION)) {
+      blocks.push(_buildEntryBlock(entry, isAdmin));
+    }
+    if (pending.length > MAX_PER_SECTION) {
+      blocks.push({
+        type: 'context',
+        elements: [{ type: 'mrkdwn', text: `_...and ${pending.length - MAX_PER_SECTION} more_` }],
+      });
+    }
+  }
+  blocks.push({ type: 'divider' });
+
+  // ── Responded ──
+  blocks.push({
+    type: 'header',
+    text: { type: 'plain_text', text: 'Responded', emoji: false },
+  });
+
+  if (responded.length === 0) {
+    blocks.push({
+      type: 'section',
+      text: { type: 'mrkdwn', text: '_No responses yet._' },
+    });
+  } else {
+    for (const entry of responded.slice(0, MAX_PER_SECTION)) {
+      blocks.push(_buildEntryBlock(entry, isAdmin));
+    }
+    if (responded.length > MAX_PER_SECTION) {
+      blocks.push({
+        type: 'context',
+        elements: [{ type: 'mrkdwn', text: `_...and ${responded.length - MAX_PER_SECTION} more_` }],
+      });
+    }
+  }
+  blocks.push({ type: 'divider' });
+
+  // ── Auto-Set ──
+  blocks.push({
+    type: 'header',
+    text: { type: 'plain_text', text: 'Auto-Set (No Response)', emoji: false },
+  });
+
+  if (autoSet.length === 0) {
+    blocks.push({
+      type: 'section',
+      text: { type: 'mrkdwn', text: '_No auto-set messages._' },
+    });
+  } else {
+    for (const entry of autoSet.slice(0, MAX_PER_SECTION)) {
+      blocks.push(_buildEntryBlock(entry, isAdmin));
+    }
+    if (autoSet.length > MAX_PER_SECTION) {
+      blocks.push({
+        type: 'context',
+        elements: [{ type: 'mrkdwn', text: `_...and ${autoSet.length - MAX_PER_SECTION} more_` }],
+      });
+    }
+  }
+
+  // ── Footer ──
+  blocks.push({ type: 'divider' });
+  blocks.push({
+    type: 'context',
+    elements: [
+      {
+        type: 'mrkdwn',
+        text: `_Last refreshed: <!date^${Math.floor(Date.now() / 1000)}^{date_short_pretty} at {time}|${new Date().toISOString()}>_`,
+      },
+    ],
+  });
+
+  return blocks;
+}
+
+/**
+ * Register the app_home_opened event handler.
+ *
+ * @param {object} app - Bolt App instance
+ * @param {object} opts
+ * @param {Function}    opts.getEntries   - () => Array of all log entries
+ * @param {string|null} opts.adminSlackId - Slack user ID of the admin (sees all messages)
+ */
+function registerAppHome(app, { getEntries, adminSlackId }) {
+  app.event('app_home_opened', async ({ event, client }) => {
+    if (event.tab !== 'home') return;
+
+    try {
+      const isAdmin = !!(adminSlackId && event.user === adminSlackId);
+      const allEntries = getEntries();
+      const entries = isAdmin
+        ? allEntries
+        : allEntries.filter((e) => e.repSlackId === event.user);
+
+      const blocks = buildAppHomeBlocks(entries, { isAdmin });
+
+      await client.views.publish({
+        user_id: event.user,
+        view: { type: 'home', blocks },
+      });
+    } catch (err) {
+      console.error(`[slack] app_home_opened error: ${err.message}`);
+    }
+  });
+}
+
 module.exports = {
   // Attribution (source) flow
   buildAttributionBlocks,
@@ -388,4 +606,8 @@ module.exports = {
   ACTION_OUTCOME_YES,
   ACTION_OUTCOME_SELECT,
   OUTCOME_OPTIONS,
+
+  // App Home
+  buildAppHomeBlocks,
+  registerAppHome,
 };

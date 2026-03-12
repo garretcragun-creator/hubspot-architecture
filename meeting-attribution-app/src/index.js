@@ -12,7 +12,7 @@
 require('dotenv').config();
 
 // VERSION TAG — used to confirm Railway is running the latest build
-console.log('[index] BUILD v3 — trigger endpoint active');
+console.log('[index] BUILD v4 — source mapping active');
 
 const { App, ExpressReceiver } = require('@slack/bolt');
 
@@ -129,6 +129,7 @@ async function handleRepAction({ meetingId, companyId, chosenSource, body }) {
 
   // Translate canonical app source → HubSpot enum value
   const hsSource = toHubSpotSource(chosenSource);
+  console.log(`[index] translated "${chosenSource}" → "${hsSource}" for HubSpot`);
 
   // Patch HubSpot — don't swallow errors so we can detect failures
   const patches = [
@@ -137,8 +138,8 @@ async function handleRepAction({ meetingId, companyId, chosenSource, body }) {
   if (companyId) {
     patches.push(
       patchCompany(companyId, {
-        stat_latest_source: hsSource,
-        discovery_source: hsSource,
+        stat_latest_source: chosenSource,
+        discovery_source: chosenSource,
       })
     );
   }

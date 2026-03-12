@@ -83,8 +83,8 @@ async function runFallback({ meetingId, companyId, inferredSource, onFallback })
   if (companyId) {
     patches.push(
       patchCompany(companyId, {
-        stat_latest_source: hsSource,
-        discovery_source: hsSource,
+        stat_latest_source: inferredSource,
+        discovery_source: inferredSource,
       })
     );
   }

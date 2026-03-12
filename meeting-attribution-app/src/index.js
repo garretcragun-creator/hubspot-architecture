@@ -1,10 +1,11 @@
 /**
- * Discovery Meeting Attribution App — entry point
- * ─────────────────────────────────────────────────
+ * Discovery Meeting Attribution App + Location Review — entry point
+ * ─────────────────────────────────────────────────────────────────
  * HTTP server that:
- *   POST /webhook/meeting-created  — receives meeting-created events
- *   POST /slack/events             — Slack Events API (handled by Bolt)
- *   POST /slack/actions            — Slack Interactivity (handled by Bolt)
+ *   POST /webhook/meeting-created   — receives meeting-created events
+ *   POST /webhook/location-review   — receives location review data from NPPES lookup
+ *   POST /slack/events              — Slack Events API (handled by Bolt)
+ *   POST /slack/actions             — Slack Interactivity (handled by Bolt)
  *
  * Uses @slack/bolt ExpressReceiver so custom routes and Bolt live on one port.
  */
@@ -29,6 +30,9 @@ const {
   getRecentOutboundActivity,
   getHapilyRegistrants,
   getNewMeetings,
+  createLocation,
+  associateLocationToCompany,
+  associateLocationToDeal,
 } = require('./hubspot');
 
 const { getCallsInWindow, inferMeetingHeld } = require('./gong');
@@ -45,6 +49,10 @@ const {
   buildPostMeetingConfirmedBlocks,
   registerPostMeetingActionHandlers,
   registerAppHome,
+  buildLocationReviewBlocks,
+  buildLocationConfirmedBlocks,
+  sendLocationReviewDM,
+  registerLocationActionHandlers,
 } = require('./slack');
 
 // ─── Config ──────────────────────────────────────────────────────────────────
@@ -86,6 +94,28 @@ const _msgStore = new Map();
 // ─── Post-meeting store: meetingId → { channel, ts, meetingTitle } ───────────
 // Same shape as _msgStore but for the outcome DM sent at meeting end time.
 const _postMsgStore = new Map();
+
+// ─── Location review stores ──────────────────────────────────────────────────
+// sessionId → { dealId, companyId, companyName, legalBusinessName, locations[], addedLocations[], channel, ts, ... }
+const _locationSessions = new Map();
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // auto-expire after 24 hours
+
+// Idempotency for location review webhooks (keyed by dealId)
+const _locationReviewSeen = new Map();
+const LOCATION_REVIEW_WINDOW_MS = 10 * 60 * 1000; // 10 minutes
+
+function isLocationReviewDuplicate(dealId) {
+  const ts = _locationReviewSeen.get(dealId);
+  if (!ts) return false;
+  return Date.now() - ts < LOCATION_REVIEW_WINDOW_MS;
+}
+
+function markLocationReviewSeen(dealId) {
+  _locationReviewSeen.set(dealId, Date.now());
+  setTimeout(() => _locationReviewSeen.delete(dealId), LOCATION_REVIEW_WINDOW_MS + 1000);
+}
+
+const CS_FALLBACK_EMAIL = process.env.CS_FALLBACK_EMAIL || '';
 
 // ─── Bolt + Express setup ────────────────────────────────────────────────────
 const receiver = new ExpressReceiver({
@@ -233,6 +263,242 @@ registerAppHome(app, {
   getEntries: () => messageLog.getAll(),
   getAdminSlackId: () => _adminSlackId,
 });
+
+// ─── Location review action handlers ─────────────────────────────────────────
+registerLocationActionHandlers(app, {
+  getSession: (sessionId) => _locationSessions.get(sessionId) || null,
+});
+
+// ─── Location review: "Add Location" modal submission ────────────────────────
+app.view(/^location_add_submit_/, async ({ ack, view }) => {
+  await ack();
+  const sessionId = view.callback_id.replace('location_add_submit_', '');
+  const session = _locationSessions.get(sessionId);
+  if (!session) {
+    console.warn(`[location] add submit: no session for ${sessionId}`);
+    return;
+  }
+
+  const vals = view.state.values;
+  const newLoc = {
+    _source: 'manual',
+    _name: vals.loc_name.name_input.value.trim(),
+    address: (vals.loc_street.street_input.value || '').trim(),
+    city: (vals.loc_city.city_input.value || '').trim(),
+    state: (vals.loc_state.state_input.value || '').toUpperCase().trim(),
+    zip: (vals.loc_zip.zip_input.value || '').trim(),
+    npi: '',
+    phone: '',
+  };
+
+  session.addedLocations.push(newLoc);
+
+  // Update the original message to show the added location
+  const allLocations = [...session.locations, ...session.addedLocations];
+  const updatedBlocks = buildLocationReviewBlocks({
+    sessionId,
+    dealId: session.dealId,
+    companyId: session.companyId,
+    companyName: session.companyName,
+    legalBusinessName: session.legalBusinessName,
+    locations: allLocations,
+    siteCount: allLocations.length,
+  });
+
+  await app.client.chat.update({
+    channel: session.channel,
+    ts: session.ts,
+    text: `Location review: ${session.companyName}`,
+    blocks: updatedBlocks,
+  }).catch((err) => console.error(`[location] chat.update after add: ${err.message}`));
+});
+
+// ─── Location review: "Going Live" modal submission ──────────────────────────
+app.view(/^location_going_live_submit_/, async ({ ack, view }) => {
+  await ack();
+  const sessionId = view.callback_id.replace('location_going_live_submit_', '');
+  const session = _locationSessions.get(sessionId);
+  if (!session) {
+    console.warn(`[location] going-live submit: no session for ${sessionId}`);
+    return;
+  }
+
+  // Collect all selected indices from all checkbox groups
+  const goingLiveIndices = new Set();
+  const vals = view.state.values;
+  for (const blockId of Object.keys(vals)) {
+    if (!blockId.startsWith('going_live_group_')) continue;
+    const actionId = Object.keys(vals[blockId])[0];
+    const selected = vals[blockId][actionId].selected_options || [];
+    selected.forEach((opt) => goingLiveIndices.add(parseInt(opt.value, 10)));
+  }
+
+  const allLocations = [...session.locations, ...session.addedLocations];
+  const goingLiveCount = goingLiveIndices.size;
+  const totalCount = allLocations.length;
+
+  console.log(
+    `[location] creating ${totalCount} locations for deal ${session.dealId} ` +
+    `(${goingLiveCount} going live, ${totalCount - goingLiveCount} prospect)`
+  );
+
+  // Create HubSpot Location records
+  let created = 0;
+  let errors = 0;
+  for (let i = 0; i < allLocations.length; i++) {
+    const loc = allLocations[i];
+    const isGoingLive = goingLiveIndices.has(i);
+
+    const name = loc._name
+      || `${loc.city || 'Site'}, ${loc.state || ''}`.trim()
+      || `Location ${i + 1}`;
+
+    const properties = {
+      name,
+      npi: loc.npi || '',
+      phone: loc.phone || '',
+      address: [loc.address, loc.city, loc.state, loc.zip].filter(Boolean).join(', '),
+      onboarding_status: isGoingLive ? 'Onboarding' : 'Prospect',
+    };
+
+    try {
+      const result = await createLocation(properties);
+      const locationId = result.id;
+
+      // Associate to Company (always)
+      await associateLocationToCompany(locationId, session.companyId);
+
+      // Associate to Deal (going live only)
+      if (isGoingLive && session.dealId) {
+        await associateLocationToDeal(locationId, session.dealId);
+      }
+
+      created++;
+      console.log(`[location] created ${locationId} "${name}" goingLive=${isGoingLive}`);
+    } catch (err) {
+      errors++;
+      console.error(`[location] failed to create "${name}": ${err.message}`);
+    }
+  }
+
+  // Update Slack message to confirmation
+  const confirmBlocks = buildLocationConfirmedBlocks({
+    companyName: session.companyName,
+    totalCount,
+    goingLiveCount,
+    notGoingLiveCount: totalCount - goingLiveCount,
+  });
+
+  await app.client.chat.update({
+    channel: session.channel,
+    ts: session.ts,
+    text: `Locations created for ${session.companyName}`,
+    blocks: confirmBlocks,
+  }).catch((err) => console.error(`[location] chat.update confirmation: ${err.message}`));
+
+  if (errors > 0) {
+    await app.client.chat.postMessage({
+      channel: session.channel,
+      text: `Warning: ${errors} of ${totalCount} locations failed to create. Check HubSpot and retry if needed.`,
+    }).catch((err) => console.error(`[location] error notification: ${err.message}`));
+  }
+
+  // Clean up session
+  _locationSessions.delete(sessionId);
+});
+
+// ─── Location review processor ───────────────────────────────────────────────
+async function processLocationReview({
+  dealId, companyId, companyName, legalBusinessName, siteCount,
+  locationsJson, executionSummary, dealOwnerId,
+}) {
+  // 1. Parse locations
+  let locations = [];
+  try { locations = JSON.parse(locationsJson || '[]'); } catch {}
+
+  if (locations.length === 0) {
+    console.warn(`[location-review] dealId ${dealId}: no locations — skipping`);
+    return;
+  }
+
+  // 2. Resolve CS rep Slack ID from deal owner
+  // TODO: Remove TEST_OVERRIDE_EMAIL before go-live
+  const TEST_OVERRIDE_EMAIL = process.env.TEST_OVERRIDE_EMAIL || '';
+  let ownerEmail = null;
+  if (!TEST_OVERRIDE_EMAIL && dealOwnerId) {
+    const owner = await getOwnerById(dealOwnerId);
+    ownerEmail = owner?.email || null;
+  }
+  const targetEmail = TEST_OVERRIDE_EMAIL || ownerEmail || CS_FALLBACK_EMAIL;
+  if (!targetEmail) {
+    console.error(`[location-review] dealId ${dealId}: no owner email and no CS_FALLBACK_EMAIL`);
+    return;
+  }
+
+  // 3. Fetch company name if not provided
+  if (companyId && !companyName) {
+    try {
+      const co = await getCompany(companyId);
+      companyName = co.name || legalBusinessName || '';
+    } catch {}
+  }
+  companyName = companyName || legalBusinessName || '(unknown)';
+
+  // 4. Normalize locations with display names
+  const normalizedLocations = locations.map((loc, i) => ({
+    ...loc,
+    _source: 'nppes',
+    _name: loc.city && loc.state
+      ? `${loc.city}, ${loc.state} ${loc.zip || ''}`.trim()
+      : `Location ${i + 1}`,
+  }));
+
+  // 5. Build and send Slack DM
+  const sessionId = `loc_${dealId}_${Date.now()}`;
+  const blocks = buildLocationReviewBlocks({
+    sessionId,
+    dealId,
+    companyId,
+    companyName,
+    legalBusinessName: legalBusinessName || companyName,
+    locations: normalizedLocations,
+    siteCount: siteCount || normalizedLocations.length,
+  });
+
+  try {
+    const dmResult = await sendLocationReviewDM(app, {
+      targetEmail,
+      blocks,
+      sessionId,
+      companyName,
+    });
+
+    // 6. Store session
+    _locationSessions.set(sessionId, {
+      dealId,
+      companyId,
+      companyName,
+      legalBusinessName: legalBusinessName || companyName,
+      locations: normalizedLocations,
+      addedLocations: [],
+      channel: dmResult.channel,
+      ts: dmResult.ts,
+      repEmail: targetEmail,
+      repSlackId: dmResult.userId,
+      createdAt: Date.now(),
+    });
+
+    // Auto-expire session after 24 hours
+    setTimeout(() => _locationSessions.delete(sessionId), SESSION_TTL_MS);
+
+    console.log(
+      `[location-review] DM sent for deal ${dealId} to ${targetEmail} — ` +
+      `session=${sessionId} locations=${normalizedLocations.length}`
+    );
+  } catch (err) {
+    console.error(`[location-review] sendDM for deal ${dealId}: ${err.message}`);
+  }
+}
 
 // ─── Core meeting processor ───────────────────────────────────────────────────
 /**
@@ -581,6 +847,41 @@ receiver.router.post('/webhook/meeting-created', async (req, res) => {
   );
 });
 
+// ─── Location review webhook ─────────────────────────────────────────────────
+receiver.router.post('/webhook/location-review', async (req, res) => {
+  res.status(200).json({ ok: true });
+
+  const {
+    dealId,
+    companyId,
+    companyName,
+    legalBusinessName,
+    siteCount,
+    locationsJson,
+    executionSummary,
+    dealOwnerId,
+  } = req.body || {};
+
+  if (!dealId) {
+    console.warn('[location-review] no dealId — ignored');
+    return;
+  }
+
+  if (isLocationReviewDuplicate(dealId)) {
+    console.log(`[location-review] duplicate dealId ${dealId} within ${LOCATION_REVIEW_WINDOW_MS / 60000} min — skipped`);
+    return;
+  }
+  markLocationReviewSeen(dealId);
+
+  console.log(`[location-review] received deal ${dealId} — ${siteCount || '?'} sites, summary: ${(executionSummary || '').slice(0, 100)}`);
+  processLocationReview({
+    dealId, companyId, companyName, legalBusinessName, siteCount,
+    locationsJson, executionSummary, dealOwnerId,
+  }).catch((err) =>
+    console.error(`[location-review] processLocationReview ${dealId}: ${err.message}`, err)
+  );
+});
+
 // ─── Health check ────────────────────────────────────────────────────────────
 receiver.router.get('/health', (_req, res) => {
   res.json({
@@ -599,6 +900,7 @@ receiver.router.get('/health', (_req, res) => {
       autoSet: messageLog.getAutoSet().length,
     },
     adminResolved: !!_adminSlackId,
+    locationReviewSessions: _locationSessions.size,
   });
 });
 

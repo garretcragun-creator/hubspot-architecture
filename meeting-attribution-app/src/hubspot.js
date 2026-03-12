@@ -388,6 +388,50 @@ async function getNewMeetings(sinceMs) {
   }));
 }
 
+// ─── Location custom object ─────────────────────────────────────────────────
+const LOCATION_OBJECT_TYPE = process.env.HUBSPOT_LOCATION_OBJECT_TYPE || '2-56022093';
+const LOCATION_TO_COMPANY_ASSOC_TYPE = parseInt(process.env.LOCATION_TO_COMPANY_ASSOC_TYPE || '156', 10);
+const LOCATION_TO_DEAL_ASSOC_TYPE = parseInt(process.env.LOCATION_TO_DEAL_ASSOC_TYPE || '160', 10);
+
+/**
+ * Create a single Location record.
+ * @param {object} properties - { name, address, phone, npi, onboarding_status, ... }
+ * @returns {Promise<object>} - { id, properties, ... }
+ */
+async function createLocation(properties) {
+  return request('POST', `/crm/v3/objects/${LOCATION_OBJECT_TYPE}`, { properties });
+}
+
+/**
+ * Create a labeled association between two objects (v4 API).
+ * @param {string} fromObjectType
+ * @param {string} fromObjectId
+ * @param {string} toObjectType
+ * @param {string} toObjectId
+ * @param {number} associationTypeId - the labeled association type ID
+ */
+async function createAssociation(fromObjectType, fromObjectId, toObjectType, toObjectId, associationTypeId) {
+  return request(
+    'PUT',
+    `/crm/v4/objects/${fromObjectType}/${fromObjectId}/associations/${toObjectType}/${toObjectId}`,
+    [{ associationCategory: 'USER_DEFINED', associationTypeId }]
+  );
+}
+
+/**
+ * Associate a Location to a Company using the configured association type.
+ */
+async function associateLocationToCompany(locationId, companyId) {
+  return createAssociation(LOCATION_OBJECT_TYPE, locationId, 'companies', companyId, LOCATION_TO_COMPANY_ASSOC_TYPE);
+}
+
+/**
+ * Associate a Location to a Deal using the configured association type.
+ */
+async function associateLocationToDeal(locationId, dealId) {
+  return createAssociation(LOCATION_OBJECT_TYPE, locationId, 'deals', dealId, LOCATION_TO_DEAL_ASSOC_TYPE);
+}
+
 module.exports = {
   getContact,
   getCompany,
@@ -401,4 +445,9 @@ module.exports = {
   getRecentOutboundActivity,
   getHapilyRegistrants,
   getNewMeetings,
+  createLocation,
+  createAssociation,
+  associateLocationToCompany,
+  associateLocationToDeal,
+  LOCATION_OBJECT_TYPE,
 };

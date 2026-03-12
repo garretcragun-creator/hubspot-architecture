@@ -648,6 +648,342 @@ function registerAppHome(app, { getEntries, getAdminSlackId }) {
   });
 }
 
+// ─── Location Review Block Kit builders ─────────────────────────────────────
+
+// Action IDs for the location review flow
+const ACTION_LOCATION_ADD = 'location_add_open';
+const ACTION_LOCATION_GOING_LIVE = 'location_going_live_open';
+
+const HUBSPOT_PORTAL_ID = process.env.HUBSPOT_PORTAL_ID || '3975853';
+
+/**
+ * Format a phone number for display (basic: add dashes if 10 digits).
+ */
+function _formatPhone(phone) {
+  if (!phone) return '--';
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length === 10) return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  return phone;
+}
+
+/**
+ * Build Block Kit blocks for the location review DM.
+ *
+ * @param {object} opts
+ * @param {string}   opts.sessionId
+ * @param {string}   opts.dealId
+ * @param {string}   opts.companyId
+ * @param {string}   opts.companyName
+ * @param {string}   opts.legalBusinessName
+ * @param {object[]} opts.locations - array of { npi, address, city, state, zip, phone, _name, _source }
+ * @param {number}   opts.siteCount
+ */
+function buildLocationReviewBlocks({
+  sessionId, dealId, companyId, companyName,
+  legalBusinessName, locations, siteCount,
+}) {
+  const blocks = [];
+
+  // Header
+  blocks.push({
+    type: 'header',
+    text: {
+      type: 'plain_text',
+      text: `Location Review: ${companyName || '(unknown)'}`,
+      emoji: false,
+    },
+  });
+
+  // Context: company + deal links
+  const contextLines = [
+    `*Legal Name:* ${legalBusinessName || '(unknown)'}`,
+    `*Sites Found:* ${siteCount}`,
+  ];
+  if (companyId && HUBSPOT_PORTAL_ID) {
+    contextLines.push(`*Company:* <https://app.hubspot.com/contacts/${HUBSPOT_PORTAL_ID}/company/${companyId}|View in HubSpot>`);
+  }
+  if (dealId && HUBSPOT_PORTAL_ID) {
+    contextLines.push(`*Deal:* <https://app.hubspot.com/contacts/${HUBSPOT_PORTAL_ID}/deal/${dealId}|View Deal>`);
+  }
+  blocks.push({
+    type: 'section',
+    text: { type: 'mrkdwn', text: contextLines.join('\n') },
+  });
+
+  blocks.push({ type: 'divider' });
+
+  // Location rows — batch 5 per section block (stays within 3000-char limit)
+  const BATCH_SIZE = 5;
+  for (let i = 0; i < locations.length; i += BATCH_SIZE) {
+    const batch = locations.slice(i, i + BATCH_SIZE);
+    const text = batch.map((loc, j) => {
+      const idx = i + j + 1;
+      const phone = _formatPhone(loc.phone);
+      const sourceTag = loc._source === 'manual' ? '  _(added)_' : '';
+      const name = loc._name || `${loc.city || 'Site'}, ${loc.state || ''}`.trim() || `Location ${idx}`;
+      return `*${idx}. ${name}*${sourceTag}\n      ${loc.address || '--'}, ${loc.city || ''}, ${loc.state || ''} ${loc.zip || ''}\n      NPI: \`${loc.npi || '--'}\`  |  Phone: ${phone}`;
+    }).join('\n\n');
+
+    blocks.push({
+      type: 'section',
+      text: { type: 'mrkdwn', text },
+    });
+  }
+
+  blocks.push({ type: 'divider' });
+
+  // Action buttons
+  blocks.push({
+    type: 'actions',
+    block_id: `locrev_${sessionId}`,
+    elements: [
+      {
+        type: 'button',
+        text: { type: 'plain_text', text: 'Add Location', emoji: false },
+        action_id: ACTION_LOCATION_ADD,
+        value: sessionId,
+      },
+      {
+        type: 'button',
+        text: { type: 'plain_text', text: 'Select Going Live', emoji: false },
+        action_id: ACTION_LOCATION_GOING_LIVE,
+        value: sessionId,
+        style: 'primary',
+      },
+    ],
+  });
+
+  // Footer instructions
+  blocks.push({
+    type: 'context',
+    elements: [{
+      type: 'mrkdwn',
+      text: '_Add any missing locations first, then select which are going live._',
+    }],
+  });
+
+  return blocks;
+}
+
+/**
+ * Build the "Add Location" modal view.
+ */
+function buildAddLocationModal(sessionId) {
+  return {
+    type: 'modal',
+    callback_id: `location_add_submit_${sessionId}`,
+    title: { type: 'plain_text', text: 'Add Location' },
+    submit: { type: 'plain_text', text: 'Add' },
+    close: { type: 'plain_text', text: 'Cancel' },
+    blocks: [
+      {
+        type: 'input',
+        block_id: 'loc_name',
+        label: { type: 'plain_text', text: 'Location Name' },
+        element: {
+          type: 'plain_text_input',
+          action_id: 'name_input',
+          placeholder: { type: 'plain_text', text: 'e.g. Downtown Clinic' },
+        },
+      },
+      {
+        type: 'input',
+        block_id: 'loc_street',
+        label: { type: 'plain_text', text: 'Street Address' },
+        element: {
+          type: 'plain_text_input',
+          action_id: 'street_input',
+          placeholder: { type: 'plain_text', text: '123 Main St' },
+        },
+      },
+      {
+        type: 'input',
+        block_id: 'loc_city',
+        label: { type: 'plain_text', text: 'City' },
+        element: {
+          type: 'plain_text_input',
+          action_id: 'city_input',
+        },
+      },
+      {
+        type: 'input',
+        block_id: 'loc_state',
+        label: { type: 'plain_text', text: 'State (2-letter code)' },
+        element: {
+          type: 'plain_text_input',
+          action_id: 'state_input',
+          placeholder: { type: 'plain_text', text: 'AZ' },
+          max_length: 2,
+        },
+      },
+      {
+        type: 'input',
+        block_id: 'loc_zip',
+        label: { type: 'plain_text', text: 'ZIP Code' },
+        element: {
+          type: 'plain_text_input',
+          action_id: 'zip_input',
+          placeholder: { type: 'plain_text', text: '85001' },
+          max_length: 10,
+        },
+      },
+    ],
+  };
+}
+
+/**
+ * Build the "Going Live" selection modal with checkbox groups.
+ * Slack limits: 10 options per checkbox group.
+ *
+ * @param {string} sessionId
+ * @param {object[]} allLocations - merged NPPES + manually-added locations
+ */
+function buildGoingLiveModal(sessionId, allLocations) {
+  const blocks = [];
+  const GROUP_SIZE = 10;
+
+  for (let g = 0; g < allLocations.length; g += GROUP_SIZE) {
+    const group = allLocations.slice(g, g + GROUP_SIZE);
+    const options = group.map((loc, j) => {
+      const idx = g + j;
+      const displayName = loc._name
+        || `${loc.address || ''}, ${loc.city || ''}, ${loc.state || ''}`.trim()
+        || `Location ${idx + 1}`;
+      const desc = loc.npi
+        ? `NPI: ${loc.npi}`
+        : (loc._source === 'manual' ? 'Manually added' : 'No NPI');
+      return {
+        text: { type: 'plain_text', text: displayName.slice(0, 75) },
+        description: { type: 'plain_text', text: desc.slice(0, 75) },
+        value: String(idx),
+      };
+    });
+
+    blocks.push({
+      type: 'input',
+      block_id: `going_live_group_${g}`,
+      optional: true,
+      label: {
+        type: 'plain_text',
+        text: g === 0 ? 'Select locations going live:' : `Locations ${g + 1}\u2013${g + group.length}:`,
+      },
+      element: {
+        type: 'checkboxes',
+        action_id: `going_live_check_${g}`,
+        options,
+      },
+    });
+  }
+
+  return {
+    type: 'modal',
+    callback_id: `location_going_live_submit_${sessionId}`,
+    title: { type: 'plain_text', text: 'Going Live Selection' },
+    submit: { type: 'plain_text', text: 'Create Locations' },
+    close: { type: 'plain_text', text: 'Cancel' },
+    blocks,
+  };
+}
+
+/**
+ * Build confirmation blocks after Location records are created.
+ */
+function buildLocationConfirmedBlocks({ companyName, totalCount, goingLiveCount, notGoingLiveCount }) {
+  return [
+    {
+      type: 'section',
+      text: {
+        type: 'mrkdwn',
+        text: `:white_check_mark: *Locations created for ${companyName}*\n\n*Total:* ${totalCount}  |  *Going Live:* ${goingLiveCount}  |  *Company Only:* ${notGoingLiveCount}`,
+      },
+    },
+    {
+      type: 'context',
+      elements: [{
+        type: 'mrkdwn',
+        text: `_Created <!date^${Math.floor(Date.now() / 1000)}^{date_short_pretty} at {time}|${new Date().toISOString()}>_`,
+      }],
+    },
+  ];
+}
+
+/**
+ * Send the location review DM to a CS rep (by email).
+ * Falls back to CS_FALLBACK_EMAIL if primary email lookup fails.
+ *
+ * @param {object} app - Bolt App instance
+ * @param {object} opts
+ * @param {string} opts.targetEmail
+ * @param {object[]} opts.blocks
+ * @param {string} opts.sessionId
+ * @param {string} opts.companyName - for fallback text
+ * @returns {{ ok, ts, channel, userId }}
+ */
+async function sendLocationReviewDM(app, { targetEmail, blocks, sessionId, companyName }) {
+  let userId;
+  try {
+    const res = await app.client.users.lookupByEmail({ email: targetEmail });
+    userId = res.user?.id;
+  } catch (err) {
+    throw new Error(`Cannot look up Slack user for email "${targetEmail}": ${err.message}`);
+  }
+  if (!userId) throw new Error(`No Slack user found for email "${targetEmail}"`);
+
+  const openRes = await app.client.conversations.open({ users: userId });
+  const channel = openRes.channel?.id;
+  if (!channel) throw new Error(`Could not open DM channel with ${userId}`);
+
+  const postRes = await app.client.chat.postMessage({
+    channel,
+    text: `Location review for ${companyName || 'new customer'}`,
+    blocks,
+  });
+
+  return { ok: postRes.ok, ts: postRes.ts, channel, userId };
+}
+
+/**
+ * Register Bolt action handlers for the location review flow.
+ * Button clicks open modals; modal submissions are handled in index.js
+ * via app.view() regex because they need access to the session store.
+ *
+ * @param {object} app
+ * @param {object} opts
+ * @param {Function} opts.getSession - (sessionId) => session object or null
+ */
+function registerLocationActionHandlers(app, { getSession }) {
+  // "Add Location" button → open modal
+  app.action(ACTION_LOCATION_ADD, async ({ ack, body, client }) => {
+    await ack();
+    const sessionId = body.actions[0].value;
+    const session = getSession(sessionId);
+    if (!session) {
+      console.warn(`[slack] location_add_open: no session for ${sessionId}`);
+      return;
+    }
+    await client.views.open({
+      trigger_id: body.trigger_id,
+      view: buildAddLocationModal(sessionId),
+    });
+  });
+
+  // "Select Going Live" button → open modal
+  app.action(ACTION_LOCATION_GOING_LIVE, async ({ ack, body, client }) => {
+    await ack();
+    const sessionId = body.actions[0].value;
+    const session = getSession(sessionId);
+    if (!session) {
+      console.warn(`[slack] location_going_live_open: no session for ${sessionId}`);
+      return;
+    }
+    const allLocations = [...session.locations, ...session.addedLocations];
+    await client.views.open({
+      trigger_id: body.trigger_id,
+      view: buildGoingLiveModal(sessionId, allLocations),
+    });
+  });
+}
+
 module.exports = {
   // Attribution (source) flow
   buildAttributionBlocks,
@@ -669,4 +1005,12 @@ module.exports = {
   // App Home
   buildAppHomeBlocks,
   registerAppHome,
+
+  // Location review flow
+  buildLocationReviewBlocks,
+  buildAddLocationModal,
+  buildGoingLiveModal,
+  buildLocationConfirmedBlocks,
+  sendLocationReviewDM,
+  registerLocationActionHandlers,
 };

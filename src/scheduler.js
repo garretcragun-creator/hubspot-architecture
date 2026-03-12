@@ -8,6 +8,7 @@
  */
 
 const { patchMeeting, patchCompany } = require('./hubspot');
+const { toHubSpotSource } = require('./inference');
 
 // Map of meetingId → { timer, meetingId, companyId, inferredSource, fallbackFn }
 const _jobs = new Map();
@@ -72,15 +73,18 @@ async function runFallback({ meetingId, companyId, inferredSource, onFallback })
     `[scheduler] fallback firing for meeting ${meetingId} — setting source to "${inferredSource}"`
   );
 
+  // Translate canonical app source → HubSpot enum value
+  const hsSource = toHubSpotSource(inferredSource);
+
   const patches = [
-    patchMeeting(meetingId, { meeting_source: inferredSource }),
+    patchMeeting(meetingId, { meeting_source: hsSource }),
   ];
 
   if (companyId) {
     patches.push(
       patchCompany(companyId, {
-        stat_latest_source: inferredSource,
-        discovery_source: inferredSource,
+        stat_latest_source: hsSource,
+        discovery_source: hsSource,
       })
     );
   }

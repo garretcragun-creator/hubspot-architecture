@@ -65,6 +65,47 @@ const CANONICAL_SOURCES = [
 
 const CANONICAL_SET = new Set(CANONICAL_SOURCES);
 
+// ─── App canonical → HubSpot meeting_source enum mapping ─────────────────────
+// The HubSpot `meeting_source` property uses a different vocabulary.
+// Any canonical value NOT listed here passes through unchanged (assumed to
+// already match a HubSpot option).
+const SOURCE_TO_HUBSPOT = {
+  // Exact matches (no mapping needed — listed for visibility)
+  'Paid Search':      'Paid Search',
+  'Paid Social':      'Paid Social',
+  'Organic Search':   'Organic Search',
+  'Partner':          'Partner',
+  // Renames
+  'Sponsored Event':   'Conference',
+  'Sponsored Webinar': 'Webinar',
+  'Hosted Webinar':    'Webinar',
+  'Hosted Event':      'Conference',
+  'Organic Social':    'Social Media',
+  'Email':             'Email Campaign',
+  'Sponsored Email':   'Email Campaign',
+  'Display':           'Digital Marketing',
+  'Retargeting':       'Digital Marketing',
+  'Paid Review':       'Digital Marketing',
+  'Prospecting':       'Cold Call',
+  'LLMs':              'Other',
+  'Press Release':     'Other',
+  'Web Link':          'Other',
+  'Direct':            'Other',
+  'Integration':       'Other',
+  'List Import':       'Other',
+  'Meeting Attendee':  'Other',
+  'Referral':          'Other',
+  'Affiliate':         'Other',
+};
+
+/**
+ * Translate a canonical app source to the HubSpot enum value.
+ * Falls back to the original value if no mapping exists.
+ */
+function toHubSpotSource(canonical) {
+  return SOURCE_TO_HUBSPOT[canonical] || canonical;
+}
+
 // ─── Meeting booking UTM → canonical (meeting_info group, NOT attribution_properties)
 function mapMeetingBooked(medium, source) {
   const m = (medium || '').toLowerCase();
@@ -371,4 +412,4 @@ function inferSource(
   };
 }
 
-module.exports = { inferSource, CANONICAL_SOURCES };
+module.exports = { inferSource, CANONICAL_SOURCES, toHubSpotSource };

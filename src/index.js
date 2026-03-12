@@ -33,7 +33,7 @@ const {
 
 const { getCallsInWindow, inferMeetingHeld } = require('./gong');
 
-const { inferSource } = require('./inference');
+const { inferSource, toHubSpotSource } = require('./inference');
 const { scheduleJob, markResponded, pendingCount, schedulePostMeetingJob, markPostMeetingResponded, pendingPostCount } = require('./scheduler');
 const messageLog = require('./message-log');
 const {
@@ -127,15 +127,18 @@ async function handleRepAction({ meetingId, companyId, chosenSource, body }) {
     `[index] rep action for meeting ${meetingId}: source="${chosenSource}" channel=${channel} ts=${ts}`
   );
 
+  // Translate canonical app source → HubSpot enum value
+  const hsSource = toHubSpotSource(chosenSource);
+
   // Patch HubSpot — don't swallow errors so we can detect failures
   const patches = [
-    patchMeeting(meetingId, { meeting_source: chosenSource }),
+    patchMeeting(meetingId, { meeting_source: hsSource }),
   ];
   if (companyId) {
     patches.push(
       patchCompany(companyId, {
-        stat_latest_source: chosenSource,
-        discovery_source: chosenSource,
+        stat_latest_source: hsSource,
+        discovery_source: hsSource,
       })
     );
   }

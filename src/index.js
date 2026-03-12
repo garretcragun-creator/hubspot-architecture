@@ -34,7 +34,7 @@ const {
 const { getCallsInWindow, inferMeetingHeld } = require('./gong');
 
 const { inferSource } = require('./inference');
-const { scheduleJob, markResponded, schedulePostMeetingJob, markPostMeetingResponded } = require('./scheduler');
+const { scheduleJob, markResponded, pendingCount, schedulePostMeetingJob, markPostMeetingResponded, pendingPostCount } = require('./scheduler');
 const messageLog = require('./message-log');
 const {
   buildAttributionBlocks,
@@ -127,33 +127,47 @@ async function handleRepAction({ meetingId, companyId, chosenSource, body }) {
     `[index] rep action for meeting ${meetingId}: source="${chosenSource}" channel=${channel} ts=${ts}`
   );
 
-  // Patch HubSpot
+  // Patch HubSpot — don't swallow errors so we can detect failures
   const patches = [
-    patchMeeting(meetingId, { meeting_source: chosenSource }).catch((err) =>
-      console.error(`[index] patchMeeting ${meetingId}: ${err.message}`)
-    ),
+    patchMeeting(meetingId, { meeting_source: chosenSource }),
   ];
   if (companyId) {
     patches.push(
       patchCompany(companyId, {
         stat_latest_source: chosenSource,
         discovery_source: chosenSource,
-      }).catch((err) =>
-        console.error(`[index] patchCompany ${companyId}: ${err.message}`)
-      )
+      })
     );
   }
-  await Promise.allSettled(patches);
 
-  // Update Slack message
+  const results = await Promise.allSettled(patches);
+  const meetingPatchOk = results[0].status === 'fulfilled';
+
+  for (const r of results) {
+    if (r.status === 'rejected') {
+      console.error(`[index] HubSpot patch failed: ${r.reason?.message || r.reason}`);
+    }
+  }
+
+  // Update Slack message — show failure if meeting patch failed
   if (channel && ts) {
-    await updateAttributionMessage(app, {
-      channel,
-      ts,
-      meetingTitle,
-      source: chosenSource,
-      setBy: 'rep',
-    }).catch((err) => console.error(`[index] updateAttributionMessage: ${err.message}`));
+    if (meetingPatchOk) {
+      await updateAttributionMessage(app, {
+        channel,
+        ts,
+        meetingTitle,
+        meetingId,
+        companyId,
+        source: chosenSource,
+        setBy: 'rep',
+      }).catch((err) => console.error(`[index] updateAttributionMessage: ${err.message}`));
+    } else {
+      // Patch failed — notify rep; original message stays interactive for retry
+      await app.client.chat.postMessage({
+        channel,
+        text: `Failed to save "${chosenSource}" to HubSpot for "${meetingTitle}". Please try again or update HubSpot manually.`,
+      }).catch((err) => console.error(`[index] error notification: ${err.message}`));
+    }
   }
 }
 
@@ -177,19 +191,30 @@ async function handleOutcomeAction({ meetingId, chosenOutcome, body }) {
     `[index] outcome action for meeting ${meetingId}: outcome="${chosenOutcome}" channel=${channel} ts=${ts}`
   );
 
-  // Patch hs_meeting_outcome in HubSpot
-  await patchMeetingOutcome(meetingId, chosenOutcome).catch((err) =>
-    console.error(`[index] patchMeetingOutcome ${meetingId}: ${err.message}`)
-  );
+  // Patch hs_meeting_outcome in HubSpot — don't swallow errors
+  let patchOk = false;
+  try {
+    await patchMeetingOutcome(meetingId, chosenOutcome);
+    patchOk = true;
+  } catch (err) {
+    console.error(`[index] patchMeetingOutcome ${meetingId}: ${err.message}`);
+  }
 
-  // Update Slack message to confirmed state
+  // Update Slack message — show failure if patch failed
   if (channel && ts) {
-    await app.client.chat.update({
-      channel,
-      ts,
-      text: `Meeting outcome recorded: ${chosenOutcome}`,
-      blocks: buildPostMeetingConfirmedBlocks({ meetingTitle, outcome: chosenOutcome, setBy: 'rep' }),
-    }).catch((err) => console.error(`[index] chat.update outcome: ${err.message}`));
+    if (patchOk) {
+      await app.client.chat.update({
+        channel,
+        ts,
+        text: `Meeting outcome recorded: ${chosenOutcome}`,
+        blocks: buildPostMeetingConfirmedBlocks({ meetingTitle, meetingId, outcome: chosenOutcome, setBy: 'rep' }),
+      }).catch((err) => console.error(`[index] chat.update outcome: ${err.message}`));
+    } else {
+      await app.client.chat.postMessage({
+        channel,
+        text: `Failed to save outcome "${chosenOutcome}" to HubSpot for "${meetingTitle}". Please try again or update HubSpot manually.`,
+      }).catch((err) => console.error(`[index] error notification: ${err.message}`));
+    }
   }
 }
 
@@ -296,6 +321,8 @@ async function processMeeting(meetingId) {
       meetingTime,
       reason,
       confidence,
+      companyName: company.name || '',
+      companyDomain: company.domain || '',
     });
 
     try {
@@ -358,20 +385,31 @@ async function processMeeting(meetingId) {
     meetingId,
     companyId,
     inferredSource,
-    onFallback: async ({ meetingId: mid, companyId: cid, inferredSource: src }) => {
+    onFallback: async ({ meetingId: mid, companyId: cid, inferredSource: src, patchOk }) => {
       messageLog.logAutoSet({ meetingId: mid, messageType: 'attribution', chosenValue: src });
 
       const ref = _msgStore.get(mid);
       if (ref?.channel && ref?.ts) {
-        await updateAttributionMessage(app, {
-          channel: ref.channel,
-          ts: ref.ts,
-          meetingTitle: ref.meetingTitle,
-          source: src,
-          setBy: 'auto',
-        }).catch((err) =>
-          console.error(`[scheduler/fallback] updateAttributionMessage: ${err.message}`)
-        );
+        if (patchOk) {
+          await updateAttributionMessage(app, {
+            channel: ref.channel,
+            ts: ref.ts,
+            meetingTitle: ref.meetingTitle,
+            meetingId: mid,
+            companyId: cid,
+            source: src,
+            setBy: 'auto',
+          }).catch((err) =>
+            console.error(`[scheduler/fallback] updateAttributionMessage: ${err.message}`)
+          );
+        } else {
+          await app.client.chat.postMessage({
+            channel: ref.channel,
+            text: `Failed to auto-set source "${src}" on HubSpot for "${ref.meetingTitle}". Please update manually.`,
+          }).catch((err) =>
+            console.error(`[scheduler/fallback] error notification: ${err.message}`)
+          );
+        }
       }
     },
   });
@@ -477,23 +515,33 @@ async function processPostMeeting({ meetingId, meetingTitle, meetingStartMs, mee
   schedulePostMeetingJob({
     meetingId,
     inferredOutcome,
-    onFallback: async ({ meetingId: mid, inferredOutcome: outcome }) => {
+    onFallback: async ({ meetingId: mid, inferredOutcome: outcome, patchOk }) => {
       messageLog.logAutoSet({ meetingId: mid, messageType: 'outcome', chosenValue: outcome });
 
       const ref = _postMsgStore.get(mid);
       if (ref?.channel && ref?.ts) {
-        await app.client.chat.update({
-          channel: ref.channel,
-          ts: ref.ts,
-          text: `Meeting outcome recorded: ${outcome}`,
-          blocks: buildPostMeetingConfirmedBlocks({
-            meetingTitle: ref.meetingTitle,
-            outcome,
-            setBy: 'auto',
-          }),
-        }).catch((err) =>
-          console.error(`[scheduler/post-fallback] chat.update for ${mid}: ${err.message}`)
-        );
+        if (patchOk) {
+          await app.client.chat.update({
+            channel: ref.channel,
+            ts: ref.ts,
+            text: `Meeting outcome recorded: ${outcome}`,
+            blocks: buildPostMeetingConfirmedBlocks({
+              meetingTitle: ref.meetingTitle,
+              meetingId: mid,
+              outcome,
+              setBy: 'auto',
+            }),
+          }).catch((err) =>
+            console.error(`[scheduler/post-fallback] chat.update for ${mid}: ${err.message}`)
+          );
+        } else {
+          await app.client.chat.postMessage({
+            channel: ref.channel,
+            text: `Failed to auto-set outcome "${outcome}" on HubSpot for "${ref.meetingTitle}". Please update manually.`,
+          }).catch((err) =>
+            console.error(`[scheduler/post-fallback] error notification: ${err.message}`)
+          );
+        }
       }
     },
   });
@@ -531,7 +579,23 @@ receiver.router.post('/webhook/meeting-created', async (req, res) => {
 
 // ─── Health check ────────────────────────────────────────────────────────────
 receiver.router.get('/health', (_req, res) => {
-  res.json({ ok: true, uptime: process.uptime() });
+  res.json({
+    ok: true,
+    uptime: process.uptime(),
+    poller: {
+      lastPollAt: new Date(_lastPolledMs).toISOString(),
+      intervalMs: POLL_INTERVAL_MS,
+    },
+    pendingJobs: pendingCount(),
+    pendingPostJobs: pendingPostCount(),
+    messageLog: {
+      total: messageLog.getAll().length,
+      pending: messageLog.getPending().length,
+      responded: messageLog.getResponded().length,
+      autoSet: messageLog.getAutoSet().length,
+    },
+    adminResolved: !!_adminSlackId,
+  });
 });
 
 // ─── Manual trigger (for testing) ────────────────────────────────────────────
@@ -597,6 +661,7 @@ receiver.router.post('/trigger', async (req, res) => {
     // ── 4. Attribution DM → override email ───────────────────────────────────
     const attrBlocks = buildAttributionBlocks({
       meetingId, companyId, inferredSource, meetingTitle, meetingTime, reason, confidence,
+      companyName: company.name || '', companyDomain: company.domain || '',
     });
     try {
       const dmResult = await sendAttributionDM(app, { ownerEmail: slackEmail, blocks: attrBlocks });

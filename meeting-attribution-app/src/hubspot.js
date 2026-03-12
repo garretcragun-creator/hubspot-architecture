@@ -109,7 +109,7 @@ async function getContact(contactId) {
 }
 
 // ─── Companies ──────────────────────────────────────────────────────────────
-const COMPANY_PROPS = ['name'].join(',');
+const COMPANY_PROPS = ['name', 'domain'].join(',');
 
 async function getCompany(companyId) {
   const data = await request(

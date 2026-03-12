@@ -72,33 +72,32 @@ async function runFallback({ meetingId, companyId, inferredSource, onFallback })
     `[scheduler] fallback firing for meeting ${meetingId} — setting source to "${inferredSource}"`
   );
 
-  const patches = [];
+  const patches = [
+    patchMeeting(meetingId, { meeting_source: inferredSource }),
+  ];
 
-  // 1. Patch meeting_source
-  patches.push(
-    patchMeeting(meetingId, { meeting_source: inferredSource }).catch((err) =>
-      console.error(`[scheduler] patchMeeting ${meetingId}: ${err.message}`)
-    )
-  );
-
-  // 2. Patch company stat_latest_source + discovery_source (if we have a company)
   if (companyId) {
     patches.push(
       patchCompany(companyId, {
         stat_latest_source: inferredSource,
         discovery_source: inferredSource,
-      }).catch((err) =>
-        console.error(`[scheduler] patchCompany ${companyId}: ${err.message}`)
-      )
+      })
     );
   }
 
-  await Promise.allSettled(patches);
+  const results = await Promise.allSettled(patches);
+  const meetingPatchOk = results[0].status === 'fulfilled';
 
-  // 3. Notify caller (e.g. update the Slack message to show auto-set)
+  for (const r of results) {
+    if (r.status === 'rejected') {
+      console.error(`[scheduler] HubSpot patch failed: ${r.reason?.message || r.reason}`);
+    }
+  }
+
+  // Notify caller (e.g. update the Slack message to show auto-set)
   if (typeof onFallback === 'function') {
     try {
-      await onFallback({ meetingId, companyId, inferredSource });
+      await onFallback({ meetingId, companyId, inferredSource, patchOk: meetingPatchOk });
     } catch (err) {
       console.error(`[scheduler] onFallback hook for meeting ${meetingId}: ${err.message}`);
     }
@@ -167,14 +166,18 @@ async function runPostFallback({ meetingId, inferredOutcome, onFallback }) {
 
   // Patch hs_meeting_outcome in HubSpot
   const { patchMeetingOutcome } = require('./hubspot');
-  await patchMeetingOutcome(meetingId, inferredOutcome).catch((err) =>
-    console.error(`[scheduler] patchMeetingOutcome ${meetingId}: ${err.message}`)
-  );
+  let patchOk = false;
+  try {
+    await patchMeetingOutcome(meetingId, inferredOutcome);
+    patchOk = true;
+  } catch (err) {
+    console.error(`[scheduler] patchMeetingOutcome ${meetingId}: ${err.message}`);
+  }
 
   // Notify caller (e.g. update the Slack message to show auto-set)
   if (typeof onFallback === 'function') {
     try {
-      await onFallback({ meetingId, inferredOutcome });
+      await onFallback({ meetingId, inferredOutcome, patchOk });
     } catch (err) {
       console.error(`[scheduler] post-meeting onFallback for meeting ${meetingId}: ${err.message}`);
     }

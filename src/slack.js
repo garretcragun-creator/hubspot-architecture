@@ -65,6 +65,8 @@ function buildAttributionBlocks({
   meetingTime,
   reason,
   confidence,
+  companyName,
+  companyDomain,
 }) {
   const meta = encodeMeta(meetingId, companyId, inferredSource);
 
@@ -77,12 +79,20 @@ function buildAttributionBlocks({
   const confLabel =
     confidence >= 70 ? 'high' : confidence >= 50 ? 'medium' : 'low';
 
+  // Build company line: "Acme Inc (acme.com)" or "Acme Inc" or omit entirely
+  let companyLine = '';
+  if (companyName && companyDomain) {
+    companyLine = `\n*Company:* ${companyName} (${companyDomain})`;
+  } else if (companyName) {
+    companyLine = `\n*Company:* ${companyName}`;
+  }
+
   return [
     {
       type: 'section',
       text: {
         type: 'mrkdwn',
-        text: `:tada: *Congrats on setting a disco call!*\n*Meeting:* ${meetingTitle || '(untitled)'}\n*When:* ${meetingTime || '(unknown)'}`,
+        text: `:tada: *Congrats on setting a disco call!*\n*Meeting:* ${meetingTitle || '(untitled)'}${companyLine}\n*When:* ${meetingTime || '(unknown)'}`,
       },
     },
     {
@@ -125,10 +135,11 @@ function buildAttributionBlocks({
 
 /**
  * Build "confirmed" blocks shown after rep (or fallback) has set the source.
+ * When setBy === 'auto', includes a dropdown so the rep can still override.
  */
-function buildConfirmedBlocks({ meetingTitle, source, setBy }) {
+function buildConfirmedBlocks({ meetingTitle, source, setBy, meetingId, companyId }) {
   const who = setBy === 'auto' ? 'Auto-set (no response in 1 h)' : 'Set by you';
-  return [
+  const blocks = [
     {
       type: 'section',
       text: {
@@ -137,6 +148,29 @@ function buildConfirmedBlocks({ meetingTitle, source, setBy }) {
       },
     },
   ];
+
+  // Keep an edit dropdown for auto-set so reps can still correct it
+  if (setBy === 'auto' && meetingId) {
+    const meta = encodeMeta(meetingId, companyId, source);
+    const options = CANONICAL_SOURCES.map((src) => ({
+      text: { type: 'plain_text', text: src, emoji: false },
+      value: src,
+    }));
+    blocks.push({
+      type: 'actions',
+      block_id: `meeting_${meta}`,
+      elements: [
+        {
+          type: 'static_select',
+          placeholder: { type: 'plain_text', text: 'Change source\u2026', emoji: false },
+          action_id: ACTION_SELECT_OTHER,
+          options,
+        },
+      ],
+    });
+  }
+
+  return blocks;
 }
 
 // ─── Post-meeting Block Kit builders ─────────────────────────────────────────
@@ -232,11 +266,12 @@ function buildPostMeetingBlocks({
 
 /**
  * Build "confirmed outcome" blocks shown after rep (or fallback) has set the outcome.
+ * When setBy === 'auto', includes a dropdown so the rep can still override.
  */
-function buildPostMeetingConfirmedBlocks({ meetingTitle, outcome, setBy }) {
+function buildPostMeetingConfirmedBlocks({ meetingTitle, meetingId, outcome, setBy }) {
   const label = OUTCOME_OPTIONS.find((o) => o.value === outcome)?.label || outcome;
   const who = setBy === 'auto' ? 'Auto-set (no response in 1 h)' : 'Set by you';
-  return [
+  const blocks = [
     {
       type: 'section',
       text: {
@@ -245,6 +280,29 @@ function buildPostMeetingConfirmedBlocks({ meetingTitle, outcome, setBy }) {
       },
     },
   ];
+
+  // Keep an edit dropdown for auto-set so reps can still correct it
+  if (setBy === 'auto' && meetingId) {
+    const meta = encodePmMeta(meetingId, outcome);
+    const options = OUTCOME_OPTIONS.map((o) => ({
+      text: { type: 'plain_text', text: o.label, emoji: false },
+      value: o.value,
+    }));
+    blocks.push({
+      type: 'actions',
+      block_id: `pm_${meta}`,
+      elements: [
+        {
+          type: 'static_select',
+          placeholder: { type: 'plain_text', text: 'Change outcome\u2026', emoji: false },
+          action_id: ACTION_OUTCOME_SELECT,
+          options,
+        },
+      ],
+    });
+  }
+
+  return blocks;
 }
 
 // ─── DM sender ───────────────────────────────────────────────────────────────
@@ -295,12 +353,12 @@ async function sendAttributionDM(app, { ownerEmail, blocks }) {
  * @param {string}   opts.source         - the final chosen/inferred source
  * @param {'rep'|'auto'} opts.setBy
  */
-async function updateAttributionMessage(app, { channel, ts, meetingTitle, source, setBy }) {
+async function updateAttributionMessage(app, { channel, ts, meetingTitle, meetingId, companyId, source, setBy }) {
   await app.client.chat.update({
     channel,
     ts,
     text: `Attribution recorded: ${source}`,
-    blocks: buildConfirmedBlocks({ meetingTitle, source, setBy }),
+    blocks: buildConfirmedBlocks({ meetingTitle, source, setBy, meetingId, companyId }),
   });
 }
 

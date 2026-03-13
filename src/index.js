@@ -239,17 +239,41 @@ registerAppHome(app, {
  * Fetch, infer, and dispatch a Slack DM for a single meeting.
  * Called both by the webhook handler and the built-in poller.
  */
-async function processMeeting(meetingId) {
+async function processMeeting(meetingId, _retryCount = 0) {
   // 1. Fetch meeting
   const meeting = await getMeeting(meetingId);
 
-  // Only process Discovery Calls
-  if (meeting.hs_activity_type !== 'Discovery Call') {
-    console.log(`[meeting] ${meetingId} skipped — type is "${meeting.hs_activity_type || 'unset'}"`);
+  const meetingTitle = meeting.hs_meeting_title || '(untitled)';
+  const isIntroMeeting = /\bintro(duction)?\b/i.test(meetingTitle);
+
+  // Process Discovery Calls + meetings whose title contains "Intro" / "Introduction"
+  if (meeting.hs_activity_type !== 'Discovery Call' && !isIntroMeeting) {
+    // Type is explicitly something else → skip permanently
+    if (meeting.hs_activity_type) {
+      console.log(`[meeting] ${meetingId} skipped — type "${meeting.hs_activity_type}", title "${meetingTitle}"`);
+      return;
+    }
+
+    // Type is unset — retry up to 3× (2 min apart) for HubSpot workflows to populate it
+    if (_retryCount < 3) {
+      markSeen(meetingId); // refresh idempotency window so poller/webhook dupes are blocked during retries
+      console.log(`[meeting] ${meetingId} type unset — retry ${_retryCount + 1}/3 in 120s`);
+      setTimeout(
+        () => processMeeting(meetingId, _retryCount + 1).catch((err) =>
+          console.error(`[meeting] retry for ${meetingId}: ${err.message}`, err)
+        ),
+        120_000
+      );
+      return;
+    }
+
+    console.log(`[meeting] ${meetingId} skipped — type still unset after 3 retries, title "${meetingTitle}"`);
     return;
   }
 
-  const meetingTitle = meeting.hs_meeting_title || '(untitled)';
+  if (isIntroMeeting && meeting.hs_activity_type !== 'Discovery Call') {
+    console.log(`[meeting] ${meetingId} proceeding — title "${meetingTitle}" matches intro pattern`);
+  }
   // HubSpot returns ISO 8601 strings for date properties (e.g. "2026-03-02T16:00:00Z")
   const meetingStartMs = meeting.hs_meeting_start_time
     ? new Date(meeting.hs_meeting_start_time).getTime()

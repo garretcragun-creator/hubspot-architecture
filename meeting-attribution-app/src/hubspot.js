@@ -307,7 +307,8 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
       });
       (batchData.results || []).forEach((r) => {
         const dir = (r.properties?.hs_call_direction || '').toUpperCase();
-        const ts = parseInt(r.properties?.hs_timestamp || '0', 10);
+        const rawTs = r.properties?.hs_timestamp;
+        const ts = rawTs ? new Date(rawTs).getTime() : 0;
         console.log(`[hubspot]   call ${r.id}: dir="${dir}" ts=${new Date(ts).toISOString()}`);
         if (dir === 'OUTBOUND' && ts >= cutoff && ts < beforeTimestampMs) {
           activities.push({ type: 'call', direction: 'OUTBOUND', timestampMs: ts });
@@ -336,7 +337,8 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
       });
       (batchData.results || []).forEach((r) => {
         const dir = (r.properties?.hs_email_direction || '').toUpperCase();
-        const ts = parseInt(r.properties?.hs_timestamp || '0', 10);
+        const rawTs = r.properties?.hs_timestamp;
+        const ts = rawTs ? new Date(rawTs).getTime() : 0;
         console.log(`[hubspot]   email ${r.id}: dir="${dir}" ts=${new Date(ts).toISOString()} subj="${(r.properties?.hs_email_subject || '').slice(0, 60)}"`);
         // HubSpot "EMAIL" direction = outbound from rep; exclude INCOMING_EMAIL
         if (

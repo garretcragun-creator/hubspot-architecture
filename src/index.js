@@ -459,6 +459,12 @@ async function processMeeting(meetingId, _retryCount = 0) {
  * @param {string}  opts.ownerEmail
  */
 async function processPostMeeting({ meetingId, meetingTitle, meetingStartMs, meetingEndMs, ownerEmail }) {
+  // Guard: don't push outcome if the meeting hasn't ended yet
+  if (meetingEndMs && meetingEndMs > Date.now()) {
+    console.log(`[post-meeting] ${meetingId} skipped — meeting end time is in the future (${new Date(meetingEndMs).toISOString()})`);
+    return;
+  }
+
   console.log(`[post-meeting] processing outcome for meeting ${meetingId}`);
 
   // 1. Build participant email list (owner + associated contacts) for Gong filtering
@@ -708,54 +714,58 @@ receiver.router.post('/trigger', async (req, res) => {
       console.error(`[trigger] attribution DM error: ${err.message}`);
     }
 
-    // ── 5. Post-meeting Gong check — run immediately (no processing delay) ────
-    console.log(`[trigger] running post-meeting Gong check immediately`);
+    // ── 5. Post-meeting Gong check — only if meeting has already ended ────
+    if (meetingEndMs && meetingEndMs > Date.now()) {
+      console.log(`[trigger] skipping outcome DM — meeting hasn't ended yet (ends ${new Date(meetingEndMs).toISOString()})`);
+    } else {
+      console.log(`[trigger] running post-meeting Gong check immediately`);
 
-    let participantEmails = [slackEmail];
-    try {
-      const contactEmails = await getMeetingContactEmails(meetingId);
-      participantEmails = [...new Set([...participantEmails, ...contactEmails])];
-    } catch (_) { /* non-fatal */ }
-    console.log(`[trigger] participant emails: ${participantEmails.join(', ')}`);
+      let participantEmails = [slackEmail];
+      try {
+        const contactEmails = await getMeetingContactEmails(meetingId);
+        participantEmails = [...new Set([...participantEmails, ...contactEmails])];
+      } catch (_) { /* non-fatal */ }
+      console.log(`[trigger] participant emails: ${participantEmails.join(', ')}`);
 
-    const windowStart = meetingStartMs || Date.now();
-    const windowEnd   = meetingEndMs   || Date.now();
-    const calls = await getCallsInWindow(windowStart, windowEnd, participantEmails).catch(() => []);
-    const { held, confidence: outConf, reason: outReason } = inferMeetingHeld(calls);
-    const inferredOutcome = held ? 'COMPLETED' : 'NO_SHOW';
-    console.log(`[trigger] inferred outcome: ${inferredOutcome} (${outConf}) — ${outReason}`);
+      const windowStart = meetingStartMs || Date.now();
+      const windowEnd   = meetingEndMs   || Date.now();
+      const calls = await getCallsInWindow(windowStart, windowEnd, participantEmails).catch(() => []);
+      const { held, confidence: outConf, reason: outReason } = inferMeetingHeld(calls);
+      const inferredOutcome = held ? 'COMPLETED' : 'NO_SHOW';
+      console.log(`[trigger] inferred outcome: ${inferredOutcome} (${outConf}) — ${outReason}`);
 
-    // ── 6. Outcome DM → override email ───────────────────────────────────────
-    const outBlocks = buildPostMeetingBlocks({
-      meetingId, meetingTitle, held, inferredOutcome, confidence: outConf, reason: outReason,
-    });
-    try {
-      const lookupRes = await app.client.users.lookupByEmail({ email: slackEmail });
-      const userId = lookupRes.user?.id;
-      if (userId) {
-        const openRes  = await app.client.conversations.open({ users: userId });
-        const dmChannel = openRes.channel?.id;
-        if (dmChannel) {
-          const postRes = await app.client.chat.postMessage({
-            channel: dmChannel,
-            text: `[TEST] Outcome check for: ${meetingTitle}`,
-            blocks: outBlocks,
-          });
-          _postMsgStore.set(meetingId, { channel: dmChannel, ts: postRes.ts, meetingTitle });
-          console.log(`[trigger] outcome DM sent → ${slackEmail}`);
+      // ── 6. Outcome DM → override email ───────────────────────────────────────
+      const outBlocks = buildPostMeetingBlocks({
+        meetingId, meetingTitle, held, inferredOutcome, confidence: outConf, reason: outReason,
+      });
+      try {
+        const lookupRes = await app.client.users.lookupByEmail({ email: slackEmail });
+        const userId = lookupRes.user?.id;
+        if (userId) {
+          const openRes  = await app.client.conversations.open({ users: userId });
+          const dmChannel = openRes.channel?.id;
+          if (dmChannel) {
+            const postRes = await app.client.chat.postMessage({
+              channel: dmChannel,
+              text: `[TEST] Outcome check for: ${meetingTitle}`,
+              blocks: outBlocks,
+            });
+            _postMsgStore.set(meetingId, { channel: dmChannel, ts: postRes.ts, meetingTitle });
+            console.log(`[trigger] outcome DM sent → ${slackEmail}`);
 
-          messageLog.logSent({
-            meetingId,
-            repEmail: slackEmail,
-            repSlackId: userId || null,
-            meetingTitle,
-            inferredSource: inferredOutcome,
-            messageType: 'outcome',
-          });
+            messageLog.logSent({
+              meetingId,
+              repEmail: slackEmail,
+              repSlackId: userId || null,
+              meetingTitle,
+              inferredSource: inferredOutcome,
+              messageType: 'outcome',
+            });
+          }
         }
+      } catch (err) {
+        console.error(`[trigger] outcome DM error: ${err.message}`);
       }
-    } catch (err) {
-      console.error(`[trigger] outcome DM error: ${err.message}`);
     }
   })().catch((err) => console.error(`[trigger] unhandled error: ${err.message}`, err));
 });

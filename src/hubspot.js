@@ -287,6 +287,8 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
   const cutoff = beforeTimestampMs - WINDOW_MS;
   const activities = [];
 
+  console.log(`[hubspot] getRecentOutboundActivity contact=${contactId} window=${new Date(cutoff).toISOString()} → ${new Date(beforeTimestampMs).toISOString()}`);
+
   // ── Outbound calls ────────────────────────────────────────────────────────
   try {
     // Step 1: get all call IDs associated with this contact
@@ -295,6 +297,7 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
       `/crm/v4/objects/contacts/${contactId}/associations/calls`
     );
     const callIds = (assocData.results || []).map((r) => String(r.toObjectId));
+    console.log(`[hubspot] contact ${contactId}: ${callIds.length} associated call(s)`);
 
     if (callIds.length > 0) {
       // Step 2: batch-read up to 50 calls, filter client-side
@@ -305,6 +308,7 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
       (batchData.results || []).forEach((r) => {
         const dir = (r.properties?.hs_call_direction || '').toUpperCase();
         const ts = parseInt(r.properties?.hs_timestamp || '0', 10);
+        console.log(`[hubspot]   call ${r.id}: dir="${dir}" ts=${new Date(ts).toISOString()}`);
         if (dir === 'OUTBOUND' && ts >= cutoff && ts < beforeTimestampMs) {
           activities.push({ type: 'call', direction: 'OUTBOUND', timestampMs: ts });
         }
@@ -322,6 +326,7 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
       `/crm/v4/objects/contacts/${contactId}/associations/emails`
     );
     const emailIds = (assocData.results || []).map((r) => String(r.toObjectId));
+    console.log(`[hubspot] contact ${contactId}: ${emailIds.length} associated email(s)`);
 
     if (emailIds.length > 0) {
       // Step 2: batch-read up to 50 emails, filter client-side
@@ -332,6 +337,7 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
       (batchData.results || []).forEach((r) => {
         const dir = (r.properties?.hs_email_direction || '').toUpperCase();
         const ts = parseInt(r.properties?.hs_timestamp || '0', 10);
+        console.log(`[hubspot]   email ${r.id}: dir="${dir}" ts=${new Date(ts).toISOString()} subj="${(r.properties?.hs_email_subject || '').slice(0, 60)}"`);
         // HubSpot "EMAIL" direction = outbound from rep; exclude INCOMING_EMAIL
         if (
           (dir === 'EMAIL' || dir === 'OUTBOUND' || dir === 'SENDING') &&
@@ -351,6 +357,7 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
     console.warn(`[hubspot] emails for contact ${contactId}: ${e.message}`);
   }
 
+  console.log(`[hubspot] contact ${contactId}: ${activities.length} qualifying outbound activities found`);
   return activities;
 }
 

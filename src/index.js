@@ -12,7 +12,7 @@
 require('dotenv').config();
 
 // VERSION TAG — used to confirm Railway is running the latest build
-console.log('[index] BUILD v4 — source mapping active');
+console.log('[index] BUILD v6 — bolt debug middleware active');
 
 const { App, ExpressReceiver } = require('@slack/bolt');
 
@@ -104,7 +104,16 @@ const app = new App({
 
 // Body parser for custom (non-Slack) routes — Bolt only handles Slack payloads
 const express = require('express');
-receiver.router.use(express.json());
+receiver.router.use(express.json({ limit: '5mb' }));
+
+// ─── Debug: log ALL incoming Bolt events ─────────────────────────────────────
+app.use(async ({ body, next }) => {
+  const type = body?.type || 'unknown';
+  const actionId = body?.actions?.[0]?.action_id || 'N/A';
+  const callbackId = body?.view?.callback_id || 'N/A';
+  console.log(`[bolt] event: type=${type} action_id=${actionId} callback_id=${callbackId}`);
+  await next();
+});
 
 // ─── Shared action handler ───────────────────────────────────────────────────
 /**
@@ -223,6 +232,57 @@ async function handleOutcomeAction({ meetingId, chosenOutcome, body }) {
 }
 
 registerPostMeetingActionHandlers(app, { onOutcome: handleOutcomeAction });
+
+// ─── Location agent forwarding ──────────────────────────────────────────────
+// Forward location review actions/views to the location-agent Railway service.
+// The location agent runs on a separate service but shares this Slack app.
+const LOCATION_AGENT_URL = process.env.LOCATION_AGENT_URL || '';
+
+function forwardToLocationAgent(path, body) {
+  if (!LOCATION_AGENT_URL) {
+    console.warn('[proxy] LOCATION_AGENT_URL not set — cannot forward');
+    return;
+  }
+  const url = new URL(path, LOCATION_AGENT_URL);
+  const data = JSON.stringify(body);
+
+  console.log(`[proxy] forwarding to ${url.href} (${data.length} bytes)`);
+  const mod = url.protocol === 'https:' ? require('https') : require('http');
+  const req = mod.request(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data) },
+    timeout: 30000,
+  }, (res) => {
+    res.resume(); // drain response
+    console.log(`[proxy] location agent ${path} returned ${res.statusCode}`);
+  });
+  req.on('error', (err) => console.error(`[proxy] forward to ${path}: ${err.message}`));
+  req.write(data);
+  req.end();
+}
+
+// Action forwarding
+const LOCATION_ACTION_IDS = ['review_locations', 'add_new_locations', 'skip_review', 'create_locations'];
+for (const actionId of LOCATION_ACTION_IDS) {
+  app.action(actionId, async ({ ack, body }) => {
+    await ack();
+    console.log(`[proxy] forwarding action ${actionId} to location agent`);
+    forwardToLocationAgent('/internal/action', body);
+  });
+}
+
+// Checkbox interactions in the review modal — just ack, no forwarding needed
+app.action(/^review_check_/, async ({ ack }) => { await ack(); });
+
+// View submission forwarding
+const LOCATION_VIEW_IDS = ['review_locations_modal', 'add_new_locations_modal'];
+for (const callbackId of LOCATION_VIEW_IDS) {
+  app.view(callbackId, async ({ ack, body }) => {
+    await ack();
+    console.log(`[proxy] forwarding view ${callbackId} to location agent`);
+    forwardToLocationAgent('/internal/view', body);
+  });
+}
 
 // ─── App Home tab ─────────────────────────────────────────────────────────────
 // Admin Slack ID is resolved once at startup (see bottom of file).

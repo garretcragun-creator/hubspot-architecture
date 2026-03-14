@@ -364,20 +364,22 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
  */
 async function getNewMeetings(sinceMs) {
   const data = await request('POST', '/crm/v3/objects/meetings/search', {
-    filterGroups: [{
-      filters: [
-        {
-          propertyName: 'hs_createdate',
-          operator: 'GT',
-          value: String(sinceMs),
-        },
-        {
-          propertyName: 'hs_activity_type',
-          operator: 'EQ',
-          value: 'Discovery Call',
-        },
-      ],
-    }],
+    filterGroups: [
+      {
+        filters: [
+          { propertyName: 'hs_createdate', operator: 'GT', value: String(sinceMs) },
+          { propertyName: 'hs_activity_type', operator: 'EQ', value: 'Discovery Call' },
+        ],
+      },
+      {
+        // Pick up meetings with no activity type — processMeeting retries
+        // up to 3× waiting for workflows to set it, and checks title for "Intro".
+        filters: [
+          { propertyName: 'hs_createdate', operator: 'GT', value: String(sinceMs) },
+          { propertyName: 'hs_activity_type', operator: 'NOT_HAS_PROPERTY' },
+        ],
+      },
+    ],
     properties: ['hs_object_id', 'hs_createdate'],
     sorts: [{ propertyName: 'hs_createdate', direction: 'ASCENDING' }],
     limit: 100,

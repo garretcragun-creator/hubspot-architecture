@@ -364,20 +364,22 @@ async function getRecentOutboundActivity(contactId, beforeTimestampMs = Date.now
  */
 async function getNewMeetings(sinceMs) {
   const data = await request('POST', '/crm/v3/objects/meetings/search', {
-    filterGroups: [{
-      filters: [
-        {
-          propertyName: 'hs_createdate',
-          operator: 'GT',
-          value: String(sinceMs),
-        },
-        {
-          propertyName: 'hs_activity_type',
-          operator: 'EQ',
-          value: 'Discovery Call',
-        },
-      ],
-    }],
+    filterGroups: [
+      {
+        filters: [
+          { propertyName: 'hs_createdate', operator: 'GT', value: String(sinceMs) },
+          { propertyName: 'hs_activity_type', operator: 'EQ', value: 'Discovery Call' },
+        ],
+      },
+      {
+        // Pick up meetings with no activity type — processMeeting retries
+        // up to 3× waiting for workflows to set it, and checks title for "Intro".
+        filters: [
+          { propertyName: 'hs_createdate', operator: 'GT', value: String(sinceMs) },
+          { propertyName: 'hs_activity_type', operator: 'NOT_HAS_PROPERTY' },
+        ],
+      },
+    ],
     properties: ['hs_object_id', 'hs_createdate'],
     sorts: [{ propertyName: 'hs_createdate', direction: 'ASCENDING' }],
     limit: 100,
@@ -386,50 +388,6 @@ async function getNewMeetings(sinceMs) {
     id: r.id,
     createdMs: parseInt(r.properties?.hs_createdate || '0', 10),
   }));
-}
-
-// ─── Location custom object ─────────────────────────────────────────────────
-const LOCATION_OBJECT_TYPE = process.env.HUBSPOT_LOCATION_OBJECT_TYPE || '2-56022093';
-const LOCATION_TO_COMPANY_ASSOC_TYPE = parseInt(process.env.LOCATION_TO_COMPANY_ASSOC_TYPE || '156', 10);
-const LOCATION_TO_DEAL_ASSOC_TYPE = parseInt(process.env.LOCATION_TO_DEAL_ASSOC_TYPE || '160', 10);
-
-/**
- * Create a single Location record.
- * @param {object} properties - { name, address, phone, npi, onboarding_status, ... }
- * @returns {Promise<object>} - { id, properties, ... }
- */
-async function createLocation(properties) {
-  return request('POST', `/crm/v3/objects/${LOCATION_OBJECT_TYPE}`, { properties });
-}
-
-/**
- * Create a labeled association between two objects (v4 API).
- * @param {string} fromObjectType
- * @param {string} fromObjectId
- * @param {string} toObjectType
- * @param {string} toObjectId
- * @param {number} associationTypeId - the labeled association type ID
- */
-async function createAssociation(fromObjectType, fromObjectId, toObjectType, toObjectId, associationTypeId) {
-  return request(
-    'PUT',
-    `/crm/v4/objects/${fromObjectType}/${fromObjectId}/associations/${toObjectType}/${toObjectId}`,
-    [{ associationCategory: 'USER_DEFINED', associationTypeId }]
-  );
-}
-
-/**
- * Associate a Location to a Company using the configured association type.
- */
-async function associateLocationToCompany(locationId, companyId) {
-  return createAssociation(LOCATION_OBJECT_TYPE, locationId, 'companies', companyId, LOCATION_TO_COMPANY_ASSOC_TYPE);
-}
-
-/**
- * Associate a Location to a Deal using the configured association type.
- */
-async function associateLocationToDeal(locationId, dealId) {
-  return createAssociation(LOCATION_OBJECT_TYPE, locationId, 'deals', dealId, LOCATION_TO_DEAL_ASSOC_TYPE);
 }
 
 module.exports = {
@@ -445,9 +403,4 @@ module.exports = {
   getRecentOutboundActivity,
   getHapilyRegistrants,
   getNewMeetings,
-  createLocation,
-  createAssociation,
-  associateLocationToCompany,
-  associateLocationToDeal,
-  LOCATION_OBJECT_TYPE,
 };
